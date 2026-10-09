@@ -1,124 +1,85 @@
-# Term project — template
+# AI-Assisted Learning and the Reversal of Long-Run Skill Degradation
 
-**Artificial Intelligence and Economic Modeling · UP 2026-II**
+**Artificial Intelligence and Economic Modeling · Universidad del Pacífico · 2026-II**
 
-> **This is the template for the term project.** Press **Use this template**,
-> name your repository **`ai-project`**, and replace the content. Every project
-> in the course has this structure, so that anyone can open any repository and
-> find the paper, the slides, the code and the Lean proofs in the same place.
->
-> Dates, page limits and what is graded are in the
-> [project issue](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7)
-> of the course repository. **Delete this block and the next two sections when
-> you write your own README.**
+**Track A:** extension of Aouad, Lykouris, and Zhong (2026), *Human-AI
+Productivity Paradoxes: Modeling the Interplay of Skill, Effort, and AI
+Assistance*.
 
-## What goes where
+## Question
 
-One repository for the whole project: it grows from the topic presentation to
-the final paper.
+Can AI assistance raise the long-run share of high-skill workers when it not
+only substitutes for current effort, as in the baseline model, but also makes
+the remaining effort more effective at producing skill?
 
-| Path | What it holds | Needed for |
-|---|---|---|
-| `README.md` | One page: the question, the model, the main result with all its conditions, and the status of the project | always |
-| `proposal/proposal.tex` · `.pdf` | The topic document, **2–4 pages** | topic presentation |
-| `slides/topic.tex` · `.pdf` | Deck for the 20-minute topic presentation | topic presentation |
-| `slides/final.tex` · `.pdf` | Deck for the final presentation | final presentation |
-| `paper/paper.tex` · `references.bib` · `paper.pdf` | The final paper, **8–20 pages**, in LaTeX with its compiled PDF | final paper |
-| `code/` | Simulations and symbolic checks; `code/verify.py` runs them all and **fails** if a claim does not hold | final paper |
-| `lean/` | The Lean formalization of **your** paper, generated with AppliedModelingLib | final paper |
-| `hand/` | The handwritten appendix: every derivation, step by step | final paper |
-| `prompts.md` | Your prompts and the relevant answers, raw | always |
-| `.github/workflows/build.yml` | Compiles the PDFs and runs `code/verify.py` on every push | — leave it as it is |
+## Model
 
-Keep the file names. If a script, figure or section needs more files, add them
-inside the folder where they belong.
+A myopic worker with skill `s`, effort `e ≥ 0`, and AI assistance `a ≥ 0`
+solves
 
-Work as in the weekly repositories: **branch → pull request → merge**. Nothing
-is written directly to `main`, and what is graded is what is on `main` at the
-deadline.
-
-## Building
-
-```bash
-python3 -m pip install -r code/requirements.txt
-python3 code/verify.py                      # checks + figures
-
-cd paper    && latexmk -pdf paper.tex       # or: tectonic paper.tex
-cd proposal && latexmk -pdf proposal.tex
-cd slides   && latexmk -pdf topic.tex final.tex
+```text
+max_{e ≥ 0} p(s + e + a) − γe,
 ```
 
-**Commit the compiled PDFs** next to their sources. The workflow in
-`.github/workflows/` recompiles everything from source on every push: the
-green check on your repository is the evidence that the PDF you committed is
-the one your LaTeX produces. If the check is red, the Actions tab shows the
-LaTeX error.
+where `p` is increasing and concave and `γ > 0`. Let `x*` be the largest
+maximizer of `p(x) − γx`. The worker's effort remains
 
-Every orange **Replace** box in the PDFs is an instruction to you. A submitted
-document has none left.
+```text
+e*(s,a) = max{x* − s − a, 0}.
+```
 
-## The Lean component
+There are two skill states, `s_L < s_H`. The downward transition rate is
+`μ > 0`; the proposed upward learning technology is
 
-The target is that **every numbered result of your paper is stated and proved
-in Lean**, with no `sorry` and no hypothesis that smuggles in the conclusion.
-It is the same workflow as in the weekly repositories, pointed at your own
-paper instead of a published one.
+```text
+λ(e,a) = λ_0 + κe(1 + ηa),
+```
 
-1. Merge the version of `paper/paper.pdf` you want formalized and copy the
-   commit hash.
-2. From the root of your [AppliedModelingLib](https://gargnikhil.com/AppliedModelingLib/)
-   clone (`git pull` first), with the same agent configuration as in the weekly
-   repositories, give the agent this task:
+with `λ_0 > 0`, `κ > 0`, and `η ≥ 0`. Thus AI and effort are substitutes in
+current production but complements in skill acquisition when `η > 0`.
 
-   ```text
-   Please formalize my own paper, an unpublished manuscript with no arXiv
-   record: https://github.com/<your-user>/ai-project/blob/<commit>/paper/paper.pdf
-   (pinned at commit <commit>), using the paper-formalization skill and
-   workflow in this repository.
-   Use <Surname>26<ShortTitle> as the paper folder.
-   ```
+## Candidate result, with conditions
 
-3. Run the paper-scoped check and keep its output:
+Let `b = x* − s_L > 0`. The stationary high-skill share is
 
-   ```bash
-   python3 scripts/paper_contribution.py check <Surname>26<ShortTitle> --fast
-   ```
+```text
+π_H(a) = λ_L(a) / [λ_L(a) + μ],
+λ_L(a) = λ_0 + κ(b − a)^+(1 + ηa).
+```
 
-4. Copy the **entire** generated `papers/<Surname>26<ShortTitle>/` folder,
-   exactly as generated, into this repository as `lean/`. Stage it with
-   `git add lean/` and respect the generated `.gitignore` — never `git add -f`.
-5. Fill in the *Lean formalization* appendix of the paper: one row per numbered
-   result, the Lean declaration that proves it, and its status.
+For `0 ≤ a < b`,
 
-If you change a proposition after the run, the Lean folder no longer matches
-the paper: run the workflow again. If a result is still open at the deadline,
-say exactly which one and what blocks it — an honest partial result is graded,
-a hidden gap is not.
+```text
+sign(dπ_H/da) = sign(η(b − 2a) − 1).
+```
 
----
+Hence the baseline skill-degradation result survives when `ηb ≤ 1`. If
+`ηb > 1`, assistance initially raises the high-skill share until
 
-# Your title
+```text
+a† = (ηb − 1)/(2η),
+```
 
-**Replace everything below with your own README — one page.**
+then lowers it for `a† < a < b`; once `a ≥ b`, effort is zero and the share is
+constant at `λ_0/(λ_0 + μ)`. For two active-effort levels
+`0 ≤ a_l < a_h < b`, the exact reversal condition is
 
-*Track A (extension of …) or Track B (thesis model).*
+```text
+π_H(a_h) > π_H(a_l)  iff  η(b − a_h − a_l) > 1.
+```
 
-## The question
-
-## The model
-
-The agent's problem, written formally: what is maximised, over which variable,
-under which constraints.
-
-## The main result, with all its conditions
+This is a local, conditional reversal of Proposition 3.5, not a universal
+claim that more AI always improves skill.
 
 ## Status
 
 | Component | State |
 |---|---|
-| Topic document and slides | |
-| Final slides | |
-| Paper | |
-| Simulations (`python3 code/verify.py`) | |
-| Lean (`check --fast` result, paper commit formalized) | |
-| Handwritten appendix | |
+| Topic document and slides | Drafted and locally compiled; pending instructor/student review |
+| Final slides | Template placeholder; not yet developed |
+| Paper | Template placeholder; not yet developed |
+| Simulations (`python code/verify.py`) | Template check only; extension checks are planned |
+| Lean | Not started; planned after the paper's proposition is fixed |
+| Handwritten appendix | Not started; required for the final paper |
+
+Repository: <https://github.com/wbgradost/ai-project>

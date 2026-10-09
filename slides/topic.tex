@@ -1,5 +1,4 @@
-% Topic presentation -- 20 minutes.
-% No animations and no screenshots of papers: equations are typeset in LaTeX.
+% Topic presentation -- 20 minutes. No animations or paper screenshots.
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -11,56 +10,318 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 \setbeamerfont{frametitle}{size=\large}
+\setbeamercolor{alerted text}{fg=blue!65!black}
 
-\title{Your Working Title}
-\subtitle{Topic presentation --- Track A or Track B}
-\author{Your Name}
+\newcommand{\source}[1]{\vfill{\tiny\color{black!60}#1}}
+
+\title{AI-Assisted Learning and the Reversal\\of Long-Run Skill Degradation}
+\subtitle{Topic presentation --- Track A}
+\author{\texttt{wbgradost}}
 \date{October 2026}
 
 \begin{document}
 
-% The title slide carries the repository link.
 \begin{frame}[plain]
   \titlepage
   \begin{center}\small
-    \texttt{github.com/your-user/ai-project}
+    \url{https://github.com/wbgradost/ai-project}
   \end{center}
 \end{frame}
 
+% ---------------------------------------------------------------------------
+\section{Question and track}
+
 \begin{frame}{1 \textperiodcentered{} The question}
-  \textbf{Replace.} The question in one sentence, and why the answer is not
-  obvious.
+  \begin{center}
+    \Large Can AI assistance raise long-run skill when it makes the
+    \alert{remaining human effort more effective for learning}?
+  \end{center}
+  \vspace{1em}
+  \begin{columns}[T]
+    \column{0.45\textwidth}
+      \centering
+      \textbf{Current production}\\[0.3em]
+      AI substitutes for effort
+    \column{0.1\textwidth}
+      \centering\Large $\Longleftrightarrow$
+    \column{0.45\textwidth}
+      \centering
+      \textbf{Skill acquisition}\\[0.3em]
+      AI may complement effort
+  \end{columns}
 \end{frame}
 
-\begin{frame}{2 \textperiodcentered{} The baseline model}
-  \textbf{Replace.} The agent's problem, written formally.
+\begin{frame}{1 \textperiodcentered{} Track A and target}
+  \textbf{Baseline:} Aouad, Lykouris, and Zhong (2026)
+  \begin{itemize}
+    \item Proposition 3.5, p.~8: more AI shifts stationary skill downward.
+  \end{itemize}
+  \vspace{0.6em}
+  \textbf{One changed assumption:}
   \[
-    \max_{e \ge 0}\; a e - \frac{c}{2}\, e^{2}
+    \lambda(e) \quad\longrightarrow\quad
+    \lambda(e,a)=\lambda_0+\kappa e(1+\eta a).
   \]
-  Cite the paper, the proposition and the page.
+  \vspace{0.3em}
+  \alert{Target:} an exact two-state condition for a \emph{local} reversal,
+  plus the threshold at which effort crowd-out regains dominance.
+  \source{Aouad, Lykouris, and Zhong, arXiv:2605.11350v1; conference version EC 2026.}
 \end{frame}
 
-\begin{frame}{3 \textperiodcentered{} The assumption I change}
-  \textbf{Replace.} Which assumption, in the paper's notation, and what
-  replaces it.
-\end{frame}
+% ---------------------------------------------------------------------------
+\section{Baseline and changed assumption}
 
-\begin{frame}{4 \textperiodcentered{} The result I expect}
-  \textbf{Replace.} The first-order condition you expect, and which result of
-  the baseline should change and in which direction.
+\begin{frame}{2 \textperiodcentered{} Baseline worker problem}
+  A myopic worker chooses effort for current utility:
   \[
-    a - c e = 0 \quad\Longrightarrow\quad e^{*} = \frac{a}{c}
+    \max_{e\geq0}\; p(s+e+a)-\gamma e,
+    \qquad \gamma>0.
+  \]
+  \begin{itemize}
+    \item $p$: increasing, concave; $s,e,a$ are perfect substitutes.
+    \item Learning does not enter the worker's current objective.
+  \end{itemize}
+  \vspace{0.4em}
+  Kuhn--Tucker conditions:
+  \[
+    e^*\geq0,\quad \gamma-p'(s+e^*+a)\geq0,\quad
+    e^*[\gamma-p'(s+e^*+a)]=0.
   \]
 \end{frame}
 
-\begin{frame}{5 \textperiodcentered{} Why this is not already solved}
-  \textbf{Replace.} Where you looked --- appendices, working-paper versions,
-  citing papers --- and what you found.
+\begin{frame}{2 \textperiodcentered{} Optimal effort: one-for-one crowd-out}
+  Let
+  \[
+    x^*=\max\arg\max_{x\geq0}\{p(x)-\gamma x\}.
+  \]
+  Then Proposition 2.1 gives
+  \[
+    \boxed{e^*(s,a)=(x^*-s-a)^+.}
+  \]
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \textbf{If $s+a<x^*$}
+      \[
+        \frac{\partial e^*}{\partial a}=-1,
+        \qquad s+e^*+a=x^*.
+      \]
+    \column{0.48\textwidth}
+      \textbf{If $s+a\geq x^*$}
+      \[
+        e^*=0.
+      \]
+  \end{columns}
+  \source{Baseline result: Aouad, Lykouris, and Zhong (2026), Proposition 2.1.}
 \end{frame}
 
-\begin{frame}{6 \textperiodcentered{} Plan and risks}
-  \textbf{Replace.} What you will prove, simulate and formalize in Lean; the
-  step most likely to fail.
+\begin{frame}{2 \textperiodcentered{} Baseline skill dynamics}
+  Continuous-time birth--death chain:
+  \[
+    s_i \xrightarrow{\ \lambda(e^*(s_i,a))\ } s_{i+1},
+    \qquad
+    s_i \xrightarrow{\ \mu\ } s_{i-1}.
+  \]
+  Local balance implies
+  \[
+    \frac{\pi_{i+1}(a)}{\pi_i(a)}
+      =\frac{\lambda(e^*(s_i,a))}{\mu}.
+  \]
+  \vspace{0.4em}
+  Higher $a$ $\Rightarrow$ lower $e^*$ $\Rightarrow$ lower upward rates
+  $\Rightarrow$ more stationary mass on low skill.
+  \begin{block}{Proposition 3.5 (baseline)}
+    For $a_\ell<a_h$, the distribution under $a_\ell$ first-order
+    stochastically dominates the distribution under $a_h$.
+  \end{block}
+\end{frame}
+
+\begin{frame}{2 \textperiodcentered{} The assumption I change}
+  \[
+    \boxed{\lambda(e,a)=\lambda_0+\kappa e(1+\eta a)}
+  \]
+  \[
+    \lambda_0>0,\qquad \kappa>0,\qquad \eta\geq0.
+  \]
+  \begin{align*}
+    \lambda_e &= \kappa(1+\eta a)>0, &
+    \lambda_{ea} &= \kappa\eta\geq0.
+  \end{align*}
+  \begin{itemize}
+    \item For fixed $a$: linear and weakly concave in effort.
+    \item $\eta=0$: affine special case of the original technology.
+    \item Worker problem unchanged: effort remains $(x^*-s-a)^+$.
+  \end{itemize}
+\end{frame}
+
+% ---------------------------------------------------------------------------
+\section{Expected result}
+
+\begin{frame}{3 \textperiodcentered{} Two states: stationary distribution}
+  Let $s_L<s_H$ and define
+  \[
+    \lambda_L(a)=\lambda(e^*(s_L,a),a).
+  \]
+  \begin{center}
+    $s_L\ \underset{\mu}{\overset{\lambda_L(a)}{\rightleftarrows}}\ s_H$
+  \end{center}
+  Stationary flow balance:
+  \[
+    \pi_L\lambda_L=\pi_H\mu,
+    \qquad \pi_L+\pi_H=1.
+  \]
+  Therefore
+  \[
+    \boxed{\pi_H(a)=\frac{\lambda_L(a)}{\lambda_L(a)+\mu}.}
+  \]
+  \alert{The sign of $d\pi_H/da$ is exactly the sign of
+  $d\lambda_L/da$.}
+\end{frame}
+
+\begin{frame}{3 \textperiodcentered{} Competing effects of AI}
+  Set $b=x^*-s_L>0$. While $0\leq a<b$,
+  \[
+    e_L^*(a)=b-a
+  \]
+  and
+  \[
+    \lambda_L(a)
+      =\lambda_0+\kappa(b-a)(1+\eta a).
+  \]
+  Total effect:
+  \begin{align*}
+    \frac{d\lambda_L}{da}
+      &= \underbrace{\kappa\eta e_L^*}_{\text{learning complementarity}}
+       - \underbrace{\kappa(1+\eta a)}_{\text{effort crowd-out}}\\[0.3em]
+      &= \kappa[\eta(b-2a)-1].
+  \end{align*}
+  \[
+    \boxed{\frac{d\pi_H}{da}>0
+      \quad\Longleftrightarrow\quad \eta(b-2a)>1.}
+  \]
+\end{frame}
+
+\begin{frame}{3 \textperiodcentered{} Candidate proposition: two thresholds}
+  \begin{columns}[T]
+    \column{0.47\textwidth}
+      \textbf{Weak complementarity}
+      \[
+        \eta b\leq1
+      \]
+      $\pi_H(a)$ is weakly decreasing: baseline degradation survives.
+    \column{0.49\textwidth}
+      \textbf{Strong complementarity}
+      \[
+        \eta b>1
+      \]
+      Initial reversal, ending at
+      \[
+        \boxed{a^\dagger=\frac{\eta b-1}{2\eta}.}
+      \]
+  \end{columns}
+  \vspace{0.8em}
+  \begin{center}
+    $0$ \quad $\xrightarrow{\ \pi_H\ \uparrow\ }$ \quad
+    $a^\dagger$ \quad $\xrightarrow{\ \pi_H\ \downarrow\ }$ \quad
+    $b$ \quad $\xrightarrow{\ \pi_H\ \text{constant}\ }$
+  \end{center}
+  \small At $a=b$, effort is zero; learning returns to $\lambda_0$.
+\end{frame}
+
+\begin{frame}{3 \textperiodcentered{} Exact pairwise reversal condition}
+  For two active-effort levels $0\leq a_\ell<a_h<b$,
+  \begin{align*}
+    \lambda_L(a_h)-\lambda_L(a_\ell)
+      &=\kappa(a_h-a_\ell)
+        [\eta(b-a_h-a_\ell)-1].
+  \end{align*}
+  Since $\pi_H=\lambda_L/(\lambda_L+\mu)$,
+  \[
+    \boxed{
+    \pi_H(a_h)>\pi_H(a_\ell)
+    \iff
+    \eta(b-a_h-a_\ell)>1.}
+  \]
+  \begin{alertblock}{Scope}
+    This reverses Proposition 3.5 only for qualifying pairs of assistance
+    levels. If $a_h\geq b>a_\ell$, the higher level eliminates effort and the
+    reversal cannot hold.
+  \end{alertblock}
+\end{frame}
+
+% ---------------------------------------------------------------------------
+\section{Why not already solved}
+
+\begin{frame}{4 \textperiodcentered{} What the baseline appendices establish}
+  \begin{itemize}
+    \item Appendix A.1 derives the stationary birth--death distribution.
+    \item Appendix A.4 proves Proposition 3.5 using
+      $\lambda=\lambda(e)$ and monotonicity in effort.
+    \item Appendix D allows convex effort costs, but the learning rate still
+      has no direct AI argument.
+    \item The current arXiv record contains v1; the authors list an EC 2026
+      conference version.
+  \end{itemize}
+  \vspace{0.5em}
+  \alert{Missing object:} no AI--effort cross-partial in the transition
+  technology, hence no closed-form stationary reversal condition.
+  \source{Aouad, Lykouris, and Zhong (2026), Appendices A and D.}
+\end{frame}
+
+\begin{frame}{4 \textperiodcentered{} Closest related result: Davies (2026)}
+  \textbf{Course Design in the Age of AI}
+  \begin{itemize}
+    \item Myopic student chooses work or full delegation; teacher designs tasks.
+    \item AI quality affects both the marginal product of effort and delegation.
+    \item Theorem 4: higher quality raises learning for high-skill students but
+      lowers it for low-skill students.
+  \end{itemize}
+  \vspace{0.4em}
+  \begin{block}{What this project adds to the Aouad et al. model}
+    Keep its worker problem and stationary Markov structure; place
+    complementarity directly in $\lambda(e,a)$; derive a closed-form stationary
+    reversal condition and assistance threshold.
+  \end{block}
+  \small No claim that AI--learning complementarity itself is new.
+  \source{Davies, arXiv:2607.18735v3, Theorem 4; Shen--Tamkin (2026); Wu et al. (2026).}
+\end{frame}
+
+% ---------------------------------------------------------------------------
+\section{Plan and risks}
+
+\begin{frame}{5 \textperiodcentered{} Work plan after topic approval}
+  \begin{enumerate}
+    \item \textbf{Proof:} all two-state boundary/equality cases; then exact
+      sufficient conditions for an $N$-state ordering.
+    \item \textbf{Symbolic checks:} verify stationary identities, derivatives,
+      and pairwise differences.
+    \item \textbf{Numerics:} parameter grids around $a^\dagger$ and $b$;
+      separate evidence from proof.
+    \item \textbf{Lean:} formalize
+      \begin{itemize}
+        \item the two-state stationary share,
+        \item the derivative-sign equivalence,
+        \item the pairwise condition, including positivity and piecewise cases.
+      \end{itemize}
+  \end{enumerate}
+  \vspace{0.3em}
+  \centering
+  \alert{Proof statement first; simulations and Lean only after it is fixed.}
+\end{frame}
+
+\begin{frame}{5 \textperiodcentered{} Main risks and disciplined fallbacks}
+  \begin{itemize}
+    \item \textbf{Different $N$-state thresholds.}
+      State sufficient rate-by-rate conditions; retain the exact two-state result.
+    \item \textbf{A local result is read as global.}
+      Report both thresholds $a^\dagger$ and $b$, with every domain restriction.
+    \item \textbf{Myopia omits the value of future skill.}
+      Keep it for baseline comparability; state forward-looking choice as a limitation.
+    \item \textbf{$\lambda(e,a)$ is not jointly concave.}
+      Require concavity in effort conditional on $a$, which is all the result uses.
+  \end{itemize}
+  \vspace{0.4em}
+  \centering
+  \Large\alert{Question for discussion: is local reversal the right scope?}
 \end{frame}
 
 \end{document}
