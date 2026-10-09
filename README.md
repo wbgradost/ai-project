@@ -88,7 +88,7 @@ with the marginal-effect threshold `a†` and the zero-effort threshold `b`.
 
 | Component | State |
 |---|---|
-| Topic document and slides | Drafted and locally compiled; pending instructor/student review |
+| Topic document and slides | Academically audited and compiled; ready for merge |
 | Final slides | Template placeholder; not yet developed |
 | Paper | Template placeholder; not yet developed |
 | Simulations (`python code/verify.py`) | Template check only; extension checks are planned |

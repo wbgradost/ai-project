@@ -805,3 +805,37 @@ El PR queda pendiente de tu revisión, sin merge y sin comentario en el Issue.
 **What I did with it:** The work is on branch
 `topic/ai-assisted-learning`. No merge to `main` and no Issue comment were
 performed.
+
+## 3. 2026-10-08 — final academic audit before merge
+
+**Prompt**
+
+```text
+He revisado el resumen de los entregables y me parece que ya estamos cerca de terminar.
+
+Antes de fusionar el PR, quiero asegurarme de que la propuesta y las diapositivas estén bien desde el punto de vista académico.
+
+Por favor, comprueba especialmente que la Proposición 3.5 esté correctamente explicada, que nuestra extensión mantenga los supuestos pertinentes del modelo original y que las condiciones de reversión, los dos umbrales y sus interpretaciones económicas sean consistentes en el documento, las diapositivas y el README.
+
+También quiero que la sección de novedad distinga claramente nuestro resultado del trabajo de Davies, sin exagerar la contribución. Revisa que las fuentes estén bien citadas y que las afirmaciones importantes tengan respaldo.
+
+En la presentación, comprueba que las 15 diapositivas puedan explicarse razonablemente en 20 minutos, que las ecuaciones sean legibles y que no existan láminas demasiado cargadas. No quiero agregar más contenido salvo que falte algo indispensable.
+
+Además, reemplaza `wbgradost` por `William Grados` en el nombre del autor de la propuesta y de las diapositivas.
+
+Si identificas errores relevantes, corrígelos puntualmente. No rehagas los documentos ni instales herramientas adicionales por cambios menores.
+
+Finalmente, vuelve a compilar los PDF que hayas modificado, actualiza la rama y comprueba el estado de GitHub Actions. Mantén el PR abierto, sin hacer todavía el merge ni publicar el enlace en el Issue.
+
+Dime únicamente si encontraste problemas importantes, qué corregiste y si todo quedó listo para fusionar.
+```
+
+**Answer**
+
+```text
+No encontré errores matemáticos importantes. La Proposición 3.5, la derivación estacionaria, la condición η(b−2a)>1, el umbral marginal a† y el corte de esfuerzo b eran consistentes. Sí encontré una imprecisión académica relevante: la comparación con Davies describía su Teorema 4 sin explicitar que se refiere al esfuerzo second-best y, por proporcionalidad, a la ganancia de habilidad por tarea bajo sus condiciones, no a una distribución estacionaria.
+
+Corregí esa atribución y la delimitación de la novedad en la propuesta, las diapositivas y el README; añadí al README la explicación exacta de la dominancia estocástica de primer orden de la Proposición 3.5 y la interpretación separada de a† y b; reemplacé el autor por William Grados; y recompilé proposal.pdf (3 páginas) y topic.pdf (15 diapositivas). La compilación no reporta desbordes de maquetación, y el deck conserva un ritmo razonable para 20 minutos.
+
+Todo quedó listo para fusionar: GitHub Actions está en verde, el PR permanece abierto, main no fue fusionado y no se publicó nada en el Issue.
+```
