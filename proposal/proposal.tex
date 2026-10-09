@@ -1,5 +1,4 @@
-% Topic document -- 2 to 4 pages in THIS format (11pt, 1-inch margins).
-% It accompanies the 20-minute topic presentation.
+% Topic document -- 2 to 4 pages in this format (11pt, 1-inch margins).
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -9,51 +8,178 @@
 \usepackage[round]{natbib}
 \usepackage[colorlinks=true,allcolors=blue!50!black]{hyperref}
 
-\newcommand{\replace}[1]{\par\smallskip\noindent
-  \fcolorbox{orange!80!black}{yellow!12}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-  \small\textbf{Replace.} #1}}\par\smallskip}
+\setlength{\bibsep}{2pt}
 
-\title{Project Topic: Your Working Title}
-\author{Your Name \\ \small\url{https://github.com/your-user/ai-project}}
+\title{AI-Assisted Learning and the Reversal of\\Long-Run Skill Degradation}
+\author{William Grados\\
+  \small\url{https://github.com/wbgradost/ai-project}}
 \date{Topic presentation, October 2026}
 
 \begin{document}
 \maketitle
 
 \section{The question and the track}
-\replace{One paragraph. The question in one sentence, and the track:
-\textbf{Track A} --- you relax an assumption of a course paper and re-derive the
-proposition it affects; or \textbf{Track B} --- you formulate the economic model
-behind your own thesis.}
 
-\section{The baseline and the assumption you change}
-\replace{Track A: cite the paper, the exact proposition and page, and state the
-assumption you relax, in the paper's notation. Track B: state the model your
-thesis currently lacks or cites as a black box. Write the agent's problem
-formally --- what is maximised, over which variable, under which constraints.}
+Can AI assistance raise long-run skill when it not only substitutes for human
+effort in current production, but also makes the remaining effort more
+effective at producing skill? I study this question under \textbf{Track A} by
+changing one assumption in the endogenous-skill model of
+\citet{aouad2026paradoxes}. Their Proposition~3.5 (p.~8) establishes a weak
+downward shift of the stationary skill distribution as AI assistance rises. My
+conjecture is deliberately narrower: sufficiently strong AI--effort
+complementarity in learning reverses that comparison over an initial range of
+assistance, but effort displacement eventually dominates. The objective is an
+exact two-state characterization, not a universal claim that more AI always
+improves skill.
 
-\section{The result you expect}
-\replace{Write the first-order condition you expect to obtain, and say which
-result of the baseline you expect to change and in which direction. This is a
-conjecture: it is graded on being precise, not on being right.}
+\section{The baseline and the assumption I change}
 
-\begin{equation}\label{eq:foc}
-  \frac{\partial}{\partial e}\Bigl[\, a e - \tfrac{c}{2} e^{2} \Bigr]
-  \;=\; a - c e \;=\; 0 .
+\paragraph{Worker problem.}
+A myopic worker has skill $s>0$, chooses effort $e\geq 0$, and receives AI
+assistance $a\geq0$. Skill, effort, and AI are perfect substitutes in current
+production. With an increasing, concave production function $p$ and linear
+effort cost $\gamma e$, $\gamma>0$, the worker solves
+\begin{equation}
+  e^*(s,a)\in\arg\max_{e\geq0}
+  \left\{p(s+e+a)-\gamma e\right\}.                 \label{eq:worker}
 \end{equation}
+The Kuhn--Tucker conditions are
+\begin{equation}
+ e^*\geq0,\qquad
+ \gamma-p'(s+e^*+a)\geq0,\qquad
+ e^*\bigl[\gamma-p'(s+e^*+a)\bigr]=0.              \label{eq:kkt}
+\end{equation}
+Let $x^*$ be the largest maximizer of $p(x)-\gamma x$. Under the paper's
+boundedness condition, Proposition~2.1 gives
+\begin{equation}
+ e^*(s,a)=(x^*-s-a)^+ .                              \label{eq:effort}
+\end{equation}
+Thus, while effort is positive, an additional unit of AI displaces one unit of
+effort.
+
+\paragraph{Baseline skill dynamics.}
+The original model is a continuous-time birth--death chain. From state $s_i$,
+the upward rate is $\lambda(e^*(s_i,a))$, where $\lambda$ is positive,
+increasing, differentiable, and weakly concave; the downward rate is the
+constant $\mu>0$. Local balance gives
+\begin{equation}
+ \frac{\pi_{i+1}(a)}{\pi_i(a)}
+ =\frac{\lambda(e^*(s_i,a))}{\mu}.                  \label{eq:odds}
+\end{equation}
+Because (3) is decreasing in $a$ and the baseline $\lambda$ is increasing in
+effort, every adjacent stationary odds ratio falls with AI. Proposition~3.5
+therefore shows that lower assistance first-order stochastically dominates
+higher assistance. Its Appendix~A.4 proves this result by comparing normalized
+sums of products of the ratios in (4).
+
+\paragraph{Changed assumption.}
+I preserve (1), myopia, current production, and the downward rate, but replace
+the effort-only learning technology with
+\begin{equation}
+ \lambda(e,a)=\lambda_0+\kappa e(1+\eta a),
+ \qquad \lambda_0>0,\ \kappa>0,\ \eta\geq0.         \label{eq:learning}
+\end{equation}
+For each fixed $a$, (5) is positive, increasing, and linear (hence weakly
+concave) in effort. Its cross-partial is $\lambda_{ea}=\kappa\eta\geq0$: AI
+raises the learning effectiveness of effort. When $\eta=0$, (5) is an affine
+special case of the baseline. Since the worker remains myopic, (5) does not
+change the first-order conditions (2); it changes only the transition rate
+evaluated at optimal effort.
+
+\section{The result I expect}
+
+Consider two skill states $s_L<s_H$. Write
+$\lambda_L(a)=\lambda(e^*(s_L,a),a)$. Stationary flow balance and normalization
+are
+\begin{equation}
+ \pi_L\lambda_L=\pi_H\mu,\qquad \pi_L+\pi_H=1,
+ \quad\Longrightarrow\quad
+ \pi_H(a)=\frac{\lambda_L(a)}{\lambda_L(a)+\mu}.     \label{eq:stationary}
+\end{equation}
+Let $b=x^*-s_L>0$. By (3) and (5),
+\begin{equation}
+ \lambda_L(a)=\lambda_0+\kappa(b-a)^+(1+\eta a).    \label{eq:equilibrium-rate}
+\end{equation}
+In the active-effort region $0\leq a<b$,
+\begin{align}
+ \lambda_L(a)
+   &=\lambda_0+\kappa\bigl[b+(\eta b-1)a-\eta a^2\bigr],\notag\\
+ \frac{d\lambda_L}{da}
+   &=\underbrace{\kappa\eta(b-a)}_{\text{learning complementarity}}
+     -\underbrace{\kappa(1+\eta a)}_{\text{effort crowd-out}}\notag\\
+   &=\kappa\bigl[\eta(b-2a)-1\bigr],\label{eq:dlambda}\\
+ \frac{d\pi_H}{da}
+   &=\frac{\mu\kappa\,[\eta(b-2a)-1]}
+           {[\lambda_L(a)+\mu]^2}.                 \label{eq:dpi}
+\end{align}
+The positive term in \eqref{eq:dlambda} is the direct increase in learning effectiveness;
+the negative term is the loss caused by effort crowd-out. This yields the
+candidate proposition. If $\eta b\leq1$, the high-skill share is weakly
+decreasing, as in the baseline. If $\eta b>1$, it increases up to
+\begin{equation}
+ a^\dagger=\frac{\eta b-1}{2\eta},                  \label{eq:threshold}
+\end{equation}
+then decreases for $a^\dagger<a<b$. At the second threshold $a=b$, effort
+reaches zero; thereafter $\lambda_L=\lambda_0$ and
+$\pi_H=\lambda_0/(\lambda_0+\mu)$ is constant. For any
+$0\leq a_\ell<a_h<b$, the exact pairwise condition is
+\begin{equation}
+ \pi_H(a_h)>\pi_H(a_\ell)
+ \quad\Longleftrightarrow\quad
+ \eta\bigl(b-a_h-a_\ell\bigr)>1.                  \label{eq:pair}
+\end{equation}
+Equation \eqref{eq:pair} is the proposed local reversal of Proposition~3.5. It also makes
+the limitation explicit: if the higher assistance level crosses $b$, the
+complementarity term disappears and cannot sustain a global reversal.
 
 \section{Why this is not already solved}
-\replace{Where you looked: the paper's appendices, its working-paper versions,
-and the papers that cite it. Say what you found and why it does not answer your
-question. ``The model did not find it'' is not evidence.}
+
+I reviewed the current arXiv version of \citet{aouad2026paradoxes}, including
+Appendix~A.4 and the convex-cost extension in Appendix~D. Their skill
+transition remains a function of effort alone; the appendices do not introduce
+AI into the learning technology or derive \eqref{eq:dlambda}--\eqref{eq:pair}. ArXiv currently lists
+only version~1; the authors also identify an EC~2026 conference version.
+
+This project does \emph{not} claim that AI--learning complementarity is new.
+Most directly, \citet{davies2026course} studies a myopic student who may work
+or delegate to AI. Under his stated second-best conditions, Theorem~4 shows
+that higher AI quality raises per-task effort---and hence per-task skill
+gain---above a skill threshold and lowers both below it. That model endogenizes
+course design and discrete delegation, whereas this project keeps the worker
+problem and stationary birth--death structure of \citet{aouad2026paradoxes}
+and puts complementarity directly in the transition rate. The added result is
+the closed-form condition under which higher assistance raises the stationary
+high-skill share, together with the two assistance thresholds that delimit the
+effect.
+Recent experiments also distinguish productive AI use from effort-replacing
+use \citep{shen2026skill,wu2026assistance}; they motivate the mechanism but do
+not provide this stationary comparative static.
 
 \section{Plan and risks}
-\replace{What you will prove, what you will simulate, and what you will
-formalize in Lean. Name the step most likely to fail and what you will do if it
-does.}
 
+\textbf{Proof.} I will prove the two-state proposition with all boundary and
+equality cases, then determine whether state-by-state transition inequalities
+yield a useful $N$-state stochastic-dominance result. \textbf{Verification.}
+After the proposition is fixed, a symbolic script will verify
+\eqref{eq:stationary}--\eqref{eq:pair}, and a
+parameter-grid simulation will test sign changes, threshold crossings, and
+limiting cases; these are checks, not proofs. \textbf{Lean.} I will formalize
+the two-state stationary identity, the sign equivalence in \eqref{eq:dpi}, and the
+pairwise condition \eqref{eq:pair}, including positivity assumptions and the piecewise
+effort boundary. These components are intentionally deferred until the
+economic statement has been reviewed.
+
+The main mathematical risk is that the clean two-state ordering need not
+extend to $N$ states when different effort thresholds are crossed. The fallback
+is to state exact sufficient conditions on every upward rate rather than claim
+a global reversal. The main economic risks are the maintained myopia assumption
+and the fact that, in two states, high-state effort affects output but not
+further learning. Finally, (5) is concave in effort for fixed AI but not jointly
+concave in $(e,a)$; the paper will state the required domain-specific
+assumption explicitly.
+
+\small
 \bibliographystyle{plainnat}
 \bibliography{../paper/references}
-\nocite{acemoglu2018race}
 
 \end{document}
