@@ -38,6 +38,12 @@ There are two skill states, `s_L < s_H`. The downward transition rate is
 with `λ_0 > 0`, `κ > 0`, and `η ≥ 0`. Thus AI and effort are substitutes in
 current production but complements in skill acquisition when `η > 0`.
 
+In the original model, `λ` depends only on effort and is increasing. Because
+`e*(s,a)` weakly falls with `a`, every upward transition rate weakly falls as
+well. Proposition 3.5 therefore shows that, for `a_l < a_h`, the stationary
+skill distribution under `a_l` first-order stochastically dominates the one
+under `a_h`.
+
 ## Candidate result, with conditions
 
 Let `b = x* − s_L > 0`. The stationary high-skill share is
@@ -71,6 +77,13 @@ constant at `λ_0/(λ_0 + μ)`. For two active-effort levels
 This is a local, conditional reversal of Proposition 3.5, not a universal
 claim that more AI always improves skill.
 
+The novelty is similarly narrow. Under the second-best conditions in Davies
+(2026), higher AI quality raises per-task effort and skill gain above a skill
+threshold and lowers both below it. This project does not claim that
+AI--learning complementarity is new; it adds a closed-form condition for the
+stationary high-skill share in the birth--death model of Aouad et al., together
+with the marginal-effect threshold `a†` and the zero-effort threshold `b`.
+
 ## Status
 
 | Component | State |
@@ -83,3 +96,6 @@ claim that more AI always improves skill.
 | Handwritten appendix | Not started; required for the final paper |
 
 Repository: <https://github.com/wbgradost/ai-project>
+
+Sources: [Aouad, Lykouris, and Zhong (2026)](https://arxiv.org/abs/2605.11350),
+[Davies (2026)](https://arxiv.org/abs/2607.18735).
