@@ -1,0 +1,80 @@
+{
+  "runtime": {
+    "python": "3.12.1",
+    "numpy": "2.5.4",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2"
+  },
+  "parameters": {
+    "A": 4,
+    "gamma": 1,
+    "s_L": 1,
+    "s_H": 3,
+    "x_star": 3,
+    "b": 2.0,
+    "lambda0": 0.1,
+    "kappa": 0.4,
+    "mu": 0.3
+  },
+  "scenarios": [
+    {
+      "scenario": "None",
+      "eta": 0.0,
+      "eta_b": 0.0,
+      "peak": 0.0,
+      "return": null,
+      "effort_cutoff": 2.0,
+      "pi0": 0.75,
+      "pi_peak": 0.75,
+      "pi_cutoff": 0.25
+    },
+    {
+      "scenario": "Weak",
+      "eta": 0.25,
+      "eta_b": 0.5,
+      "peak": 0.0,
+      "return": null,
+      "effort_cutoff": 2.0,
+      "pi0": 0.75,
+      "pi_peak": 0.75,
+      "pi_cutoff": 0.25
+    },
+    {
+      "scenario": "Strong",
+      "eta": 1.0,
+      "eta_b": 2.0,
+      "peak": 0.5,
+      "return": 1.0,
+      "effort_cutoff": 2.0,
+      "pi0": 0.75,
+      "pi_peak": 0.7692307692307693,
+      "pi_cutoff": 0.25
+    }
+  ],
+  "symbolic_identities": 28,
+  "deterministic_checks": {
+    "effort_grid_max_error": 1.0240963855184804e-05,
+    "effort_grid_step": 5e-05,
+    "random_parameter_cases": 300
+  },
+  "ctmc": {
+    "seed": 20261104,
+    "replications": 384,
+    "initial_state": "L",
+    "burn_in": 0,
+    "horizons": [
+      25.0,
+      100.0,
+      400.0
+    ],
+    "cells": 21,
+    "max_abs_error_vs_stationary": 0.005223004145218729,
+    "max_abs_error_vs_exact_finite_horizon_mean": 0.003660504145218735,
+    "max_abs_z_all_horizons": 1.8485856756686554,
+    "max_abs_initial_bias_final": 0.002083333333333326,
+    "max_empirical_sem_final": 0.0025330034013098255,
+    "nominal_95_coverage_finite_horizon": 0.9841269841269841,
+    "validation_rule": "abs(mean-exact finite-horizon mean) <= 6 exact MC standard errors; diagnostic, not proof"
+  },
+  "interpretation": "Illustrative parameters, not estimated; no welfare or N-state claim."
+}

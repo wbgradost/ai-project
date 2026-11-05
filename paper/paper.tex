@@ -1,164 +1,717 @@
-% Final paper -- Artificial Intelligence and Economic Modeling (UP 2026-II)
-%
-% Body: 8 to 20 pages in THIS format (11pt, 1-inch margins, single column).
-% Do not change the geometry or the font size to fit the limit.
-% References and appendices do not count towards the limit.
+% Working manuscript for the final presentation; course format retained.
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{booktabs}
+\usepackage{booktabs,array}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[round]{natbib}
 \usepackage[colorlinks=true,allcolors=blue!50!black]{hyperref}
-
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
 \theoremstyle{definition}
 \newtheorem{assumption}{Assumption}
 \newtheorem{definition}{Definition}
-
-% Every \replace box is an instruction to you, not text for the reader.
-% A submitted paper has none left: delete the macro to be sure.
-\newcommand{\replace}[1]{\par\smallskip\noindent
-  \fcolorbox{orange!80!black}{yellow!12}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-  \small\textbf{Replace.} #1}}\par\smallskip}
-
-\title{Your Title: State the Result, Not the Topic}
-\author{Your Name\thanks{Universidad del Pac\'ifico. Repository:
-  \url{https://github.com/your-user/ai-project}. Track A (extension of a course
-  paper) or Track B (thesis model): say which.}}
-\date{\today}
-
+\newcommand{\lam}{\lambda_L}
+\newcommand{\share}{\pi_H}
+\newcommand{\peak}{a^*}
+\newcommand{\ret}{a^R}
+\input{../code/output/results.tex}
+\title{AI-Assisted Learning and the Reversal of\\Long-Run Skill Degradation}
+\author{William Grados\thanks{Universidad del Pac\'ifico. Track A extension of
+ Aouad, Lykouris, and Zhong (2026). Repository:
+ \url{https://github.com/wbgradost/ai-project}.}}
+\date{Working manuscript for the final presentation, November 2026}
 \begin{document}
 \maketitle
-
 \begin{abstract}
-\noindent\replace{One paragraph, at most 150 words: the question, the model in
-one sentence, the main result \emph{with its condition}, and what the Lean
-formalization does and does not certify.}
+\noindent Can AI assistance improve long-run skill while displacing human effort?
+I preserve the myopic worker problem of Aouad, Lykouris, and Zhong (2026) and
+replace only the learning rate with $\lambda_0+\kappa e(1+\eta a)$.
+In a two-state continuous-time Markov chain, let $b>0$ be low-state effort
+without AI. The stationary high-skill share initially increases if and only if
+$\eta b>1$. Its unique maximum is then at $(b-1/\eta)/2$, its return to
+the no-AI share is at $b-1/\eta$, and effort vanishes at $b$. Exact pairwise
+comparisons distinguish marginal reversal from gains relative to no AI.
+Reproducible formula evaluations illustrate the mechanism; independent
+Markov trajectories check predicted occupation shares with explicit Monte
+Carlo error and initial-condition bias. Mathematical proofs are complete
+here. The official Lean workflow has not run; no result is reported as
+Lean verified.
 \end{abstract}
 
 \section{Introduction}
-\replace{The question, why it matters, and your answer. State the main result
-in words in the first page. Say which paper you extend and which assumption you
-relax (Track A), or which thesis model you formulate (Track B). End with what
-is new relative to the closest paper. The toy model below only shows the
-mechanics of this template; none of it is yours to keep.}
+AI can substitute for human effort in current production while making the
+remaining effort more effective for learning. These effects need not have
+the same implications for the long-run distribution of skill. This paper
+asks when the second effect is strong enough to reverse the first. The answer
+is conditional and local: in the two-state model studied here, the stationary
+high-skill share rises over an initial interval precisely when the product
+of learning complementarity and low-state effort without AI exceeds one.
 
-\section{Related literature}
-\replace{Two or three paragraphs. Position the paper against the closest
-work, cite the exact result you depart from (proposition and page), and check
-the editorial status of every preprint you cite.}
+The starting point is Proposition~3.5 of \citet[p.~8]{aouad2026paradoxes}.
+In their endogenous-skill model, assistance reduces effort; an upward learning
+rate that depends increasingly on effort alone then falls. Lower assistance
+therefore first-order stochastically dominates higher assistance in the
+stationary skill distribution. I retain their worker objective, myopia,
+additive production inputs, and constant downward transition rate. The only
+modified primitive is the learning technology: AI enters it directly and
+complements effort. For each fixed assistance level it remains positive,
+increasing, and affine in effort.
 
-The task-based view of automation follows \citet{acemoglu2018race}; the
-decision-theoretic view of AI assistance follows \citet{agrawal2025bicycles}.
+The contribution is a complete two-state characterization, including the
+corner at zero effort. Three comparisons have different thresholds: the
+marginal effect of more assistance, the comparison with no assistance, and
+the comparison of two positive assistance levels. Confusing them would
+overstate what complementarity achieves. The stationary high-skill share can
+remain above its no-AI value after its marginal assistance effect has become
+negative. Sufficiently high assistance eliminates the effort channel entirely.
 
-\section{Model}\label{sec:model}
-\replace{Primitives, timing, information, and the agent's problem written
-formally: what is maximised, over which variable, subject to which
-constraints. Number every assumption; a result may only use numbered
-assumptions.}
+This is a working manuscript for critique, not a claim that the November
+final-paper deliverable is complete. Mathematical statements and proofs
+identify a future formalization target. Numerical checks and stochastic
+simulations respond to feedback on the topic presentation. The author's
+handwritten derivations and the official paper-scoped Lean run remain
+pending; their status is reported explicitly.
 
-A worker chooses effort $e \ge 0$. Output is $a e$, where $a$ is productivity
-with AI assistance, and effort costs $\tfrac{c}{2}e^{2}$.
+\section{Relation to the baseline and established literature}
+The baseline is the reviewed arXiv version~1 of
+\citet{aouad2026paradoxes}, especially Proposition~2.1 (effort),
+Proposition~3.5 (stationary skill degradation), and Appendix~A.4 (its proof).
+That comparison orders stationary distributions through upward transition
+rates that fall with assistance. In this extension an upward rate can instead
+increase, even though optimal effort continues to fall. With two ordered
+states, the distributional comparison reduces to the high-state probability.
+This restriction permits an exact result; no $N$-state extension is asserted.
 
-\begin{assumption}\label{ass:params}
-$a > 0$ and $c > 0$.
-\end{assumption}
+The topic-stage review distinguished this contribution from
+\citet{davies2026course}, a working paper in the reviewed September 2026
+version~3. Davies studies course design, work versus delegation, and
+state-dependent effects of AI quality on second-best per-task effort and
+skill acquisition under his stated conditions. This paper does not claim to
+introduce AI--learning complementarity. It gives closed-form stationary
+thresholds in the different birth--death framework of Aouad et al.
+The experimental studies reviewed at the topic stage
+\citep{shen2026skill,wu2026assistance} motivate distinguishing active use from
+delegation; they do not estimate this paper's parameters or validate its
+stationary comparative static. Bibliographic version descriptions refer to
+the sources reviewed at that stage, rather than a new claim about current
+editorial status.
 
-The worker solves
-\begin{equation}\label{eq:problem}
-  \max_{e \ge 0}\; a e - \frac{c}{2}\, e^{2}.
+\section{Model and assumptions}\label{sec:model}
+Assistance $a$ is fixed and exogenous, held constant as the skill process
+evolves. The worker observes current skill $s$ and chooses effort $e\geq0$
+to maximize current utility. There is no continuation value in this choice.
+Skill changes subsequently through the rates specified below.
+
+\begin{assumption}[Worker problem and selection]\label{ass:worker}
+The production function $p:[0,\infty)\to\mathbb R$ is continuously
+differentiable, nondecreasing, and concave. Effort costs $\gamma e$, where
+$\gamma>0$. The growth condition is
+\[
+ \limsup_{x\to\infty}\frac{p(x)}{x}<\gamma.
+\]
+The worker selects the largest effort among maximizers of
+\begin{equation}\label{eq:worker}
+ \max_{e\geq0}\{p(s+e+a)-\gamma e\},\qquad s,a\geq0.
 \end{equation}
+Write $x^*=\max\arg\max_{x\geq0}\{p(x)-\gamma x\}$.
+\end{assumption}
+The selection rule preserves the baseline convention under weak concavity;
+uniqueness is not silently imposed. The growth restriction guarantees a
+nonempty compact maximizer set. At an interior optimum the FOC is
+$p'(s+e+a)=\gamma$. Learning cannot change this condition because it is
+absent from the myopic objective.
 
-\section{Results}\label{sec:results}
-\replace{Every proposition with \emph{all} its conditions and a complete
-proof. A proof may be moved to Appendix~\ref{app:proofs}, but the statement and
-the idea of the proof stay here.}
+\begin{assumption}[States, learning, and depreciation]\label{ass:chain}
+There are two skills $0\leq s_L<s_H$, with $b:=x^*-s_L>0$.
+For fixed $a\geq0$, the skill process is a time-homogeneous continuous-time
+Markov chain. Its transition rate from $L$ to $H$ is
+\begin{equation}\label{eq:technology}
+ \lambda(e,a)=\lambda_0+\kappa e(1+\eta a),\qquad
+ \lambda_0>0,\quad\kappa>0,\quad\eta\geq0,
+\end{equation}
+evaluated at optimal low-state effort. The rate from $H$ to $L$ is the
+constant $\mu>0$. There is no state above $H$.
+\end{assumption}
+High-state effort can affect current production, but cannot generate another
+upward transition in this chain. Baseline learning $\lambda_0$ does not
+require measured effort. The parameter $\kappa$ converts effective effort
+into a transition intensity; $\eta$ is the increase in the learning
+effectiveness of effort per unit of assistance. At fixed $a$,
+$\lambda_e=\kappa(1+\eta a)>0$ and $\lambda_{ee}=0$;
+$\lambda_{ea}=\kappa\eta\geq0$. Joint concavity in $(e,a)$ is neither
+assumed nor used.
 
-\begin{proposition}\label{prop:effort}
-Under Assumption~\ref{ass:params}, problem~\eqref{eq:problem} has the unique
-solution $e^{*} = a/c$, and $\partial e^{*}/\partial a = 1/c > 0$.
-\end{proposition}
+\begin{definition}[Effective effort]\label{def:f}
+For $a\geq0$, define
+\begin{equation}\label{eq:f}
+ f(a)=(b-a)^+(1+\eta a),\qquad \lam(a)=\lambda_0+\kappa f(a).
+\end{equation}
+Let $\share(a)$ be the stationary probability of $H$, and let
+$\pi_L(a)=1-\share(a)$.
+\end{definition}
 
+\begin{lemma}[Effort under the baseline selection rule]\label{lem:effort}
+Under Assumption~\ref{ass:worker}, selected effort is
+\begin{equation}\label{eq:effort}
+ e^*(s,a)=(x^*-s-a)^+.
+\end{equation}
+Under Assumption~\ref{ass:chain}, $e_L^*(a)=b-a>0$ for $0\leq a<b$;
+$e_L^*(a)=0$ for $a\geq b$. On $(0,b)$ its derivative is $-1$.
+\end{lemma}
 \begin{proof}
-The objective is twice differentiable with second derivative $-c < 0$, so it is
-strictly concave and has at most one maximiser. The first-order condition
-$a - c e = 0$ gives $e = a/c$, which is positive under
-Assumption~\ref{ass:params}, so the constraint $e \ge 0$ does not bind and
-$e^{*} = a/c$. Differentiating, $\partial e^{*}/\partial a = 1/c > 0$.
+Set $z=s+a$ and $q(x)=p(x)-\gamma x$. Replacing $e$ with $x=z+e$
+rewrites the objective as $q(x)+\gamma z$ on $x\geq z$.
+The growth restriction gives $q(x)\to-\infty$. Continuity gives a
+nonempty compact global maximizer set, with largest member $x^*$.
+If $z\leq x^*$, this member is feasible and remains the largest
+constrained maximizer. If $z>x^*$, $q$ is strictly decreasing on
+$[z,\infty)$. Indeed, take $x^*<x<y$. If $q(y)\geq q(x)$, concavity
+would imply
+\[
+ \frac{q(x)-q(x^*)}{x-x^*}\geq
+ \frac{q(y)-q(x)}{y-x}\geq0,
+\]
+contradicting $q(x)<q(x^*)$, since $x$ is beyond the largest global
+maximizer. The constrained maximizer is then $z$. Thus the selected total
+input is $\max\{x^*,z\}$, yielding \eqref{eq:effort}. Substitute $s=s_L$
+and use $b>0$ for the last claims. Since $x^*>s_L\geq0$,
+differentiability at the interior maximizer also gives $p'(x^*)=\gamma$.
+No strict concavity is needed.
 \end{proof}
 
-\section{Simulations}\label{sec:sim}
-\replace{A symbolic or numerical check of every result (SymPy, Monte Carlo, or
-both), produced by the scripts in \texttt{code/}. Say what the simulation can
-and cannot show: it checks a derivation on a grid, it does not prove it.}
+\begin{lemma}[Stationarity and finite-horizon occupation]\label{lem:stationary}
+Under Assumptions~\ref{ass:worker}--\ref{ass:chain}, each fixed $a\geq0$
+has a unique stationary distribution,
+\begin{equation}\label{eq:stationary}
+ \share(a)=\frac{\lam(a)}{\lam(a)+\mu},\qquad
+ \pi_L(a)=\frac{\mu}{\lam(a)+\mu}.
+\end{equation}
+Write $q_a=\lam(a)+\mu>0$. If $h_0\in[0,1]$ is the initial probability
+of $H$, its probability at time $t\geq0$ is
+\begin{equation}\label{eq:transient}
+ h(t)=\share(a)+(h_0-\share(a))e^{-q_a t}.
+\end{equation}
+For $T>0$, the occupation fraction
+$Y_T=T^{-1}\int_0^T\mathbf1_{\{X_t=H\}}\,dt$ satisfies
+\begin{equation}\label{eq:occupation}
+ \mathbb E[Y_T]=\share(a)+(h_0-\share(a))
+                       \frac{1-e^{-q_aT}}{q_aT}.
+\end{equation}
+Starting in $L$ therefore creates a downward bias of
+$\share(a)(1-e^{-q_aT})/(q_aT)$ relative to stationarity.
+\end{lemma}
+\begin{proof}
+The generator in order $(L,H)$ is
+\[
+ Q(a)=\begin{pmatrix}-\lam(a)&\lam(a)\\ \mu&-\mu\end{pmatrix}.
+\]
+Both off-diagonal rates are strictly positive by
+Assumption~\ref{ass:chain}; the finite chain is irreducible. Stationary
+balance and normalization are
+$\pi_L\lam=\share\mu$ and $\pi_L+\share=1$.
+They imply $(\lam+\mu)\share=\lam$. Division is valid because
+$\lam\geq\lambda_0>0$ and $\mu>0$. The resulting probabilities are
+positive, sum to one, and uniquely solve the two equations.
+The forward equation is
+$h'=\lam(1-h)-\mu h=\lam-q_a h$.
+Subtract $\share=\lam/q_a$ to obtain
+$(h-\share)'=-q_a(h-\share)$, with unique solution
+\eqref{eq:transient}. Boundedness of the indicator allows expectation and
+integration to be interchanged. Integrating \eqref{eq:transient} on $[0,T]$
+and dividing by $T$ proves \eqref{eq:occupation}. Set $h_0=0$ for the
+stated bias. These formulas show convergence of the marginal probability and
+the expected occupation to stationarity.
+\end{proof}
 
-Figure~\ref{fig:check} compares the closed form of
-Proposition~\ref{prop:effort} with a grid search over $e$. The largest
-absolute gap is reported by \texttt{code/verify.py}, which fails if it exceeds
-the grid resolution.
+\section{Results: three distinct comparisons}\label{sec:results}
+For $\mu>0$ the map $g(\lambda)=\lambda/(\lambda+\mu)$ is strictly
+increasing, with $g'(\lambda)=\mu/(\lambda+\mu)^2>0$.
+Every stationary comparison therefore has the sign of its learning-rate
+comparison. Positivity of $\mu$ matters: with $\mu=0$ irreducibility is
+lost and the stationary share no longer encodes these strict comparisons.
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.72\linewidth]{../code/figures/effort_check.pdf}
-  \caption{Optimal effort: closed form (lines) and grid search (markers).
-  Source: \texttt{code/verify.py}.}
-  \label{fig:check}
+\begin{proposition}[Global shape, maximum, and comparison with no AI]\label{prop:shape}
+Under Assumptions~\ref{ass:worker}--\ref{ass:chain}, $\share$ is continuous
+on $[0,\infty)$. For $0\leq a<b$, its derivative (the right derivative
+at $0$) is
+\begin{equation}\label{eq:derivative}
+ \share'(a)=\frac{\mu\kappa[\eta(b-2a)-1]}{[\lam(a)+\mu]^2}.
+\end{equation}
+The following statements hold.
+\begin{enumerate}
+ \item If $\eta b\leq1$, $\share$ is strictly decreasing on $[0,b]$,
+ has its unique global maximum at $a=0$, and
+ $\share(a)<\share(0)$ for all $a>0$.
+ If $\eta b=1$, $\share'(0+)=0$ but $\share'(a)<0$ on $(0,b)$.
+ \item If $\eta b>1$, define
+ \begin{equation}\label{eq:thresholds}
+ \peak=\frac{b-1/\eta}{2},\qquad \ret=b-1/\eta=2\peak.
+ \end{equation}
+ Then $0<\peak<\ret<b$ and $\peak<b/2$; $\share$ is strictly
+ increasing on $[0,\peak]$, strictly decreasing on $[\peak,b]$, and
+ has its unique global maximum at $\peak$. Moreover,
+ \begin{equation}\label{eq:baseline}
+ \share(a)>\share(0)\iff0<a<\ret,\qquad
+ \share(\ret)=\share(0),\qquad
+ \share(a)<\share(0)\quad(a>\ret).
+ \end{equation}
+ \item In either regime, for all $a\geq b$, effort is zero and
+ \begin{equation}\label{eq:plateau}
+ \lam(a)=\lambda_0,\qquad
+ \share(a)=\frac{\lambda_0}{\lambda_0+\mu}<\share(0).
+ \end{equation}
+ At $b$ the one-sided derivatives are
+ \begin{equation}\label{eq:kink}
+ \share'(b-)=-\frac{\mu\kappa(1+\eta b)}{(\lambda_0+\mu)^2}<0,
+ \qquad \share'(b+)=0.
+ \end{equation}
+ On $(0,b)$, $\share''<0$; this does not imply global concavity across $b$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+On $[0,b)$ expand
+\begin{equation}\label{eq:quadratic}
+ f(a)=b+(\eta b-1)a-\eta a^2,\qquad
+ f'(a)=\eta(b-2a)-1,\qquad f''(a)=-2\eta.
+\end{equation}
+The quotient and chain rules give \eqref{eq:derivative}; its denominator is
+positive and $\mu\kappa>0$. When $\eta b\leq1$, $f'(a)<0$ for
+every $a\in(0,b)$: if $\eta=0$, it equals $-1$, and otherwise
+$\eta b-1-2\eta a<0$. The mean value theorem gives strict decrease,
+including endpoint $0$ even when its right derivative vanishes. At $b$,
+$f(a)>0=f(b)$ for each $a<b$ extends the strict comparison.
+
+When $\eta b>1$, necessarily $\eta>0$. Solving $f'(a)=0$ gives
+$\peak$. The condition $b>1/\eta$ gives $\peak>0$; $1/\eta>0$
+gives $\peak<b/2$, and $0<\peak<2\peak=\ret<b$.
+The derivative is positive before $\peak$ and negative after it. Strict
+monotonicity of $g$ transfers these comparisons to $\share$.
+For $0<a<b$, subtract $f(0)=b$:
+\begin{equation}\label{eq:baseline-factor}
+ f(a)-b=a[\eta(b-a)-1].
+\end{equation}
+If $\eta b\leq1$, the bracket is negative for $a>0$. If
+$\eta b>1$, it is positive exactly for $a<\ret$, zero at $\ret$,
+and negative thereafter. This proves the active-region no-AI comparisons.
+At $a=0$ the shares agree, so a strict gain excludes zero.
+
+For $a\geq b$, the positive part in \eqref{eq:f} vanishes, proving
+\eqref{eq:plateau}. Since $f(0)=b>0$, the plateau lies strictly below
+the no-AI share. The positive part is continuous, and the rational
+denominator remains positive, proving continuity at $b$.
+Take $a\uparrow b$ in \eqref{eq:derivative} to obtain the left derivative
+in \eqref{eq:kink}. The right derivative is zero because $\share$ is
+constant on $[b,\infty)$. These signs and the plateau also establish
+uniqueness of the claimed global maxima. On $(0,b)$,
+\begin{equation}\label{eq:second}
+ \share''(a)=-\frac{2\mu\kappa\eta}{(\lam+\mu)^2}
+             -\frac{2\mu\kappa^2[f'(a)]^2}{(\lam+\mu)^3}<0.
+\end{equation}
+If $\eta>0$, the first term is strictly negative; if $\eta=0$,
+$f'=-1$ makes the second strictly negative. The upward derivative jump at
+$b$ prevents a global concavity conclusion.
+\end{proof}
+
+\begin{proposition}[Comparison of two assistance levels]\label{prop:pairwise}
+Under Assumptions~\ref{ass:worker}--\ref{ass:chain}, for any $0\leq u<v$,
+with $D_w=\lambda_0+\kappa f(w)+\mu>0$,
+\begin{equation}\label{eq:globaldiff}
+ \share(v)-\share(u)=\frac{\mu\kappa[f(v)-f(u)]}{D_vD_u}.
+\end{equation}
+If $v\leq b$, then
+\begin{equation}\label{eq:pairwise}
+ \share(v)-\share(u)=
+ \frac{\mu\kappa(v-u)[\eta(b-u-v)-1]}{D_vD_u}.
+\end{equation}
+Thus $\share(v)>\share(u)$ if and only if $\eta(b-u-v)>1$;
+the analogous equality and strict-reverse equivalences also hold.
+If $u<b\leq v$, $\share(v)<\share(u)$.
+If $b\leq u<v$, the shares agree.
+In two states, the share comparison also characterizes first-order stochastic
+dominance and the ordering of mean skill.
+\end{proposition}
+\begin{proof}
+Subtract the fractions in \eqref{eq:stationary}. The common numerator is
+$\lam(v)[\lam(u)+\mu]-\lam(u)[\lam(v)+\mu]
+=\mu[\lam(v)-\lam(u)]$, proving \eqref{eq:globaldiff}.
+For $v\leq b$, the quadratic in \eqref{eq:quadratic} is valid at both
+points, including $v=b$, so
+\[
+ f(v)-f(u)=(\eta b-1)(v-u)-\eta(v^2-u^2)
+          =(v-u)[\eta(b-u-v)-1].
+\]
+The factors $D_uD_v$, $\mu\kappa$, and $v-u$ are positive, yielding
+all sign equivalences. If $u<b\leq v$, then $f(u)>0=f(v)$; if
+$b\leq u<v$, both equal zero. Finally, the cumulative probability
+between $s_L$ and $s_H$ is $1-\share$, and expected skill is
+$s_L+(s_H-s_L)\share$. Since $s_H>s_L$, these comparisons are exactly
+the share comparison. This is a two-state statement.
+\end{proof}
+An increase from $u$ to $v$ can improve skill even when $v$ exceeds the
+maximum: in the strong regime the exact condition is $u+v<2\peak$.
+A marginal comparison at $v$ instead requires $v<\peak$. The no-AI
+comparison sets $u=0$ and requires $v<2\peak$. These statements answer
+different questions; none says that every positive increase improves skill.
+
+\begin{corollary}[Threshold locations and outcome magnitudes]\label{cor:sensitivity}
+Under Assumptions~\ref{ass:worker}--\ref{ass:chain}, critical complementarity
+is $\eta_c=1/b$. In the strong regime the thresholds $\peak$ and $\ret$
+depend only on $\eta,b$, independently of $\lambda_0,\kappa,\mu$.
+Holding the other arguments fixed,
+\begin{equation}\label{eq:threshold-sensitivity}
+ \partial_\eta\peak=\frac{1}{2\eta^2},\quad
+ \partial_\eta\ret=\frac{1}{\eta^2},\quad
+ \partial_b\peak=\frac12,\quad \partial_b\ret=1.
+\end{equation}
+For fixed $a\geq0$ and $D=\lam(a)+\mu$,
+\begin{equation}\label{eq:level-sensitivity}
+ \partial_{\lambda_0}\share=\frac{\mu}{D^2}>0,\qquad
+ \partial_\kappa\share=\frac{\mu f(a)}{D^2}\geq0,\qquad
+ \partial_\mu\share=-\frac{\lam(a)}{D^2}<0.
+\end{equation}
+Also $\partial_\eta\share=\mu\kappa a(b-a)^+/D^2\geq0$
+(a right derivative at $\eta=0$);
+for $a<b$, $\partial_b\share=\mu\kappa(1+\eta a)/D^2>0$.
+Multiplying all three rates $(\lambda_0,\kappa,\mu)$ by the same
+$c>0$ leaves the entire stationary curve unchanged and multiplies the
+convergence rate $q_a$ by $c$.
+
+For a fixed $0<a<\ret$ in the strong regime, the positive no-AI gain is
+\begin{equation}\label{eq:gain}
+ G(a):=\share(a)-\share(0)
+ =\frac{\mu\kappa\Delta}{(\lambda_0+\kappa f(a)+\mu)
+                             (\lambda_0+\kappa b+\mu)},\qquad
+ \Delta=f(a)-b>0.
+\end{equation}
+It strictly decreases with $\lambda_0$. Its derivative in $\mu$ has the
+sign of $(\lambda_0+\kappa f(a))(\lambda_0+\kappa b)-\mu^2$;
+its derivative in $\kappa$ has the sign of
+$(\lambda_0+\mu)^2-\kappa^2 f(a)b$.
+Thus stronger effort sensitivity or faster depreciation need not
+monotonically increase the gain, even though they leave its assistance
+thresholds unchanged.
+\end{corollary}
+\begin{proof}
+The regime boundary and thresholds follow from
+Proposition~\ref{prop:shape}; differentiation gives
+\eqref{eq:threshold-sensitivity}. Their independence of the other rates is
+literal. Apply the quotient rule in \eqref{eq:stationary}, using
+$\partial_\kappa\lam=f$, $\partial_{\lambda_0}\lam=1$,
+$\partial_\eta\lam=\kappa a(b-a)^+$, and, for $a<b$,
+$\partial_b\lam=\kappa(1+\eta a)$, to obtain the level formulas.
+For common scaling, cancel $c$ in $c\lam/(c\lam+c\mu)$; the sum of the
+rates becomes $cq_a$, proving the convergence statement using
+Lemma~\ref{lem:stationary}.
+Setting $u=0$ in \eqref{eq:globaldiff} proves \eqref{eq:gain}.
+Let $C_1=\lambda_0+\kappa f(a)>0$, $C_0=\lambda_0+\kappa b>0$,
+$M=(C_1+\mu)(C_0+\mu)>0$, and $B=\lambda_0+\mu>0$.
+Holding $a,b,\eta$ fixed, differentiation gives
+\[
+ \partial_{\lambda_0}G
+ =-\frac{\mu\kappa\Delta[(C_1+\mu)+(C_0+\mu)]}{M^2}<0,
+ \qquad
+ \partial_\mu G=\frac{\kappa\Delta(C_1C_0-\mu^2)}{M^2},
+\]
+\[
+ \partial_\kappa G=\frac{\mu\Delta[B^2-\kappa^2 f(a)b]}{M^2}.
+\]
+All prefactors and denominators are positive. This establishes the stated
+signs and equality cases without assuming a globally monotone gain.
+\end{proof}
+Threshold invariance holds conditional on fixed $b,\eta$, not on arbitrary
+changes to the worker problem. For the numerical example
+$p(x)=A\log(1+x)$, $A>\gamma>0$, one has
+$x^*=A/\gamma-1$ and $b=A/\gamma-1-s_L>0$.
+Raising $A$ increases $b$; raising $\gamma$ or $s_L$ lowers it.
+The stationary curve depends on the dimensionless arguments
+$a/b$, $\eta b$, $\lambda_0/\mu$, and $\kappa b/\mu$, as follows by
+dividing \eqref{eq:stationary} by $\mu$ and factoring $b$ from $f$.
+
+\section{Numerical evidence and stochastic validation}\label{sec:sim}
+\subsection{Design and economic interpretation}
+All parameters are illustrative, not estimated or calibrated to data.
+Use $p(x)=4\log(1+x)$, $\gamma=1$, $s_L=1$, and $s_H=3$;
+then $x^*=3$ and $b=2$. Set $\lambda_0=0.1$, $\kappa=0.4$, and
+$\mu=0.3$, with rates per chosen time unit. Without measured effort the
+mean upward waiting time is ten units; the mean high-state spell is
+$1/0.3$ units. These units have no assigned calendar interpretation.
+Assistance and effort have the same production-input units.
+
+We compare $\eta\in\{0,0.25,1\}$, so
+$\eta b\in\{0,0.5,2\}$. The first regime excludes complementarity;
+the second allows it below the critical value; the third crosses the
+condition in Proposition~\ref{prop:shape}. A separate equality check uses
+$\eta=0.5$, testing the zero derivative at $a=0$ without misclassifying it
+as a gain region.
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{../code/figures/mechanism.pdf}
+ \caption{Formula evaluations of effort, learning, and stationary skill.
+ Effort is identical across regimes. Only strong complementarity makes the
+ learning rate and high-skill share rise initially. These curves are not
+ stochastic simulations. Source: \texttt{code/verify.py}.}
+ \label{fig:mechanism}
 \end{figure}
 
+Figure~\ref{fig:mechanism} separates behavior from learning. Effort falls
+one-for-one until $a=2$ in every regime: the learning technology does not
+alter that response. Without complementarity learning falls immediately.
+Weak complementarity attenuates the fall but cannot reverse it. Strong
+complementarity raises learning for $0<a<0.5$ even as effort falls.
+Beyond the maximum, additional effectiveness no longer offsets displaced
+effort. Every regime meets the same zero-effort plateau.
+
+In the strong example, the maximum is at $a=0.5$, the return to the no-AI
+share at $a=1$, and effort disappears at $a=2$. The no-AI share is $3/4$;
+the maximum is $10/13$, a gain of $1/52$, approximately $1.9231$
+percentage points. The plateau is $1/4$. Indeed, $f(0)=2$,
+$f(0.5)=2.25$, $\lam(0)=0.9$, and $\lam(0.5)=1.0$.
+Between $0.5$ and $1$, assistance lowers skill at the margin while the
+share remains above its no-AI value.
+
+\subsection{Thresholds and sensitivity}
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=.76\linewidth]{../code/figures/thresholds.pdf}
+ \caption{Normalized threshold map. The dimensionless coordinates $\eta b$
+ and $a/b$ locate marginal improvement, improvement over no AI, and zero
+ effort. The two improvement thresholds are distinct. This is a formula
+ evaluation, not Monte Carlo evidence. Source: \texttt{code/verify.py}.}
+ \label{fig:thresholds}
+\end{figure}
+Figure~\ref{fig:thresholds} shows which parameters determine locations.
+A larger $\eta b$ creates and expands the gain regions, but the marginal
+maximum always lies below $b/2$. The no-AI return threshold approaches $b$
+as complementarity grows, but never reaches it for finite $\eta$.
+The rates $\lambda_0,\kappa,\mu$ do not move these boundaries: they
+multiply or monotonically transform the same effective-effort comparison.
+Production parameters can move them through $b$.
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=.88\linewidth]{../code/figures/sensitivity.pdf}
+ \caption{Sensitivity of the stationary outcome to rate parameters and the
+ effort primitive. Rate changes alter levels and gains while preserving
+ assistance thresholds. Changes in $b$ alter the reversal condition and
+ threshold locations. Source: \texttt{code/verify.py}.}
+ \label{fig:sensitivity}
+\end{figure}
+Figure~\ref{fig:sensitivity} separates location from magnitude. Baseline
+learning raises all shares; depreciation lowers all shares. Neither changes
+where $\share'(a)$ changes sign. A large stationary share need not imply a
+large complementarity gain: high baseline learning compresses the gain over
+no AI. The gain can also be small when increased effort sensitivity drives
+both compared shares toward one. Corollary~\ref{cor:sensitivity} explains
+why the gain need not be monotone in $\kappa$ or $\mu$.
+
+\subsection{Continuous-time Markov simulations}
+Each path draws an exponential holding time with its current state's exit
+rate, then switches to the other state. There is no discrete-time transition
+approximation. Occupation is time spent in $H$, including the final censored
+holding spell, divided by the horizon. Counting the proportion of visits to
+$H$ would be inappropriate: the embedded jump chain alternates and does not
+have the same occupation law.
+
+For each of $21$ assistance/regime cells, independent paths start in $L$.
+There are \MCReplications{} replications per cell and horizons
+$T=25,100,400$. The cells combine the three complementarity values with
+$a\in\{0,0.25,0.5,1,1.5,2,2.5\}$. The master seed is $20261104$;
+independent child streams make the experiment reproducible. No burn-in is
+hidden. Each path is evaluated at all three horizons, so estimates at
+different horizons share a trajectory; errors at a given horizon are computed
+across independent paths. Means are compared with the stationary share and with the exact
+finite-horizon expectation from Lemma~\ref{lem:stationary}. The standard
+error is the sample standard deviation of independent path occupation
+fractions divided by the square root of the replication count. Plotted
+$95\%$ intervals use this replication-level error, rather than treating
+autocorrelated within-path observations as independent.
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=.94\linewidth]{../code/figures/ctmc.pdf}
+ \caption{Stochastic occupation estimates and analytical predictions.
+ Points and Monte Carlo intervals use independent continuous-time paths.
+ The finite-horizon mean accounts for starting in $L$; stationary values are
+ limiting predictions. Their gap can reflect both Monte Carlo error and
+ initial-condition bias. Source: \texttt{code/verify.py}.}\label{fig:ctmc}
+\end{figure}
+
+Figure~\ref{fig:ctmc} checks whether simulated dynamics reproduce the
+analytical occupation target, and whether increasing the horizon reduces
+the known initial-condition bias. At $T=\MCHorizon$, the maximum absolute
+gap from stationarity across the simulated cells is \MCMaxAbsErrorPP{}
+percentage points, and the largest gap from the finite-horizon mean is
+\MCMaxFiniteErrorPP{} percentage points. The largest standardized
+finite-horizon error across the checked horizons is \MCMaxZ{} exact
+standard errors. These are realized implementation diagnostics, not an
+estimate of an economic effect. Exact formula evaluation illustrates a
+proven comparative static; the stochastic experiment checks the predicted
+law of the chain. Neither substitutes for the proof, and finitely many
+paths cannot by themselves establish a long-run limit.
+
+\subsection{Checks, reproducibility, and limits}
+The single entry point is
+\begin{quote}\ttfamily
+python code/verify.py
+\end{quote}
+Required packages are listed in \path{code/requirements.txt}.
+The script checks symbolic derivatives
+and difference factorizations, optimal effort against independent numerical
+maximization, balance and normalization, threshold and boundary cases,
+pairwise orderings, and parameter sensitivity. It fails on a violated claim,
+rather than merely saving figures. Generated tables, numeric results, and
+figures are stored in \texttt{code/output/} and \texttt{code/figures/}.
+Committed generated assets are also available to the course's independent
+LaTeX workflow; its configuration is unchanged.
+
+Monte Carlo means are checked within six exact standard errors of the
+finite-horizon target. Exact variances follow from the integrated joint
+probability of being in $H$ at two times. The diagnostic does not demand that
+all nominal $95\%$ intervals contain their targets: some noncoverage is
+expected across multiple cells under a correct implementation. Those
+intervals are normal approximations across bounded independent replications;
+the wider failure tolerance is a reproducible diagnostic. Numerical
+tolerances, seeds, per-cell errors, and comparisons are recorded in the code.
+These experiments are illustrations, not inference about estimated economic
+parameters.
+
 \section{Discussion and limitations}
-\replace{What the result depends on, which assumption does the work, and what
-you could not prove. A stated limitation is worth more than a hidden one.}
+The mechanism is a contest between two terms:
+\[
+ \lam'(a)=\underbrace{\kappa\eta(b-a)}_{\text{effectiveness of retained effort}}
+          -\underbrace{\kappa(1+\eta a)}_{\text{displaced effort}},\qquad a<b.
+\]
+The FOC never changes. Complementarity affects the return generated by the
+effort the myopic worker still chooses. The condition $\eta b>1$ thus
+depends on both the technology and no-AI effort. It is not a welfare theorem,
+an empirical estimate, or a global recommendation for assistance. Output,
+effort costs, stationary skill, and social welfare need not share an ordering.
+The maintained interiority condition $b>0$ is essential for a strict reversal:
+if $b\leq0$, the same effort rule gives $e_L^*(a)=0$ for every $a\geq0$,
+and the stationary share is constant. Positive $\kappa$ and $\mu$ are also
+needed for strict comparative statics; the proof does not cover a model
+without depreciation or without an effort-sensitive learning channel.
+
+The two-state restriction is substantial. The value of $s_H$ does not enter
+transition rates or the high-state share, although it affects mean skill and
+production. With more states, different effort cutoffs could make upward
+rates move in opposite directions; a single high-state probability would
+not characterize the stationary ordering. A third-state illustration is
+omitted to keep the verified contribution complete and interpretable.
+
+The proof resolves stationarity, derivative signs, equality cases, the effort
+boundary, and all pairwise comparisons. Delicate steps were preserving the
+weak-concavity selection rule and distinguishing the maximum from the no-AI
+return. Extending the active quadratic beyond $b$ would produce negative
+effort and a false global result. Global concavity is also false because the
+derivative jumps upward to zero at $b$. Operationally pending are independent
+author-written verification, the official Lean run against a fixed PDF, and
+incorporation of class critique. No unexecuted Lean fragment is offered as a
+certificate.
 
 \section{Conclusion}
-\replace{One paragraph. No new results.}
+AI--effort complementarity reverses stationary skill degradation over an
+initial assistance interval exactly when $\eta b>1$. The marginal maximum,
+return to the no-AI benchmark, and zero-effort boundary are different objects.
+Analytical proofs establish these comparisons; formula evaluations explain
+their magnitudes, while continuous-time simulations test occupation behavior
+with explicit Monte Carlo error and finite-horizon bias. This manuscript
+defines substantive targets for the course's subsequent paper-scoped Lean
+procedure.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
-
 \appendix
-
-\section{Omitted proofs}\label{app:proofs}
-\replace{Proofs and derivations moved out of the body. The handwritten,
-step-by-step version of every derivation lives in \texttt{hand/}.}
-
-\section{Lean formalization}\label{app:lean}
-\replace{One row per numbered result of the paper. ``Status'' is one of:
-\emph{proved} (no \texttt{sorry}, no added hypothesis), \emph{proved under an
-added hypothesis} (state it), or \emph{open} (state the exact blocker). Report
-the paper commit that was formalized and the output of
-\texttt{paper\_contribution.py check <Folder> --fast}.}
-
-\begin{center}
-\begin{tabular}{llll}
+\section{Formalization targets and truthful status}\label{app:lean}
+No paper commit has yet been selected for formalization. No corresponding
+Lean declaration, generated proof file, or paper-scoped check output exists
+for this manuscript. Each row below is \emph{open}: the operational blocker
+is that the official workflow has not started. Mathematical proofs are
+complete in the body; this table concerns formal verification status.
+\begin{center}\small
+\begin{tabular}{p{.20\linewidth}p{.42\linewidth}p{.25\linewidth}}
 \toprule
-Paper & Lean declaration & File in \texttt{lean/} & Status \\
+Paper result & Substantive formalization target & Declaration / file / status\\
 \midrule
-Proposition~\ref{prop:effort} & \texttt{<Folder>.prop\_effort} &
-  \texttt{MainTheorems.lean} & \emph{example row} \\
+Lemma~\ref{lem:effort} & Largest-maximizer effort rule, weak concavity,
+binding constraint & None / none / open\\[3pt]
+Lemma~\ref{lem:stationary} & Unique stationary law; transient and occupation
+expectations & None / none / open\\[3pt]
+Proposition~\ref{prop:shape} & Strict monotonicity, unique maximum, no-AI
+comparison, boundary kink & None / none / open\\[3pt]
+Proposition~\ref{prop:pairwise} & Pairwise sign equivalence, saturation
+cases, two-state dominance & None / none / open\\[3pt]
+Corollary~\ref{cor:sensitivity} & Threshold invariance; level and gain
+derivatives & None / none / open\\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{tabular}\end{center}
 
-\section{AI collaboration log}\label{app:ai}
-\replace{For each relevant contribution of a language model: what it claimed,
-your verdict (correct, incorrect, or not verifiable) with the reason, and how
-you checked it. The raw prompts and answers are in \texttt{prompts.md}.}
+After author review, merge the chosen \texttt{paper/paper.pdf} into
+\texttt{main} and record its full commit hash. Update the existing
+AppliedModelingLib clone. At its root, invoke the
+\texttt{paper-formalization} skill on the commit-pinned PDF. Use the
+course-specified agent configuration. The proposed paper folder is
+\texttt{Grados26AIAssistedLearning}. Run
+\begin{quote}\small\ttfamily
+python3 scripts/paper\_contribution.py check Grados26AIAssistedLearning --fast
+\end{quote}
+and retain the actual output. Copy the entire generated
+\texttt{papers/Grados26AIAssistedLearning/} folder into \texttt{lean/},
+respecting its ignore rules without forced staging. Fill the table with
+actual declarations, files, the pinned commit, and the status of each result:
+proved, proved under a stated added hypothesis, or open with the exact
+blocker. Re-run the workflow if a claim changes. The current PR remains
+unmerged for review.
 
-\begin{center}
-\begin{tabular}{p{.30\linewidth}p{.22\linewidth}p{.36\linewidth}}
+Checking only fraction subtraction would be insufficient. A faithful
+formalization must include the positive-part boundary, positive denominators,
+strict-order and equality cases, and the maintained assumptions. Any added
+smoothness or concavity must be disclosed instead of silently presented as
+the exact paper statement. Assuming the desired ordering as a hypothesis
+would not verify the economic result.
+For Lemma~\ref{lem:stationary}, proving the displayed differential equation
+and its integral alone certifies formulas conditional on that equation. To
+claim the full Markov-chain result, the formalization must also connect the
+generator to the transition law and the occupation expectation. If that
+connection remains assumed rather than proved, the correspondence table must
+state the added assumption or the remaining open part.
+
+\section{Critical AI check and handwritten appendix}\label{app:ai}
+The priority author check is
+\[
+ \share(v)-\share(u)=
+ \frac{\mu\kappa(v-u)[\eta(b-u-v)-1]}{D_vD_u},\qquad 0\leq u<v\leq b.
+\]
+It should be derived by hand from stationary balance, displaying fraction
+subtraction, cancellation, difference of squares, denominator positivity,
+and sign division. Setting $u=0$ should give $\ret=2\peak$, followed by
+a separate check for $a\geq b$. This tests the consequential distinction
+between local reversal and a gain relative to no AI. No handwritten evidence
+has been supplied; no handwritten verification verdict is claimed. The typed
+proof is an agent-assisted mathematical derivation, not a substitute for the
+required appendix in \texttt{hand/}.
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.29\linewidth}
+ >{\raggedright\arraybackslash}p{.24\linewidth}
+ >{\raggedright\arraybackslash}p{.35\linewidth}}
 \toprule
-Claim by the model & Verdict & How it was checked \\
+AI-assisted claim & Current verdict & Evidence and remaining check\\
 \midrule
-\emph{example:} ``$e^{*}=a/c$ for any $a$'' & Incorrect as stated &
-  Fails for $a \le 0$: the corner $e^{*}=0$ binds. Hand derivation, p.~1. \\
+Active derivative and pairwise condition from the topic stage
+& Confirmed by rederivation & Complete proofs here and symbolic/numerical
+checks; author hand check pending.\\[4pt]
+An initial planning value of the strong-case peak share was $0.785714$
+& Incorrect; corrected before delivery & Direct substitution gives
+$\lam(0.5)=1$ and $\share(0.5)=10/13=0.769230\ldots$.\\[4pt]
+The propositions are Lean verified & Not claimed; not verified & No official
+run, declarations, or check output exists; author approval of a paper
+version comes first.\\
 \bottomrule
-\end{tabular}
-\end{center}
-
+\end{tabular}\end{center}
+Actual prompts, relevant responses, and corrections are recorded in
+\texttt{prompts.md}; no earlier conversation or author intervention is
+reconstructed. Numerical checks do not become a human-verification verdict.
 \end{document}

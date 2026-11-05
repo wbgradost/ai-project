@@ -17,6 +17,10 @@ __pycache__/
 *.pyc
 .venv/
 
+# Local PDF review images and contact sheets
+/tmp/
+/.tmp_simulation_qa/
+
 # Lean build cache -- never commit it
 .lake/
 
