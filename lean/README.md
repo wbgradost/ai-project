@@ -13,9 +13,10 @@ stationary law, and the selected optimizer must be faithful to the paper.
 
 ## Sequence required by Issue #7
 
-1. Review this PR and the compiled manuscript. Decide which version to
-   formalize. Merge that version into `main` **only after the author's approval**
-   and record its full commit hash. The present branch has not been merged.
+1. The author approved PR #2 after the final manuscript review. Its main merge
+   commit and immutable PDF URL will be recorded in the PR description. Use
+   that exact commit as the target. Any later change to a numbered claim
+   requires repeating the formalization for the new manuscript version.
 2. From the existing AppliedModelingLib clone, run `git pull`. Use its
    **paper-formalization skill**, instructions, and the configuration specified
    in Issue #7: `gpt-5.6-sol`, reasoning effort `xhigh`. Do not replace this

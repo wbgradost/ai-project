@@ -1041,3 +1041,70 @@ verification; the slide does not attribute a fabricated quotation to a past
 AI answer. The author must still supply the handwriting and verdict.
 The final CI result and the PR state are externally observable on GitHub;
 the local checks above do not assert that a remote workflow has already passed.
+
+## 5. Final review and authorization to pin the manuscript for Lean
+
+**Prompt (raw)**
+
+```text
+Ya tenemos el PR #2 con las simulaciones, las demostraciones y el primer borrador de la final presentation. Quiero avanzar ahora hacia la formalización oficial en Lean.
+
+Antes de ello, realiza una revisión final breve de los resultados matemáticos y comprueba que la proposición y sus condiciones estén correctamente reflejadas en paper/paper.pdf. Verifica especialmente la distinción entre el máximo estacionario, el retorno al escenario sin IA y la desaparición del esfuerzo, así como la exactitud de las afirmaciones sobre simulaciones.
+
+No necesito que vuelvas a desarrollar el modelo, ejecutar investigaciones bibliográficas extensas ni rehacer gráficos que ya superaron las comprobaciones. Conservemos los resultados actuales salvo que encuentres un error sustantivo.
+
+Comprueba también que las diapositivas correspondan a los resultados del manuscrito, que no atribuyan a Lean pruebas que todavía no existen y que la derivación manuscrita pendiente esté claramente identificada.
+
+Si todo está correcto, marca el PR #2 como listo, fusiónalo mediante el procedimiento habitual del curso y registra el hash completo del commit de main que contiene paper/paper.pdf. Esta será la versión que utilizaremos para el procedimiento oficial de formalización.
+
+No modifiques después las proposiciones numeradas de ese manuscrito sin señalar que será necesario repetir la formalización.
+
+Al finalizar, indícame el hash exacto, la URL del PDF fijado a ese commit y los resultados numerados que deberemos formalizar. Comprueba que los workflows de main estén en verde.
+
+Todavía no prepares otra versión de las diapositivas: primero quiero obtener una formalización auténtica para incorporarla a la presentación.
+```
+
+**Assistant review answer (raw)**
+
+```text
+El PDF refleja correctamente los supuestos y los tres umbrales; las cifras coinciden con los resultados guardados. No encontré errores sustantivos.
+
+Anoté una precisión menor para la futura actualización de las slides: el error estandarizado máximo de 1,8486 corresponde al conjunto de horizontes, no solo a T = 400; el manuscrito ya lo dice correctamente. Conservaré las slides y registraré esta revisión antes de fusionar.
+```
+
+**Review record (notes, not reconstructed dialogue)**
+
+- This instruction explicitly supersedes the previous request to leave PR #2
+  unmerged. The author now authorizes ready-for-review and merge after review.
+- The working tree initially matched commit
+  8f93ac41396e68aff03b749c11a4ae24143b0052. The committed PDF was inspected
+  by text extraction; all mathematical statements, conditions, and reported
+  diagnostics were present. Its Git blob is
+  39a404ad42185df6bcf0ca2aab64aeb8cdfd5155.
+- Independent brief mathematical audit found no substantive error. Under
+  Assumptions 1-2, the strong-regime maximum is (b-1/eta)/2, the no-AI
+  return is b-1/eta=2*a_peak, and effort ends at b. Equality and saturation
+  cases remain explicit.
+- The reported CTMC discrepancies match the committed CSV/JSON outputs:
+  0.5223 pp versus stationarity and 0.3661 pp versus the exact finite-horizon
+  mean at T=400; maximum standardized discrepancy 1.8486 across all horizons.
+  The maximum standardized discrepancy occurs at T=100. The current slide
+  sentence could suggest a common T=400 qualifier; record this clarification
+  for the later authentic-evidence update, without changing the slides now.
+- Lean has not run. No verified declaration or proof fragment is claimed.
+  The author's handwritten verification of the pairwise factorization remains
+  clearly pending. Neither document is treated as evidence of completed Lean
+  or human handwriting.
+- Official targets: Lemma 1 (selected effort), Lemma 2 (stationary law,
+  transients and occupation expectation), Proposition 1 (global shape and
+  thresholds), Proposition 2 (pairwise ordering/FOSD), Corollary 1
+  (sensitivity and rate scaling). Assumptions 1-2 and Definition 1 are part
+  of their mathematical context.
+- No paper, slides, simulation code, generated graph, or numerical output
+  is changed in this review. No literature search, plot regeneration, or
+  manual rerun of the stochastic experiments is needed. The course's
+  unchanged workflow will execute its required checks on the merged commit.
+- The full main merge commit and immutable PDF URL will be recorded in PR #2's
+  description and the actual final answer after GitHub returns them; no hash
+  is invented in advance. Future changes to numbered claims require repeating
+  the official formalization for the new manuscript version.

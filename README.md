@@ -62,14 +62,15 @@ because the unchanged official workflow compiles documents in a separate job.
 | Handwritten appendix | Author's derivations pending; [priority checklist](hand/README.md) prepared |
 | Collaboration log | Actual current prompt, responses, corrections, and decisions in prompts.md |
 
-**Next step.** Review the PR and choose the manuscript version for Lean.
-Only after approval: merge that paper to main, pin its commit, run the
-official AppliedModelingLib workflow, retain the scoped check, and copy its
-entire generated folder. Insert the real Lean excerpt and author's handwritten
-verification before reporting those presentation requirements as complete.
+**Formalization target.** The author approved merging PR #2 after the final
+mathematical review. Its main merge commit and immutable paper URL will be
+recorded in the PR description. Use that exact version for the official
+AppliedModelingLib workflow, retain the scoped check, and copy its entire
+generated folder. Lean and the author's handwritten verification remain pending.
+Changing a numbered claim after this pin requires repeating the formalization.
 
 The [official schedule](https://github.com/alexanderquispe/AI-Econ-Modeling/blob/main/PRESENTATIONS.md)
 assigns Friday November 6, 07:30–08:15 (Lima); the
 [Issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7)
-slide deadline is November 5, 22:00. This first-stage PR remains unmerged
-at the author's request. The final paper is due November 26, 22:00.
+slide deadline is November 5, 22:00. PR #2 is the approved manuscript baseline
+for the official formalization. The final paper is due November 26, 22:00.
