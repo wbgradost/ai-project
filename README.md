@@ -1,101 +1,75 @@
 # AI-Assisted Learning and the Reversal of Long-Run Skill Degradation
 
-**Artificial Intelligence and Economic Modeling · Universidad del Pacífico · 2026-II**
+**William Grados · Artificial Intelligence and Economic Modeling · UP 2026-II**
 
-**Track A:** extension of Aouad, Lykouris, and Zhong (2026), *Human-AI
-Productivity Paradoxes: Modeling the Interplay of Skill, Effort, and AI
-Assistance*.
+Track A extension of Aouad, Lykouris, and Zhong (2026), Proposition 3.5,
+reviewed [arXiv version 1](https://arxiv.org/html/2605.11350v1).
 
-## Question
+**Question.** Can assistance improve stationary skill while displacing human
+effort? Keep the original myopic problem `max p(s+e+a) − gamma*e`, with
+nonnegative effort, concave differentiable production, sublinear growth
+relative to the effort cost, and the original largest-maximizer selection.
+Then `e*(s,a) = max(x*−s−a,0)`. Only learning changes:
+`lambda(e,a) = lambda0 + kappa*e*(1+eta*a)`.
 
-Can AI assistance raise the long-run share of high-skill workers when it not
-only substitutes for current effort, as in the baseline model, but also makes
-the remaining effort more effective at producing skill?
+**Result and conditions.** In two states `0 <= s_L < s_H`, assume
+`b = x*−s_L > 0`, fixed assistance `a >= 0`, and
+`lambda0, kappa, mu > 0`, `eta >= 0`. The unique stationary high-skill
+share is `pi_H(a) = lambda_L(a)/(lambda_L(a)+mu)`.
 
-## Model
+- If `eta*b <= 1`, the share strictly decreases until `a=b`, then is constant.
+- If `eta*b > 1`, it strictly increases until the unique maximum
+  `a_peak = (b−1/eta)/2`, then decreases until `b`.
+- It exceeds the no-AI share exactly for `0 < a < a_return = b−1/eta`;
+  `a_return = 2*a_peak`. Effort vanishes at `b`; this is a kink.
+- For `0 <= a_low < a_high < b`, higher assistance improves skill exactly
+  when `eta*(b−a_low−a_high) > 1`. A local reversal does not rank every pair.
 
-A myopic worker with skill `s`, effort `e ≥ 0`, and AI assistance `a ≥ 0`
-solves
+Threshold locations depend on `eta,b`, not on `lambda0,kappa,mu`.
+Common scaling of all three rates leaves stationary shares unchanged and
+speeds convergence. No welfare, productivity, empirical, or general
+N-state conclusion is asserted. Learning complementarity itself is not
+claimed as novel; the topic proposal preserves the comparison with Davies.
 
-```text
-max_{e ≥ 0} p(s + e + a) − γe,
+**Computational evidence.** Illustrative values `b=2`, `lambda0=.1`,
+`kappa=.4`, `mu=.3`, with `eta=0,.25,1`, expose three regimes.
+The strong case peaks at `a=.5`: skill rises from 75% to 76.9231%,
+returns at `a=1`, and reaches the 25% zero-effort plateau at `a=2`.
+Formula evaluations and CTMC simulations are reported separately.
+The latter use 384 independent paths per scenario/assistance cell,
+seed `20261104`, and horizons 25, 100, 400. At 400, the largest gap from
+stationarity is 0.5223 percentage points; finite-horizon bias is measured
+separately. These are model checks, not parameter estimates.
+
+Run all checks and regenerate data, figures, and document numbers with:
+
+```bash
+python -m pip install -r code/requirements.txt
+python code/verify.py
 ```
 
-where `p` is increasing and concave and `γ > 0`. Let `x*` be the largest
-maximizer of `p(x) − γx`. The worker's effort remains
+See [code/README.md](code/README.md) for units, error formulas, checks, and
+output provenance. Generated figure PDFs and LaTeX tables are committed
+because the unchanged official workflow compiles documents in a separate job.
 
-```text
-e*(s,a) = max{x* − s − a, 0}.
-```
-
-There are two skill states, `s_L < s_H`. The downward transition rate is
-`μ > 0`; the proposed upward learning technology is
-
-```text
-λ(e,a) = λ_0 + κe(1 + ηa),
-```
-
-with `λ_0 > 0`, `κ > 0`, and `η ≥ 0`. Thus AI and effort are substitutes in
-current production but complements in skill acquisition when `η > 0`.
-
-In the original model, `λ` depends only on effort and is increasing. Because
-`e*(s,a)` weakly falls with `a`, every upward transition rate weakly falls as
-well. Proposition 3.5 therefore shows that, for `a_l < a_h`, the stationary
-skill distribution under `a_l` first-order stochastically dominates the one
-under `a_h`.
-
-## Candidate result, with conditions
-
-Let `b = x* − s_L > 0`. The stationary high-skill share is
-
-```text
-π_H(a) = λ_L(a) / [λ_L(a) + μ],
-λ_L(a) = λ_0 + κ(b − a)^+(1 + ηa).
-```
-
-For `0 ≤ a < b`,
-
-```text
-sign(dπ_H/da) = sign(η(b − 2a) − 1).
-```
-
-Hence the baseline skill-degradation result survives when `ηb ≤ 1`. If
-`ηb > 1`, assistance initially raises the high-skill share until
-
-```text
-a† = (ηb − 1)/(2η),
-```
-
-then lowers it for `a† < a < b`; once `a ≥ b`, effort is zero and the share is
-constant at `λ_0/(λ_0 + μ)`. For two active-effort levels
-`0 ≤ a_l < a_h < b`, the exact reversal condition is
-
-```text
-π_H(a_h) > π_H(a_l)  iff  η(b − a_h − a_l) > 1.
-```
-
-This is a local, conditional reversal of Proposition 3.5, not a universal
-claim that more AI always improves skill.
-
-The novelty is similarly narrow. Under the second-best conditions in Davies
-(2026), higher AI quality raises per-task effort and skill gain above a skill
-threshold and lowers both below it. This project does not claim that
-AI--learning complementarity is new; it adds a closed-form condition for the
-stationary high-skill share in the birth--death model of Aouad et al., together
-with the marginal-effect threshold `a†` and the zero-effort threshold `b`.
-
-## Status
-
-| Component | State |
+| Component | Current state |
 |---|---|
-| Topic document and slides | Academically audited and compiled; ready for merge |
-| Final slides | Template placeholder; not yet developed |
-| Paper | Template placeholder; not yet developed |
-| Simulations (`python code/verify.py`) | Template check only; extension checks are planned |
-| Lean | Not started; planned after the paper's proposition is fixed |
-| Handwritten appendix | Not started; required for the final paper |
+| Topic proposal and slides | Preserved from the merged topic stage |
+| Mathematical manuscript | Five numbered results with complete proofs; working version for review |
+| Simulations and verification | Symbolic, numerical, and independent CTMC checks implemented |
+| Final slides | 24 English frames, about 30 minutes; authentic evidence still pending |
+| Lean | Not run; all targets open; [official sequence](lean/README.md) prepared |
+| Handwritten appendix | Author's derivations pending; [priority checklist](hand/README.md) prepared |
+| Collaboration log | Actual current prompt, responses, corrections, and decisions in prompts.md |
 
-Repository: <https://github.com/wbgradost/ai-project>
+**Next step.** Review the PR and choose the manuscript version for Lean.
+Only after approval: merge that paper to main, pin its commit, run the
+official AppliedModelingLib workflow, retain the scoped check, and copy its
+entire generated folder. Insert the real Lean excerpt and author's handwritten
+verification before reporting those presentation requirements as complete.
 
-Sources: [Aouad, Lykouris, and Zhong (2026)](https://arxiv.org/abs/2605.11350),
-[Davies (2026)](https://arxiv.org/abs/2607.18735).
+The [official schedule](https://github.com/alexanderquispe/AI-Econ-Modeling/blob/main/PRESENTATIONS.md)
+assigns Friday November 6, 07:30–08:15 (Lima); the
+[Issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7)
+slide deadline is November 5, 22:00. This first-stage PR remains unmerged
+at the author's request. The final paper is due November 26, 22:00.
