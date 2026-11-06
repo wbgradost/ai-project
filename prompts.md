@@ -1108,3 +1108,79 @@ Anoté una precisión menor para la futura actualización de las slides: el erro
   description and the actual final answer after GitHub returns them; no hash
   is invented in advance. Future changes to numbered claims require repeating
   the official formalization for the new manuscript version.
+
+## 2026-11-05 — cierre de la presentación final
+
+**User instruction (raw excerpts; no reconstructed dialogue)**
+
+```text
+Continúa desde el estado actual de `C:\Users\WILLIAM\Documents\GitHub\ai-project`.
+
+**Objetivo: completar y entregar inmediatamente la presentación final del Issue #7**, cumpliendo todos sus requisitos académicos y técnicos:
+
+https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7
+
+Repositorio: https://github.com/wbgradost/ai-project
+
+Esta es una ejecución de cierre. El modelo, el manuscrito, las demostraciones analíticas, las simulaciones y buena parte del trabajo Lean ya existen. No vuelvas a planificar, investigar ni reconstruirlos.
+
+**La presentación completa debe estar EN ESPAÑOL**, incluidos títulos, tablas, interpretaciones, resultados, conclusiones y preguntas de discusión. Conserva en su idioma original únicamente los nombres propios, referencias y código Lean.
+
+Trabaja directamente sobre la presentación existente. Mantén su diseño profesional, figuras y demostraciones. No crees una presentación alternativa.
+
+**Trabaja en este orden exacto:**
+
+1. Edita `slides/final.tex`, traduce toda la presentación al español y completa los ocho componentes.
+2. Incorpora las figuras numéricas existentes, la prueba Lean auténtica y la fotografía manuscrita.
+3. Compila `slides/final.pdf`.
+4. Revisa únicamente errores críticos: compilación, páginas incompletas, texto desbordado, fórmulas incorrectas e imagen ilegible.
+5. **Realiza inmediatamente commit y push** de la presentación, el PDF y los respaldos necesarios.
+6. Abre el PR correspondiente mediante GitHub CLI.
+7. Comprueba GitHub Actions y corrige los errores que impidan su aprobación.
+8. Fusiona el PR en `main`.
+9. Confirma que `slides/final.tex` y `slides/final.pdf` están efectivamente en `main`.
+
+Si el workflow sigue ejecutándose y GitHub permite auto-merge, actívalo. No pospongas el push por verificaciones secundarias.
+
+No utilices force-push ni sobrescribas cambios de otros proyectos.
+```
+
+**Assistant responses (raw)**
+
+```text
+Voy a editar la presentación existente, dejarla íntegramente en español e incorporar la prueba Lean compilada y la fotografía manuscrita. Después compilaré, subiré los entregables y completaré el merge con los checks oficiales.
+```
+
+```text
+La fotografía contiene una refutación clara: un máximo interior no implica que toda asistencia positiva mejore frente a no usar IA. Incorporaré esa comprobación y la distinguiré del resultado Lean sobre comparaciones entre dos niveles de asistencia.
+```
+
+```text
+La presentación ya compila en 22 diapositivas, con cinco dedicadas a las simulaciones existentes. La comprobación manuscrita distingue el máximo, el retorno sin IA y el esfuerzo nulo. Estoy revisando la legibilidad y el fragmento Lean antes de subirla.
+```
+
+```text
+La comprobación Lean terminó con código de salida 0: confirmó la equivalencia exacta y las declaraciones de igualdad, disminución y saturación, sin axiomas económicos añadidos. El PDF definitivo compila sin desbordamientos. Ahora haré el commit y push, abriré el PR y completaré el merge con los checks de GitHub.
+```
+
+**Observed corrections and decisions (notes, not dialogue)**
+
+- Translated the existing deck and existing figure labels; no new simulation
+  was run for the presentation. The original English figures and frozen paper
+  remain unchanged. The Spanish renderer is called by the existing verify.py.
+- Corrected the maximum standardized Monte Carlo discrepancy to refer to all
+  horizons; the T=400 differences retain their separate qualifications.
+- Read the actual JPEG supplied in hand/. Its counterexample uses different
+  rates from the simulation scenario; both have b=2, eta=1, peak=0.5 and return=1.
+  The photograph refutes the universal-positive-assistance assertion. No
+  handwritten image or author intervention was generated or reconstructed.
+- Preserved the exact Model.lean and Algebra.lean sources from the existing AML
+  worktree. The successful narrow check imports the compiled Algebra module
+  and prints declarations and the axioms of active_pair_increase_iff. This is
+  not a claim that the five numbered results or the full official check passed.
+- The initial narrow-check wrapper contained a UTF-8 BOM and Lean rejected
+  its first token. Removing that BOM allowed the actual import/check to pass.
+  Its final stdout, toolchain and source hashes are in lean/Grados26Learning/verification.txt.
+- Corrected source line ranges for the exact statement/proof excerpt and two
+  layout overflows. Reviewed rendered pages including both original-photo crops.
+- The pinned manuscript and the official build workflow were not modified.

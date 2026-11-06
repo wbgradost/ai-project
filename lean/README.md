@@ -1,61 +1,45 @@
-# Official formalization: not started
+﻿# Grados26Learning: evidencia formal utilizada en la presentación
 
-No Lean statement, proof fragment, or paper-scoped check has been executed for
-this manuscript. The mathematical proofs in `paper/paper.tex` are ordinary
-proofs; symbolic and numerical checks in `code/` are not Lean certificates.
+El manuscrito permanece fijado en
+[`7cc3a7406e09ba1544ff6997d5d742430c6c771c`](https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf).
+No se modifican sus proposiciones numeradas.
 
-The manuscript appendix lists every numbered result and its current status.
-The principal targets are the global shape and baseline comparison
-(Proposition 1), and the exact ordering of two assistance levels
-(Proposition 2). Effort, stationarity, transient behavior, and sensitivity
-results must also be covered. Definitions of the positive part, generator,
-stationary law, and the selected optimizer must be faithful to the paper.
+`Grados26Learning/Model.lean` y `Algebra.lean` son copias fieles del trabajo
+existente en `papers/Grados26Learning/` de AppliedModelingLib, worktree
+`/home/william/AppliedModelingLib-Grados26Learning` (base de la biblioteca:
+`194edcc95df74806a39b961d10dedddc6e730cce`). Se conservan los módulos
+compilados necesarios para la evidencia de la presentación, sin presentar los
+borradores restantes como demostraciones verificadas.
 
-## Sequence required by Issue #7
+La declaración mostrada es `Grados26Learning.active_pair_increase_iff`, en
+`Algebra.lean`, líneas 109–114. Prueba exactamente la comparación de la
+Proposición 2 para 0 ≤ u < v ≤ b: mayor asistencia mejora la fórmula estacionaria
+si y solo si eta · (b − u − v) > 1. `Parameters` contiene exclusivamente las
+positividades originales y eta ≥ 0. No hay hipótesis económica adicional.
+El módulo también demuestra las comparaciones de igualdad y disminución,
+la saturación y la equivalencia del orden de proporciones con dominancia
+estocástica y habilidad media en dos estados.
 
-1. The author approved PR #2 after the final manuscript review. Its main merge
-   commit and immutable PDF URL will be recorded in the PR description. Use
-   that exact commit as the target. Any later change to a numbered claim
-   requires repeating the formalization for the new manuscript version.
-2. From the existing AppliedModelingLib clone, run `git pull`. Use its
-   **paper-formalization skill**, instructions, and the configuration specified
-   in Issue #7: `gpt-5.6-sol`, reasoning effort `xhigh`. Do not replace this
-   process with a standalone Lean file in this repository.
-3. Supply the actual pinned URL and commit, with this task:
+`PresentationCheck.lean` importa ese módulo ya compilado y consulta las
+declaraciones y los axiomas del teorema mostrado. `verification.txt` conserva
+la salida auténtica de esta comprobación estrecha, la versión de Lean y las
+huellas de los dos archivos originales. Los axiomas fundacionales estándar de
+Lean/Mathlib no constituyen supuestos económicos añadidos. No se utiliza
+`sorry`, `admit` ni un axioma adicional para obtener la conclusión.
 
-   ```text
-   Please formalize my own paper, an unpublished manuscript with no arXiv
-   record: https://github.com/wbgradost/ai-project/blob/<commit>/paper/paper.pdf
-   (pinned at commit <commit>), using the paper-formalization skill and
-   workflow in this repository.
-   Use Grados26AIAssistedLearning as the paper folder.
-   ```
+Desde el mismo entorno AppliedModelingLib, con estos módulos disponibles:
 
-4. From the AppliedModelingLib root, run and retain the complete output of:
+```bash
+lake env lean /ruta/a/ai-project/lean/Grados26Learning/PresentationCheck.lean
+```
 
-   ```bash
-   python3 scripts/paper_contribution.py check Grados26AIAssistedLearning --fast
-   ```
-
-5. Copy the **entire** generated
-   `papers/Grados26AIAssistedLearning/` folder, exactly as generated, to this
-   repository's `lean/` directory. Replace this preparatory README at that
-   point. Respect the generated `.gitignore`; use `git add lean/`, never
-   `git add -f`.
-6. Complete the paper's formalization table with real declaration names,
-   files, the pinned paper commit, check output, and the verdict for **each**
-   numbered result: proved exactly; proved under an explicitly stated added
-   hypothesis; or open with the exact blocker. Check that no hypothesis
-   assumes the conclusion and that there are no `sorry` gaps.
-7. Put a real declaration and the relevant executed proof fragment on the
-   Lean slide. `slides/final.tex` can include `slides/lean-evidence.tex` once
-   that file contains authenticated evidence from this run. Include an
-   explanation of the mapping and any extra hypothesis. Recompile and review.
-8. If a numbered claim changes after formalization, rerun the official
-   process for the new paper version. Carry changes through a PR.
-
-The commit placeholder above is an instruction for the future run, not an
-identified or already formalized version. The preparatory paper appendix
-contains no invented Lean declarations.
-
-Source: [Issue #7, section 6](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7).
+Esta comprobación no es el paper-scoped check oficial ni una certificación
+completa de los cinco resultados. En particular, aquí no se da por formalizada
+la construcción probabilística de la cadena, el optimizador original, la
+caracterización global completa ni todo el corolario de sensibilidad. La
+presentación distingue estas limitaciones de las demostraciones analíticas
+existentes. Completar el procedimiento oficial del paper sigue requiriendo
+cerrar esos componentes, ejecutar
+`python3 scripts/paper_contribution.py check Grados26Learning --fast` y trasladar
+la carpeta generada completa respetando su `.gitignore`, como exige el
+[Issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7).
