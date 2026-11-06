@@ -1,22 +1,10 @@
-% Final presentation, Issue #7. About 30 minutes plus discussion.
+﻿% Presentación final, Issue #7. Aproximadamente 30 minutos.
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[english]{babel}
+\usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage{amsmath,amssymb}
-\usepackage{booktabs,graphicx,newunicodechar,array}
-% Preserve course mappings for authentic Lean excerpts added later.
-\newunicodechar{∀}{\ensuremath{\forall}} \newunicodechar{∃}{\ensuremath{\exists}}
-\newunicodechar{→}{\ensuremath{\to}} \newunicodechar{↔}{\ensuremath{\leftrightarrow}}
-\newunicodechar{∧}{\ensuremath{\land}} \newunicodechar{∨}{\ensuremath{\lor}}
-\newunicodechar{¬}{\ensuremath{\lnot}} \newunicodechar{×}{\ensuremath{\times}}
-\newunicodechar{∈}{\ensuremath{\in}} \newunicodechar{∉}{\ensuremath{\notin}}
-\newunicodechar{≤}{\ensuremath{\le}} \newunicodechar{≥}{\ensuremath{\ge}}
-\newunicodechar{≠}{\ensuremath{\ne}} \newunicodechar{↦}{\ensuremath{\mapsto}}
-\newunicodechar{ℝ}{\ensuremath{\mathbb R}} \newunicodechar{ℕ}{\ensuremath{\mathbb N}}
-\newunicodechar{⟨}{\ensuremath{\langle}} \newunicodechar{⟩}{\ensuremath{\rangle}}
-\newunicodechar{λ}{\ensuremath{\lambda}} \newunicodechar{α}{\ensuremath{\alpha}}
-\newunicodechar{β}{\ensuremath{\beta}} \newunicodechar{ε}{\ensuremath{\varepsilon}}
+\usepackage{booktabs,graphicx,array,listings}
 \usetheme{default}
 \usecolortheme{seahorse}
 \setbeamertemplate{navigation symbols}{}
@@ -25,430 +13,441 @@
 \setbeamercolor{alerted text}{fg=blue!65!black}
 \newcommand{\source}[1]{\vfill{\tiny\color{black!60}#1}}
 \newcommand{\lam}{\lambda_L}
-\newcommand{\pos}[1]{(#1)^+}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,keepspaces=true,
+  showstringspaces=false,breaklines=true,breakatwhitespace=true,
+  literate={ℝ}{{$\mathbb R$}}1 {≤}{{$\leq$}}1 {↔}{{$\leftrightarrow$}}1
+    {←}{{$\leftarrow$}}1 {→}{{$\to$}}1 {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1 {≠}{{$\ne$}}1 {≥}{{$\geq$}}1}
 \input{../code/output/results.tex}
-\title{AI-Assisted Learning and the Reversal\\of Long-Run Skill Degradation}
-\subtitle{Final presentation --- Track A\\Working results for class critique}
+\title{Aprendizaje asistido por IA y reversión\\de la degradación de habilidades a largo plazo}
+\subtitle{Presentación final --- Modalidad A\\Artificial Intelligence and Economic Modeling}
 \author{William Grados}
-\date{November 6, 2026}
+\date{6 de noviembre de 2026}
 \begin{document}
 \begin{frame}[plain]
   \titlepage
-  \begin{center}\small
-    \url{https://github.com/wbgradost/ai-project}
-  \end{center}
+  \begin{center}\small\url{https://github.com/wbgradost/ai-project}\end{center}
 \end{frame}
 
-\begin{frame}{Research question and conditional answer}
-  Can AI improve long-run skill while reducing human effort?
+\begin{frame}{Pregunta de investigación y contribución}
+  ¿Puede la IA mejorar las habilidades a largo plazo mientras reduce el esfuerzo humano?
   \par\medskip
-  \begin{block}{Result in one sentence}
-  With $b,\lambda_0,\kappa,\mu>0$ and fixed primitives, AI initially raises
-  the stationary high-skill share \alert{if and only if $\eta b>1$},
-  where $b$ is effort without AI and $\eta$ measures learning complementarity.
+  \begin{block}{Resultado central, con su condición}
+  En el modelo de dos estados, con $b,\lambda_0,\kappa,\mu>0$ y $\eta\geq0$,
+  la asistencia aumenta inicialmente la proporción estacionaria de habilidad alta
+  \alert{si y solo si $\eta b>1$}, aunque desplaza esfuerzo humano.
   \end{block}
-  The improvement is bounded: assistance eventually eliminates effort,
-  leaving only background learning.
   \[
     \lambda(e,a)=\lambda_0+\kappa e(1+\eta a).
   \]
+  $b$ es el esfuerzo sin IA; $\eta$ mide la complementariedad entre IA y esfuerzo
+  en el aprendizaje. La mejora es acotada: cuando desaparece el esfuerzo,
+  solo permanece el aprendizaje basal.
 \end{frame}
 
-\begin{frame}{Baseline and contribution}
-  \textbf{Aouad, Lykouris, and Zhong (2026), Proposition 3.5:}
-  when upward learning rates depend only on effort, more assistance weakly
-  shifts stationary skill downward.
+\begin{frame}{Del desplazamiento del esfuerzo a nuestra extensión}
+  \textbf{Aouad, Lykouris y Zhong (2026), Proposición 3.5:}
+  si el aprendizaje depende solo del esfuerzo, una mayor asistencia desplaza
+  débilmente hacia abajo la distribución estacionaria de habilidades.
   \par\medskip
   \begin{itemize}
-    \item Keep the myopic worker problem and effort displacement.
-    \item Allow assistance to increase learning from remaining effort.
-    \item Derive exact two-state conditions and test simulated dynamics.
+    \item Conservamos el problema miope del trabajador y su regla de desempate.
+    \item Modificamos únicamente la tecnología de aprendizaje: la IA puede
+    elevar el rendimiento del esfuerzo que permanece.
+    \item Caracterizamos exactamente los umbrales y las comparaciones en dos estados.
   \end{itemize}
   \par\medskip
-  The contribution is a stationary-distribution characterization.
-  It does not establish a welfare or productivity ranking.
-  \source{Baseline: arXiv:2605.11350v1, Prop.~3.5, p.~8.
-  Learning complementarity itself is not a novelty claim; see the topic proposal.}
+  La contribución describe la distribución de habilidades; no establece un
+  ordenamiento de bienestar ni una política óptima de asistencia.
+  \source{Aouad, Lykouris y Zhong, \textit{Human-AI Productivity Paradoxes},
+  arXiv:2605.11350v1, Prop.~3.5. Extensión del manuscrito propio fijado en 7cc3a740.}
 \end{frame}
 
-\begin{frame}{The worker's decision is unchanged}
-  For fixed skill $s$ and assistance $a\geq0$,
+\begin{frame}{Lema 1: la decisión del trabajador no cambia}
+  Para habilidad fija $s\geq0$ y asistencia $a\geq0$,
   \[
     \max_{e\geq0}\;p(s+e+a)-\gamma e,\qquad \gamma>0.
   \]
-  $p$ is continuously differentiable, increasing and concave;
-  $\limsup_{x\to\infty}p(x)/x<\gamma$ ensures finite maximizers.
+  $p$ es continuamente diferenciable, no decreciente y cóncava;
+  $\limsup_{x\to\infty}p(x)/x<\gamma$ garantiza máximos finitos.
   \[
-    x^*=\max\arg\max_{x\geq0}\{p(x)-\gamma x\},
-    \qquad e^*(s,a)=(x^*-s-a)^+.
+    x^*=\max\arg\max_{x\geq0}\{p(x)-\gamma x\},\qquad
+    e^*(s,a)=\max\{x^*-s-a,0\}.
   \]
-  Retain the original \textbf{largest-maximizer selection} if choices tie.
+  Se elige el \textbf{mayor maximizador} en caso de empate.
   \[
     e>0:\ p'(s+e+a)=\gamma;\qquad
     e=0:\ p'(s+a)\leq\gamma.
   \]
-  Learning does not enter this objective. Its technology cannot change the FOC.
+  El aprendizaje no entra en el objetivo miope: su modificación conserva
+  la condición de primer orden y el desplazamiento del esfuerzo.
 \end{frame}
 
-\begin{frame}{Two-state skill dynamics}
+\begin{frame}{Lema 2: transiciones y distribución estacionaria}
   \[
-    0\leq s_L<s_H,\qquad b=x^*-s_L>0,\qquad
-    e_L^*(a)=(b-a)^+.
+    0\leq s_L<s_H,\quad b=x^*-s_L>0,\qquad
+    \boxed{e_L^*(a)=\max\{b-a,0\}.}
   \]
-  At fixed assistance, the continuous-time Markov chain has
+  Para cada asistencia fija $a\geq0$, la cadena de Markov de tiempo continuo tiene
   \[
-    Q(a)=
-    \begin{pmatrix}
-      -\lam(a)&\lam(a)\\ \mu&-\mu
-    \end{pmatrix},
-    \qquad
-    \lam(a)=\lambda_0+\kappa(b-a)^+(1+\eta a).
+    Q(a)=\begin{pmatrix}-\lam(a)&\lam(a)\\ \mu&-\mu\end{pmatrix},\quad
+    \lam(a)=\lambda_0+\kappa\max\{b-a,0\}(1+\eta a).
   \]
-  Assume $\lambda_0,\kappa,\mu>0$ and $\eta\geq0$ throughout.
-  Balance and normalization give the unique stationary law:
+  Suponemos $\lambda_0,\kappa,\mu>0$ y $\eta\geq0$ en todo el análisis.
+  El balance y la normalización implican una distribución estacionaria única:
   \[
     (1-\pi_H)\lam=\pi_H\mu
     \quad\Longrightarrow\quad
     \boxed{\pi_H(a)=\frac{\lam(a)}{\lam(a)+\mu}.}
   \]
-  Positive rates imply irreducibility. Effort in $H$ does not affect transitions
-  because there is no higher state.
+  Las tasas positivas garantizan irreducibilidad. El esfuerzo en $H$ no
+  afecta las transiciones porque no existe un estado superior.
 \end{frame}
 
-\begin{frame}{Learning complementarity versus effort displacement}
-  With positive effort, $0\leq a<b$,
+\begin{frame}{Dos fuerzas contrapuestas en el aprendizaje}
+  En la región con esfuerzo positivo, $0\leq a<b$, definimos
   \[
-    \lam(a)=\lambda_0+\kappa(b-a)(1+\eta a).
+    L(a)=\lambda_0+\kappa(b-a)(1+\eta a)=\lam(a).
   \]
-  The marginal effect splits into two terms:
+  Su efecto marginal se descompone en
   \[
-    \lam'(a)=\kappa\left[
-      \underbrace{\eta(b-a)}_{\text{learning from remaining effort}}
-      -\underbrace{(1+\eta a)}_{\text{lost human effort}}
+    L'(a)=\kappa\left[
+      \underbrace{\eta(b-a)}_{\text{rendimiento del esfuerzo restante}}
+      -\underbrace{(1+\eta a)}_{\text{esfuerzo desplazado}}
     \right]
     =\kappa[\eta(b-2a)-1].
   \]
-  Complementarity must exceed displacement, rather than merely be positive.
-  At $a\geq b$, effort is zero and $\lam(a)=\lambda_0$.
+  \begin{block}{Mecanismo económico}
+  La IA reduce el esfuerzo, pero puede aumentar su productividad para aprender.
+  El efecto neto es positivo solamente si la complementariedad supera
+  el desplazamiento: $\eta(b-2a)>1$.
+  \end{block}
+  Para $a\geq b$, $e_L^*=0$ y $\lam=\lambda_0$: la complementariedad ya no opera.
 \end{frame}
 
-\begin{frame}{Proposition 1: global stationary skill}
-  Under the worker and rate assumptions just stated:
-  \par\medskip
+\begin{frame}{Proposición 1: forma global y máximo estacionario}
+  Bajo los supuestos de los dos lemas anteriores:
   \begin{itemize}
-    \item If $\eta b\leq1$, $\pi_H$ strictly decreases on $[0,b]$,
-    then is constant. Its unique maximum is at $a=0$.
-    \item If $\eta b>1$, define
+    \item Si $\eta b\leq1$, $\pi_H$ disminuye estrictamente en $[0,b]$
+    y después es constante. Su máximo global único está en $a=0$.
+    \item Si $\eta b>1$, definimos
     \[
-      a^*=\frac{b-1/\eta}{2},\qquad a^R=b-\frac1\eta=2a^*.
+      a^*=\frac{b-1/\eta}{2},\qquad a_R=b-\frac1\eta=2a^*.
     \]
-    Then $0<a^*<a^R<b$: $\pi_H$ strictly increases on $[0,a^*]$,
-    strictly decreases on $[a^*,b]$, and is constant on $[b,\infty)$.
-    \item The unique global maximum is $a^*$ in the strong regime.
+    Entonces $0<a^*<a_R<b$: $\pi_H$ aumenta estrictamente en $[0,a^*]$,
+    disminuye estrictamente en $[a^*,b]$ y es constante en $[b,\infty)$.
+    \item El máximo global único es $a^*$ en el régimen fuerte.
+    La mejora frente a no usar IA ocurre exactamente cuando $0<a<a_R$.
   \end{itemize}
-  At $\eta b=1$, the right derivative at zero is zero, but there is no
-  increasing interval.
+  \par\smallskip
+  En la frontera $\eta b=1$, $\pi_H'(0+)=0$, pero no existe un intervalo creciente.
+  Para $a\geq b$, $\pi_H=\lambda_0/(\lambda_0+\mu)<\pi_H(0)$.
 \end{frame}
 
-\begin{frame}{Three different comparisons}
-  In the strong regime $\eta b>1$:
-  \par\medskip
-  \begin{center}
-  \begin{tabular}{ll}
-  \toprule
-  Question & Exact answer\\
-  \midrule
-  Positive marginal effect & $0\leq a<a^*$ (right derivative at zero)\\[0.35em]
-  Better than no AI & $0<a<a^R$\\[0.35em]
-  Better than lower positive AI & depends on both levels\\[0.35em]
-  Zero human effort & $a\geq b$\\
-  \bottomrule
-  \end{tabular}
-  \end{center}
-  \par\medskip
-  For $a^*<a<a^R$, assistance is already reducing stationary skill,
-  while skill remains above the no-AI benchmark.
-  \[
-    \pi_H(a^R)=\pi_H(0),\qquad
-    \pi_H(a\geq b)=\frac{\lambda_0}{\lambda_0+\mu}<\pi_H(0).
-  \]
+\begin{frame}{Tres umbrales que responden preguntas distintas}
+  \begin{columns}[c]
+    \column{.61\textwidth}
+    \includegraphics[width=\linewidth]{../code/figures/es/thresholds.pdf}
+    \column{.36\textwidth}
+    Si $\eta b>1$:
+    \par\smallskip
+    \textbf{Máximo:} $a^*=(b-1/\eta)/2$.
+    \par\medskip
+    \textbf{Retorno sin IA:} $a_R=2a^*$,
+    con $\pi_H(a_R)=\pi_H(0)$.
+    \par\medskip
+    \textbf{Esfuerzo nulo:} $b>a_R$.
+    \par\medskip
+    En $(a^*,a_R)$ la habilidad disminuye, pero todavía supera el nivel sin IA.
+  \end{columns}
+  \source{Evaluación de fórmulas cerradas. Ejes normalizados: $a/b$ y $\eta b$.
+  La región de crecimiento local difiere de la región de mejora frente a no usar IA.}
 \end{frame}
 
-\begin{frame}{Proof: signs, maximum, and the effort boundary}
-  On the active-effort region,
+\begin{frame}{Demostración: signos, curvatura y frontera del esfuerzo}
+  Para $0\leq a<b$ (derivada derecha en cero),
   \[
-    \pi_H'(a)=\frac{\mu\kappa[\eta(b-2a)-1]}{[\lam(a)+\mu]^2}.
+    \boxed{\pi_H'(a)=\frac{\mu\kappa[\eta(b-2a)-1]}{[L(a)+\mu]^2}.}
   \]
-  Positivity of $\mu,\kappa$ and the denominator transfers the sign
-  to $\eta(b-2a)-1$, which strictly decreases when $\eta>0$.
-  \par\medskip
-  \begin{itemize}
-    \item Its root is interior exactly when $\eta b>1$.
-    \item Monotonicity plus the constant tail establishes the global maximum.
-    \item At $b$, continuity holds, but differentiability fails:
-  \end{itemize}
+  $\mu,\kappa>0$ y el denominador positivo hacen que el signo dependa
+  exclusivamente de $\eta(b-2a)-1$. Su raíz es positiva si y solo si $\eta b>1$.
+  \par\smallskip
+  Si $f(a)=(b-a)(1+\eta a)$, en $(0,b)$:
+  \[
+    \pi_H''=-\frac{2\mu\kappa\eta}{(L+\mu)^2}
+       -\frac{2\mu\kappa^2[f'(a)]^2}{(L+\mu)^3}<0.
+  \]
+  Si $\eta=0$, $f'=-1$ conserva la desigualdad estricta. En $b$ hay continuidad,
+  pero no diferenciabilidad:
   \[
     \pi_H'(b-)=-\frac{\mu\kappa(1+\eta b)}{(\lambda_0+\mu)^2}<0,
     \qquad \pi_H'(b+)=0.
   \]
-  The active branch is strictly concave; the full curve is not globally concave.
+  La rama activa es estrictamente cóncava; la curva completa no es cóncava.
 \end{frame}
 
-\begin{frame}{Proposition 2: comparing two assistance levels}
-  For $0\leq a_\ell<a_h<b$, under the same assumptions,
+\begin{frame}{Proposición 2: comparar dos niveles de asistencia}
+  Para $0\leq a_\ell<a_h<b$, bajo los mismos supuestos,
   \[
-  \pi_H(a_h)-\pi_H(a_\ell)=
-  \frac{\mu\kappa(a_h-a_\ell)[\eta(b-a_h-a_\ell)-1]}
-       {[\lam(a_h)+\mu][\lam(a_\ell)+\mu]}.
+    \pi_H(a_h)-\pi_H(a_\ell)=
+    \frac{\mu\kappa(a_h-a_\ell)[\eta(b-a_h-a_\ell)-1]}
+         {[L(a_h)+\mu][L(a_\ell)+\mu]}.
   \]
-  Therefore
   \[
     \boxed{\pi_H(a_h)>\pi_H(a_\ell)
-    \ \Longleftrightarrow\
-    \eta(b-a_h-a_\ell)>1.}
+      \iff\eta(b-a_h-a_\ell)>1.}
   \]
-  In the strong regime this is $a_\ell+a_h<a^R$.
-  Set $a_\ell=0$ to obtain the no-AI return threshold.
-  \par\medskip
-  If $a_\ell<b\leq a_h$, skill strictly falls; if $b\leq a_\ell<a_h$,
-  the shares are equal. In two states, share ordering is equivalent to FOSD.
+  \begin{itemize}
+    \item Igualdad si y solo si $\eta(b-a_h-a_\ell)=1$; disminución si es menor que uno.
+    \item Si $a_\ell<b\leq a_h$, la habilidad disminuye estrictamente.
+    Si $b\leq a_\ell<a_h$, las proporciones son iguales.
+    \item En dos estados, ordenar $\pi_H$ equivale a ordenar la habilidad media
+    y la dominancia estocástica de primer orden.
+  \end{itemize}
+  La fórmula activa también es válida en $a_h=b$.
 \end{frame}
 
-\begin{frame}{Numerical design: three illustrative regimes}
-  Use $p(x)=4\log(1+x)$, $\gamma=1$, $s_L=1$, $s_H=3$:
+\begin{frame}{Demostración: una factorización para tres comparaciones}
+  Restar las fracciones estacionarias elimina el producto de las tasas:
   \[
-    x^*=3,\quad b=2,\qquad
-    \lambda_0=0.1,\quad\kappa=0.4,\quad\mu=0.3.
+    \pi_H(v)-\pi_H(u)=
+    \frac{\mu[\lam(v)-\lam(u)]}{[\lam(v)+\mu][\lam(u)+\mu]}.
+  \]
+  Para $0\leq u<v\leq b$, expandir y factorizar da
+  \[
+    L(v)-L(u)=\kappa(v-u)[\eta(b-u-v)-1].
+  \]
+  Los demás factores son positivos. Así obtenemos condiciones necesarias
+  y suficientes, sin asumir el signo que se pretende demostrar.
+  \begin{center}\small
+  \begin{tabular}{lll}
+    \toprule
+    Comparación & Condición de mejora & Régimen fuerte\\
+    \midrule
+    Marginal en $a$ & $\eta(b-2a)>1$ & $a<a^*$\\
+    Frente a no usar IA & $a>0$, $\eta(b-a)>1$ & $0<a<a_R$\\
+    Entre $u$ y $v$ & $\eta(b-u-v)>1$ & $u+v<a_R$\\
+    \bottomrule
+  \end{tabular}\end{center}
+  \source{Las dos últimas equivalencias se refieren a la región activa; fuera de ella se aplica la saturación.}
+\end{frame}
+
+\begin{frame}{Simulaciones 1/5: diseño y predicciones contrastables}
+  Ejemplo ilustrativo: $p(x)=4\log(1+x)$, $\gamma=1$, $s_L=1$, $s_H=3$.
+  \[
+    x^*=3,\quad b=2,\qquad \lambda_0=0.1,\quad\kappa=0.4,\quad\mu=0.3.
   \]
   \begin{center}
   \begin{tabular}{lccc}
     \toprule
-    Regime & $\eta$ & $\eta b$ & Predicted shape\\
+    Complementariedad & $\eta$ & $\eta b$ & Predicción analítica\\
     \midrule
-    No complementarity & $0$ & $0$ & decreasing\\
-    Weak complementarity & $0.25$ & $0.5$ & decreasing\\
-    Strong complementarity & $1$ & $2$ & increasing, then decreasing\\
+    Nula & $0$ & $0$ & disminución\\
+    Débil & $0.25$ & $0.5$ & disminución\\
+    Fuerte & $1$ & $2$ & aumento y posterior disminución\\
     \bottomrule
-  \end{tabular}
-  \end{center}
-  Rates are per common time unit; $a,s,e$ share an input unit and $\eta$
-  has its inverse unit. Parameters expose different regimes;
-  \alert{they are not estimated from data}.
+  \end{tabular}\end{center}
+  \begin{itemize}
+    \item Las curvas evalúan fórmulas cerradas: ilustran la estática comparativa.
+    \item Las trayectorias aleatorias contrastan ocupaciones con la predicción dinámica.
+  \end{itemize}
+  Las tasas comparten una unidad temporal; $s,e,a$ tienen la misma unidad
+  y $\eta$ su inversa. \alert{No son parámetros estimados con datos.}
 \end{frame}
 
-\begin{frame}{Numerical comparative statics}
+\begin{frame}{Simulaciones 2/5: menos esfuerzo y una mejora acotada}
   \begin{center}
-    \includegraphics[width=.99\linewidth]{../code/figures/mechanism.pdf}
+    \includegraphics[width=.87\linewidth]{../code/figures/es/mechanism.pdf}
   \end{center}
-  Effort falls identically in every regime. Only strong complementarity
-  initially raises learning and stationary skill.
-  \source{Closed-form evaluations from code/verify.py; these lines are not stochastic simulations.}
-\end{frame}
-
-\begin{frame}{The strong regime: a small, bounded skill gain}
-  \begin{center}
-  \begin{tabular}{lccc}
+  \vspace{-.7em}
+  \begin{center}\small
+  \begin{tabular}{lrrrr}
     \toprule
-    Assistance & Effort & Learning rate & Stationary high skill\\
+    Asistencia & $0$ & $a^*=0.5$ & $a_R=1$ & $b=2$\\
     \midrule
-    $0$ & $2$ & $0.9$ & $75.00\%$\\
-    $a^*=0.5$ & $1.5$ & $1.0$ & $76.92\%$\\
-    $a^R=1$ & $1$ & $0.9$ & $75.00\%$\\
-    $b=2$ & $0$ & $0.1$ & $25.00\%$\\
+    Esfuerzo & $2$ & $1.5$ & $1$ & $0$\\
+    Aprendizaje & $0.9$ & $1.0$ & $0.9$ & $0.1$\\
+    Habilidad alta & $75.00\%$ & $76.92\%$ & $75.00\%$ & $25.00\%$\\
     \bottomrule
-  \end{tabular}
-  \end{center}
-  \par\medskip
-  The peak gain is \alert{\PeakGainPP{} percentage points} with $25\%$
-  less effort than without AI. This is a skill result, not an optimal
-  assistance policy.
-  \[
-    \lam(a^*)-\lam(0)=\frac{\kappa(\eta b-1)^2}{4\eta}.
-  \]
-  Near $\eta b=1$, the gain is second-order small.
+  \end{tabular}\end{center}
+  \small El máximo gana \PeakGainPP{} puntos porcentuales con $25\%$ menos esfuerzo.
+  Solo la complementariedad fuerte genera una región creciente.
+  \source{Evaluaciones numéricas de las fórmulas cerradas; no son simulaciones estocásticas.}
 \end{frame}
 
-\begin{frame}{Threshold sensitivity: complementarity and baseline effort}
+\begin{frame}{Simulaciones 3/5: sensibilidad y robustez del mecanismo}
+  \begin{center}
+    \includegraphics[width=.99\linewidth]{../code/figures/es/rate_sensitivity.pdf}
+  \end{center}
+  Los umbrales dependen solo de $(b,\eta)$; $\lambda_0,\kappa,\mu$ modifican
+  los niveles y la magnitud de la ganancia, sin mover $a^*,a_R,b$.
+  \par\smallskip
+  Multiplicar las tres tasas por $c>0$ conserva $\pi_H$ y acelera la convergencia
+  por $c$. La ganancia no necesariamente aumenta con $\kappa$ o con $\mu$.
+  \source{Barridos de parámetros existentes y verificación de invariancia por escala.
+  Las conclusiones analíticas corresponden al Corolario 1.}
+\end{frame}
+
+\begin{frame}{Simulaciones 4/5: dinámica de Markov y convergencia}
+  \small Con $r=\lam+\mu$ y estado inicial $L$, el Lema 2 predice
+  \[
+    \Pr(S_t=H)=\pi_H(1-e^{-rt}),\quad
+    E[\widehat A_T]=\pi_H\!\left[1-\frac{1-e^{-rT}}{rT}\right],\quad
+    \widehat A_T=\frac1T\int_0^T\!\mathbf1_{\{S_t=H\}}\,dt.
+  \]
+  \begin{center}
+    \includegraphics[width=.94\linewidth,height=.44\textheight,keepaspectratio]{../code/figures/es/ctmc.pdf}
+  \end{center}
+  \MCReplications{} trayectorias independientes por celda; 21 celdas;
+  $T=25,100,400$; semilla \MCSeed. Esperas exponenciales exactas,
+  sin discretización ni descarte inicial; se incluye el último intervalo parcial.
+  \source{Se mide tiempo de ocupación, no número de visitas: la cadena de saltos de dos estados alterna.}
+\end{frame}
+
+\begin{frame}{Simulaciones 5/5: precisión, comprobaciones y límites}
+  \[
+    \overline A_T-\pi_H=
+    \underbrace{\overline A_T-E[\widehat A_T]}_{\text{error Monte Carlo}}
+    +\underbrace{E[\widehat A_T]-\pi_H}_{\text{sesgo por el estado inicial}}.
+  \]
+  \begin{center}\small
+  \begin{tabular}{lr}
+    \toprule
+    Diagnóstico máximo & Resultado\\
+    \midrule
+    Diferencia frente al nivel estacionario, $T=400$ & \MCMaxAbsErrorPP{} pp\\
+    Diferencia frente a la media exacta finita, $T=400$ & \MCMaxFiniteErrorPP{} pp\\
+    Sesgo exacto por estado inicial, $T=400$ & \MCMaxBiasPP{} pp\\
+    Error estandarizado, \textbf{todos los horizontes} & \MCMaxZ\\
+    \bottomrule
+  \end{tabular}\end{center}
+  \begin{itemize}\small
+    \item Intervalos nominales del $95\%$ con errores estándar entre trayectorias;
+    umbral diagnóstico de seis errores estándar exactos.
+    \item 28 identidades simbólicas, 300 casos paramétricos y 32 comprobaciones
+    independientes del esfuerzo; se incluyen igualdades y fronteras.
+    \item La coincidencia numérica respalda la implementación; no sustituye
+    la demostración ni identifica efectos causales en datos.
+  \end{itemize}
+  \source{Resultados guardados en code/output/; ejecución reproducible: python code/verify.py.}
+\end{frame}
+
+\begin{frame}{Corolario 1: qué determina los umbrales y las ganancias}
+  En el régimen fuerte, $\eta_c=1/b$ y
+  \[
+    \frac{\partial a^*}{\partial b}=\frac12,\quad
+    \frac{\partial a_R}{\partial b}=1,\qquad
+    \frac{\partial a^*}{\partial\eta}=\frac1{2\eta^2},\quad
+    \frac{\partial a_R}{\partial\eta}=\frac1{\eta^2}.
+  \]
+  Un mayor esfuerzo inicial $b$ reduce la complementariedad crítica;
+  una mayor $\eta$ amplía la región de mejora. Las otras tasas no mueven los umbrales.
+  \par\medskip
+  La ganancia máxima de aprendizaje es
+  \[
+    \Delta L=L(a^*)-L(0)=\frac{\kappa(\eta b-1)^2}{4\eta},\qquad
+    \pi_H(a^*)-\pi_H(0)=
+    \frac{\mu\,\Delta L}{[L(a^*)+\mu][L(0)+\mu]}.
+  \]
+  Cerca de $\eta b=1$, la mejora es de segundo orden. El denominador explica
+  por qué mayor aprendizaje adicional no se traduce proporcionalmente en habilidad.
+\end{frame}
+
+\begin{frame}[fragile]{Lean: del resultado económico al enunciado exacto}
+  \textbf{Proposición 2:} para $0\leq u<v\leq b$,
+  \[
+    \pi_H(v)>\pi_H(u)\iff\eta(b-u-v)>1.
+  \]
+  \textbf{Declaración del archivo \texttt{Algebra.lean}:}
+  \lstinputlisting[firstline=109,lastline=111]{../lean/Grados26Learning/Algebra.lean}
+  \medskip
+  \small \texttt{Parameters} exige $b,\lambda_0,\kappa,\mu>0$ y $\eta\geq0$.
+  \texttt{stationaryShare} es exactamente
+  $[\lambda_0+\kappa\max\{b-a,0\}(1+\eta a)]/[\lam(a)+\mu]$.
+  \par\medskip
+  La declaración incluye $v=b$, como el manuscrito. Las hipótesis son
+  los supuestos económicos y el dominio; ninguna incorpora la conclusión.
+  \source{AppliedModelingLib, Grados26Learning. Manuscrito fijado: 7cc3a7406e09ba1544ff6997d5d742430c6c771c.}
+\end{frame}
+
+\begin{frame}[fragile]{Lean: fragmento auténtico y alcance de la prueba}
+  \textbf{Demostración de \texttt{active\_pair\_increase\_iff}:}
+  \lstinputlisting[firstline=112,lastline=114]{../lean/Grados26Learning/Algebra.lean}
+  \medskip
+  \begin{enumerate}\small
+    \item \texttt{share\_order\_iff}: los denominadores positivos transfieren
+    el orden a $(b-a)^+(1+\eta a)$.
+    \item \texttt{effectiveEffort\_active\_difference}: factoriza la diferencia
+    como $(v-u)[\eta(b-u-v)-1]$.
+    \item $v-u>0$ permite cancelar ese factor y obtener la equivalencia exacta.
+  \end{enumerate}
+  \medskip
+  \small \textbf{Verificado:} necesidad y suficiencia de la condición de comparación
+  de la fórmula estacionaria; el módulo también prueba igualdad, disminución,
+  saturación y la equivalencia con dominancia en dos estados.
+  \par\smallskip
+  \textbf{Alcance:} esta evidencia no certifica todavía los cinco resultados completos,
+  la construcción probabilística de la cadena ni las simulaciones.
+  \source{Código y comprobación auténtica conservados en lean/Grados26Learning/.
+  No se utiliza sorry, admit ni axiomas adicionales.}
+\end{frame}
+
+\begin{frame}{Comprobación manuscrita: cuestionar una generalización}
   \begin{columns}[c]
-    \column{.66\textwidth}
-    \includegraphics[width=\linewidth]{../code/figures/thresholds.pdf}
-    \column{.31\textwidth}
-    Let $z=a/b$ and $\theta=\eta b$.
-    \[
-      z^*=\tfrac12(1-1/\theta)
-    \]
-    \[
-      z^R=1-1/\theta
-    \]
-    These exist positively only for $\theta>1$.
+    \column{.67\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=.80\textheight,keepaspectratio,
+      trim=0 610 0 0,clip]{../hand/derivacion_manuscrita.jpeg}
+    \column{.30\textwidth}\small
+    \textbf{Afirmación contrastada:}
+    «Si existe un máximo interior, cualquier asistencia positiva mejora frente a no usar IA».
     \par\medskip
-    Higher baseline effort $b$ lowers the critical complementarity $1/b$.
+    \textbf{Operación independiente:}
+    restar las fracciones estacionarias y factorizar $L(a)-L(0)$.
+    \par\medskip
+    El signo correcto depende de $\eta(b-a)-1$, además de $a>0$.
   \end{columns}
-  \source{Closed-form regime map. The return boundary differs from the marginal-effect boundary.}
+  \source{Fotografía original de la derivación del autor: hand/derivacion\_manuscrita.jpeg.
+  Se muestra un recorte del mismo archivo, sin reconstruir la escritura.}
 \end{frame}
 
-\begin{frame}{Rates affect magnitudes, not threshold locations}
-  \begin{center}
-    \includegraphics[width=.99\linewidth]{../code/figures/rate_sensitivity.pdf}
-  \end{center}
-  Thresholds depend only on $(b,\eta)$. Rates change levels and gains.
-  A common scaling of $(\lambda_0,\kappa,\mu)$ leaves $\pi_H(a)$ unchanged,
-  but speeds convergence. Gain size need not rise with $\kappa$ or $\mu$.
-  \source{Parameter sweeps and rate-scaling invariance checked numerically; sensitivity results proved in the manuscript.}
+\begin{frame}{Comprobación manuscrita: afirmación refutada}
+  \begin{columns}[c]
+    \column{.67\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=.79\textheight,keepaspectratio,
+      trim=0 0 0 650,clip]{../hand/derivacion_manuscrita.jpeg}
+    \column{.30\textwidth}\small
+    La hoja usa un ejemplo independiente:
+    $b=2$, $\eta=1$, $\lambda_0=1/4$, $\kappa=1$, $\mu=3/4$.
+    \[
+      a^*=1/2,\qquad a_R=1.
+    \]
+    A pesar del máximo interior,
+    \[
+      \begin{aligned}\pi_H(3/2)&=2/3\\&<3/4=\pi_H(0).\end{aligned}
+    \]
+    \textbf{Conclusión:} la afirmación general es falsa.
+    El resultado correcto exige $0<a<a_R$; $a<b$ no basta.
+  \end{columns}
+  \source{Continuación de la fotografía original. Sus tasas son distintas del escenario de simulación;
+  el contraejemplo no necesita parámetros estimados.}
 \end{frame}
 
-\begin{frame}{Stochastic experiment: what is actually simulated}
-  For each fixed $a$, simulate the CTMC with exponential holding times of means
-  $1/\lam$ in $L$ and $1/\mu$ in $H$.
-  \[
-    \widehat A_T=\frac1T\int_0^T{\bf1}_{\{S_t=H\}}\,dt .
-  \]
-  \begin{itemize}
-    \item \MCReplications{} independent paths per cell; seed \MCSeed.
-    \item Start in $L$; horizons $T=25,100,400$, with no burn-in.
-    \item Include the last partial holding interval; no time discretization.
-    \item Estimate standard errors across independent path occupancies.
-  \end{itemize}
-  A count of visits would mislead: the two-state jump chain alternates.
-  We measure the time spent in each state.
-\end{frame}
-
-\begin{frame}{Finite horizons: bias and Monte Carlo error}
-  Write $r=\lam+\mu$ and start in $L$. Exact predictions are
-  \[
-    \Pr(S_t=H)=\pi_H(1-e^{-rt}),\qquad
-    E[\widehat A_T]=\pi_H\left[1-\frac{1-e^{-rT}}{rT}\right].
-  \]
-  \[
-  \underbrace{\overline A_T-\pi_H}_{\text{gap from stationarity}}
-  =
-  \underbrace{\overline A_T-E[\widehat A_T]}_{\text{Monte Carlo error}}
-  +\underbrace{E[\widehat A_T]-\pi_H}_{\text{initial-state bias}}.
-  \]
-  We check means against the finite-horizon prediction using exact
-  occupation variance, and report nominal $95\%$ intervals from empirical SEs.
-  The automated tolerance is six exact SEs; it is a diagnostic, not proof.
-\end{frame}
-
-\begin{frame}{CTMC occupation approaches the analytic prediction}
-  \begin{center}
-    \includegraphics[width=.98\linewidth,height=.65\textheight,keepaspectratio]{../code/figures/ctmc.pdf}
-  \end{center}
-  At $T=\MCHorizon$, the largest gap from stationary skill is
-  \MCMaxAbsErrorPP{} pp; the largest standardized error against the
-  finite-horizon mean is \MCMaxZ.
-  \source{Independent stochastic paths; nominal 95\% Monte Carlo intervals do not measure parameter uncertainty.}
-\end{frame}
-
-\begin{frame}{What the computational evidence establishes}
-  \begin{itemize}
-    \item Symbolic factorization checks derivatives, comparisons, and variance.
-    \item Independent effort optimization checks the unchanged worker choice.
-    \item Numerical checks cover equality, effort boundaries, arbitrary pairs,
-    parameter sensitivity, and stationary balance.
-    \item CTMC experiments test occupation against exact dynamics;
-    increasing $T$ reduces initial-state bias and sampling error in scale.
-  \end{itemize}
-  \par\medskip
-  These are illustrative model checks. They do not estimate complementarity,
-  prove the theorem, or identify effects in data.
-  \source{Single entry point: python code/verify.py. Outputs, seeds, tolerances, and environment are recorded in code/output/.}
-\end{frame}
-
-\begin{frame}{Proof progress and remaining scope}
-  \textbf{Completed mathematically:} effort selection, unique stationarity,
-  transient probabilities, global shape, exact two-level comparisons,
-  thresholds, and rate-scaling invariance.
-  \par\medskip
-  \textbf{Delicate steps:} preserve tie-breaking under weak concavity;
-  handle $\eta=0$, $\eta b=1$, and the kink at $b$;
-  distinguish a share level from a gain.
-  \par\medskip
-  \textbf{Open research scope:} endogenous assistance, forward-looking effort,
-  empirical identification, and more than two skill states.
-  No result for a general $N$-state chain is claimed.
-\end{frame}
-
-\begin{frame}{Lean: substantive targets and correspondence}
-  \textbf{Status: the official formalization has not been run.}
-  \par\medskip
-  \begin{center}
-  \begin{tabular}{>{\raggedright\arraybackslash}p{.43\linewidth}>{\raggedright\arraybackslash}p{.48\linewidth}}
-    \toprule
-    Mathematical object/result & Required formal counterpart\\
-    \midrule
-    Selected optimum and $(b-a)^+$ & optimizer with original tie rule\\
-    Balance and stationary law & generator and unique invariant law\\
-    Proposition 1 & sign regions, maximum, return, boundary\\
-    Proposition 2 & exact comparison with positive denominators\\
-    \bottomrule
-  \end{tabular}
-  \end{center}
-  Every numbered result needs an explicit status. No conclusion may be
-  introduced as a hypothesis.
-\end{frame}
-
-% Future file must contain authenticated statement, executed fragment, mapping,
-% pinned paper commit, and official paper-scoped check evidence.
-\IfFileExists{lean-evidence.tex}{\input{lean-evidence.tex}}{
-\begin{frame}{Lean: evidence pending the official workflow}
-  No verified Lean declaration or proof fragment is available today.
-  \par\medskip
-  The sequence required by Issue \#7 is:
+\begin{frame}{Preguntas para la discusión}
   \begin{enumerate}
-    \item Review and merge the chosen paper version; pin its commit.
-    \item Run AppliedModelingLib's paper-formalization skill.
-    \item Retain the scoped check and copy the entire generated folder.
-    \item Show the actual statement, proof fragment, and exact scope here.
+    \item ¿Es convincente la complementariedad en el aprendizaje cuando el
+    trabajador sigue siendo miope, o conviene que el siguiente modelo
+    incorpore decisiones de esfuerzo con visión de futuro?
+    \par\medskip
+    \item ¿Qué resultado observable permitiría distinguir $\eta$ del aprendizaje
+    basal $\lambda_0$ y de la eficacia del esfuerzo $\kappa$?
+    \par\medskip
+    \item ¿Qué condiciones sobre transiciones adicionales permitirían conservar
+    la reversión en tres estados, y qué resultado de bienestar debería acompañarla?
   \end{enumerate}
   \par\medskip
-  \alert{The Lean requirement remains incomplete.}
-  Unexecuted code would not certify our result.
-  \source{Workflow: lean/README.md. Merge awaits the author's review.}
-\end{frame}
-}
-
-\begin{frame}{AI-assisted comparison selected for independent verification}
-  \IfFileExists{../hand/critical-check.pdf}{
-    \begin{columns}[c]
-      \column{.68\textwidth}
-      \includegraphics[page=1,width=\linewidth,height=.72\textheight,keepaspectratio]{../hand/critical-check.pdf}
-      \column{.29\textwidth}
-      Check the positive denominator and the factor
-      $\eta(b-a_h-a_\ell)-1$.
-      \par\medskip
-      Explain the author's verdict from the actual scan.
-    \end{columns}
-  }{
-    \textbf{AI-assisted result to check:} for two active-effort levels,
-    \[
-      \Delta\pi_H\ \text{has sign}\ \eta(b-a_h-a_\ell)-1 .
-    \]
-    Let $g(a)=(b-a)^+(1+\eta a)$. With $b=2$, $\eta=1$,
-    $a_\ell=0.4$, $a_h=0.8$:
-    \[
-      g(a_\ell)=2.24>g(a_h)=2.16>g(0)=2 .
-    \]
-    \textbf{Algebraic/computational verdict:} the pairwise condition holds.
-    The example shows why $\eta b>1$ alone cannot rank every pair.
-    \par\medskip
-    \alert{Author's handwritten derivation and verdict: pending.}
-    This typed calculation is not handwritten evidence.
-    \source{Author must independently derive the fraction subtraction and sign condition.
-    Checklist: hand/README.md.}
-  }
-\end{frame}
-
-\begin{frame}{Questions for class critique}
-  \begin{enumerate}
-    \item Is learning complementarity a convincing mechanism when the worker
-    remains myopic, or should the next model make effort forward-looking?
-    \par\medskip
-    \item Which observable learning outcome could distinguish $\eta$
-    from background learning and effort effectiveness?
-    \par\medskip
-    \item Is the bounded increase in stationary skill economically meaningful,
-    and which additional outcome should accompany it before discussing policy?
-  \end{enumerate}
+  El resultado demostrado pertenece a dos estados y a asistencia fija.
+  La extensión a más estados y el diseño de políticas quedan abiertos.
 \end{frame}
 \end{document}

@@ -1,0 +1,22 @@
+Pinned paper commit: 7cc3a7406e09ba1544ff6997d5d742430c6c771c
+Check scope: existing compiled Algebra module; no full paper-scoped check claimed.
+Lean (version 4.30.0-rc2, x86_64-unknown-linux-gnu, commit 3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc, Release)
+Grados26Learning.active_pair_increase_iff (p : Grados26Learning.Parameters) {u v : ℝ} (hu : 0 ≤ u) (huv : u < v)
+  (hv : v ≤ p.b) :
+  Grados26Learning.stationaryShare p u < Grados26Learning.stationaryShare p v ↔ p.eta * (p.b - u - v) > 1
+'Grados26Learning.active_pair_increase_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.active_pair_equal_iff (p : Grados26Learning.Parameters) {u v : ℝ} (hu : 0 ≤ u) (huv : u < v)
+  (hv : v ≤ p.b) :
+  Grados26Learning.stationaryShare p v = Grados26Learning.stationaryShare p u ↔ p.eta * (p.b - u - v) = 1
+Grados26Learning.active_pair_decrease_iff (p : Grados26Learning.Parameters) {u v : ℝ} (hu : 0 ≤ u) (huv : u < v)
+  (hv : v ≤ p.b) :
+  Grados26Learning.stationaryShare p v < Grados26Learning.stationaryShare p u ↔ p.eta * (p.b - u - v) < 1
+Grados26Learning.mixed_pair_decrease (p : Grados26Learning.Parameters) {u v : ℝ} (hu : 0 ≤ u) (hub : u < p.b)
+  (hbv : p.b ≤ v) : Grados26Learning.stationaryShare p v < Grados26Learning.stationaryShare p u
+Grados26Learning.plateau_pair_equal (p : Grados26Learning.Parameters) {u v : ℝ} (hu : p.b ≤ u) (hv : p.b ≤ v) :
+  Grados26Learning.stationaryShare p v = Grados26Learning.stationaryShare p u
+Grados26Learning.skillFOSD_iff (qHigh qLow sL sH : ℝ) (hs : sL < sH) :
+  Grados26Learning.skillFOSD qHigh qLow sL sH ↔ qLow ≤ qHigh
+Lean import/check exit status: 0
+6cf4adc3deaf8857a66de13f9b54226167473607a2a707c5ebd733406fdc819c  papers/Grados26Learning/Model.lean
+0a6f28a4e11f0a9ca4ec1c6ad57e5f9bb4270638198ff9f119b96d2deb896b1f  papers/Grados26Learning/Algebra.lean

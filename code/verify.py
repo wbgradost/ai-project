@@ -442,6 +442,8 @@ def main():
              "scenarios":scenarios,"symbolic_identities":count,"deterministic_checks":checks,
              "ctmc":metrics,"interpretation":"Illustrative parameters, not estimated; no welfare or N-state claim."}
     (OUT/"summary.json").write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
+    from render_spanish import render_spanish
+    render_spanish(mc=mc)
     print(f"PASS: {count} symbolic identities; {checks['random_parameter_cases']} random parameter cases; independent effort grid check.")
     print("Strong complementarity: peak a=0.5, no-AI return a=1, zero effort a=2.")
     print(f"High-skill share: no AI={share(0,BASE):.6f}; peak={share(.5,BASE):.6f}; zero-effort plateau={share(2,BASE):.6f}.")

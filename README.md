@@ -55,18 +55,17 @@ because the unchanged official workflow compiles documents in a separate job.
 | Component | Current state |
 |---|---|
 | Topic proposal and slides | Preserved from the merged topic stage |
-| Mathematical manuscript | Five numbered results with complete proofs; working version for review |
+| Mathematical manuscript | Five numbered results with analytic proofs; pinned at 7cc3a7406e09ba1544ff6997d5d742430c6c771c |
 | Simulations and verification | Symbolic, numerical, and independent CTMC checks implemented |
-| Final slides | 24 English frames, about 30 minutes; authentic evidence still pending |
-| Lean | Not run; all targets open; [official sequence](lean/README.md) prepared |
-| Handwritten appendix | Author's derivations pending; [priority checklist](hand/README.md) prepared |
+| Final slides | [22 Spanish frames](slides/final.pdf), about 30 minutes; five simulation slides, authentic Lean proof and handwritten check |
+| Lean | [Verified stationary-comparison module](lean/README.md); the five complete numbered results are not all certified |
+| Handwritten appendix | [Original photograph](hand/derivacion_manuscrita.jpeg): baseline comparison, distinct thresholds and a counterexample |
 | Collaboration log | Actual current prompt, responses, corrections, and decisions in prompts.md |
 
-**Formalization target.** The author approved merging PR #2 after the final
-mathematical review. Its main merge commit and immutable paper URL will be
-recorded in the PR description. Use that exact version for the official
-AppliedModelingLib workflow, retain the scoped check, and copy its entire
-generated folder. Lean and the author's handwritten verification remain pending.
+**Formalization target.** The manuscript remains fixed at
+[7cc3a7406e09ba1544ff6997d5d742430c6c771c](https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf).
+The presentation displays the authentic verified pairwise comparison; it does
+not claim completion of all five results or a successful full paper-scoped check.
 Changing a numbered claim after this pin requires repeating the formalization.
 
 The [official schedule](https://github.com/alexanderquispe/AI-Econ-Modeling/blob/main/PRESENTATIONS.md)

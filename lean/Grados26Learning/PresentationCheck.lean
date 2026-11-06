@@ -1,0 +1,9 @@
+import Grados26Learning.Algebra
+
+#check Grados26Learning.active_pair_increase_iff
+#print axioms Grados26Learning.active_pair_increase_iff
+#check Grados26Learning.active_pair_equal_iff
+#check Grados26Learning.active_pair_decrease_iff
+#check Grados26Learning.mixed_pair_decrease
+#check Grados26Learning.plateau_pair_equal
+#check Grados26Learning.skillFOSD_iff
