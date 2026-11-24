@@ -19,7 +19,7 @@ TRANSLATIONS = {
     "peak\n0.5": "máximo\n0.5",
     "return 1": "retorno 1",
     "Marginal peak: $a^*/b$": "Máximo interior: $a^*/b$",
-    "No-AI return: $a^R/b$": "Retorno sin IA: $a_R/b$",
+    "No-AI return: $a_R/b$": "Retorno sin IA: $a_R/b$",
     "Effort cutoff: $a/b=1$": "Esfuerzo nulo: $a/b=1$",
     "Locally increasing\nand above no AI": "Crecimiento local\ny mejora frente a no IA",
     "Decreasing, but\nabove no AI": "Disminuye, pero\nsupera el nivel sin IA",

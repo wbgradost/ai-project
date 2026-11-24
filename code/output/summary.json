@@ -51,11 +51,18 @@
       "pi_cutoff": 0.25
     }
   ],
-  "symbolic_identities": 28,
+  "symbolic_identities": 30,
   "deterministic_checks": {
     "effort_grid_max_error": 1.0240963855184804e-05,
     "effort_grid_step": 5e-05,
-    "random_parameter_cases": 300
+    "random_parameter_cases": 300,
+    "worker_tie_and_corner_cases": 7,
+    "skill_order_cases": 6,
+    "handwritten_counterexample": {
+      "assistance": "3/2",
+      "no_ai_share": "3/4",
+      "assisted_share": "2/3"
+    }
   },
   "ctmc": {
     "seed": 20261104,

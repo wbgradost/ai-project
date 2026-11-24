@@ -1184,3 +1184,72 @@ La comprobación Lean terminó con código de salida 0: confirmó la equivalenci
 - Corrected source line ranges for the exact statement/proof excerpt and two
   layout overflows. Reviewed rendered pages including both original-photo crops.
 - The pinned manuscript and the official build workflow were not modified.
+
+
+## 2026-11-24 — mathematical consolidation for the Final Paper
+
+**User request (raw excerpts)**
+
+> **El objetivo de este trabajo es obtener la versión matemática definitiva del paper que servirá de fuente para completar su formalización en Lean.**
+>
+> Recupera las decisiones económicas y matemáticas que ya hemos adoptado. No reconstruyas el modelo, no cambies el tema de investigación ni descartes resultados válidos.
+>
+> La demostración de cada resultado debe ser completa, autosuficiente y matemáticamente defendible.
+>
+> Comprueba que **cada resultado numerado del paper tenga una comprobación simbólica o numérica correspondiente**, como exige el Issue #7. Completa exclusivamente aquellas comprobaciones que todavía falten.
+>
+> Incorpora la comprobación manuscrita auténtica que ya se encuentra en `hand/derivacion_manuscrita.jpeg`, incluida la refutación de la afirmación de que cualquier asistencia positiva mejora las habilidades cuando existe un máximo interior.
+>
+> No reinicies ahora la formalización ni modifiques los archivos Lean existentes.
+
+**Assistant response during work (raw)**
+
+> La auditoría confirmó los cinco resultados y sus umbrales. Estoy haciendo explícitas las pruebas del desempate, las probabilidades de transición y la falla de concavidad global. También confirmé que la revisión de octubre de Aouad, Lykouris y Zhong renumeró la proposición de referencia.
+
+**Academic audit notes**
+
+- Source comparison. The AI-assisted review checked the statement and proof
+  of Proposition 3.5 directly in May arXiv v1 and inspected the October v2
+  counterpart, Proposition 3.3. The manuscript keeps v1 as the economic
+  reference for the additive model and identifies the revised numbering.
+  The result is a weak ordering of stationary skill. It does not imply a
+  strict drop for every assistance change.
+- Largest-maximizer selection. The AI-assisted derivation verified
+  compactness by bounding the objective at infinity and checked the
+  constrained maximizer on each side of the largest unconstrained maximizer.
+  The selection rule and weak concavity were retained.
+- Global concavity. The presentation's claim that the full curve fails
+  concavity was checked independently using the midpoint of two assistance
+  levels on opposite sides of the effort cutoff. The active-side share exceeds
+  both the value at the midpoint and the constant value on the plateau.
+  The Jensen inequality fails, so the manuscript now proves the claim.
+- Occupation. Conditioning on the current state gives the forward equation
+  and all four transition probabilities. The second moment was checked
+  by integrating the existing joint-probability calculation. It is used
+  for the exact Monte Carlo diagnostic, while the plotted standard errors
+  use independent replication-level variation.
+- Author check. The existing photograph was inspected and reproduced in the
+  appendix. It shows that an interior maximum is consistent with
+  pi_H(3/2) = 2/3 < 3/4 = pi_H(0), even with positive effort. The broad
+  claim was a test conjecture recorded on November 4. The numerical rates on
+  the sheet are distinct from the manuscript's simulation parameters.
+- Lean evidence. The archived import check returned exit status zero for
+  the existing algebra module. Both source hashes were confirmed against
+  the archived report after normalizing checkout line endings. The
+  stationary formula comparison remains the verified scope. The appendix
+  identifies the probabilistic and other gaps in the five numbered results.
+
+- Presentation feedback. The November 4 prompt mentions an observation from
+  the instructor and requests both closed-form evaluations and continuous-time
+  simulations. The manuscript reports those exercises separately, with
+  independent replications and finite-horizon targets. The record gives no
+  verbatim wording for the instructor's observation.
+- Final computational audit. The pinned dependency run passed 30 symbolic
+  checks, 300 seeded parameter cases, seven worker tie or corner cases and
+  six distributional comparisons. The exact-value test reproduced the
+  handwritten counterexample. The 21 CTMC cells each used 384 independent
+  trajectories. The maximum standardized discrepancy was 1.8486 across all
+  horizons, below the threshold of six exact standard errors. At T=400 the
+  maximum absolute gaps were 0.5223 pp from stationarity and 0.3661 pp from
+  the finite-horizon mean. The maximum absolute initial-state bias was
+  0.2083 pp. The simulation quantities agree with the earlier run.
