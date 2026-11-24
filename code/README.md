@@ -24,24 +24,16 @@ units, and `kappa` has rate-per-effort units. There is no calibration claim.
 
 ## Checks that fail on a discrepancy
 
-- SymPy checks effort's first-order condition, stationary flow, the forward
-  equation, derivative/curvature identities, the baseline and pairwise
-  comparisons, threshold derivatives, rate effects on levels and gains,
-  and the exact occupation mean and second moment.
-- An independent grid maximization checks the worker's effort at interior
-  and corner choices. Three hundred seeded random parameter cases check
-  stationary balance, finite-difference derivatives, global maxima,
-  comparisons, thresholds and invariance to the three rate parameters.
-- Explicit boundary checks cover `eta=0`, `eta*b=1`, `a=b`, and `a>b`.
-  Common scaling of all rates preserves the full stationary curve and
-  multiplies the speed of convergence. The critical pair `a=0.4,0.8`
-  verifies that both levels can exceed no AI even while increasing AI lowers
-  skill. This is a computational check, not a handwritten derivation.
-- Exact CTMC occupation means are checked against the finite-horizon
-  analytic mean using six *exact* Monte Carlo standard errors. This is a
-  conservative stochastic diagnostic, not a mathematical guarantee or a
-  proof of the economic proposition. There is no requirement that every
-  nominal 95% interval contain its target.
+| Result | Check |
+|---|---|
+| Lemma 1 | SymPy checks the first-order condition. Independent effort grids cover interior choices, corners, and a concave payoff with a flat maximum for the largest-effort rule. |
+| Lemma 2 | SymPy checks balance, the transition kernel, and occupation moments. Numerical uniformization independently evaluates the transition kernel. Simulated occupations must lie within six exact Monte Carlo standard errors of the finite-horizon mean. |
+| Proposition 1 | Symbolic derivatives and seeded parameter sweeps check maxima, baseline comparisons, active curvature, the boundary kink, and the failure of global concavity. The exact rational check reproduces the author's handwritten counterexample. |
+| Proposition 2 | Symbolic subtraction and numerical comparisons cover strict orderings, equality, saturation, and the corresponding cumulative distributions and means. The pair `a=0.4,0.8` illustrates two shares above the no-AI level with the lower assistance level yielding the larger share. |
+| Corollary 1 | Symbolic checks verify threshold, level, and gain derivatives. Numerical cases check threshold invariance, time rescaling, and interior turning points of the gain with respect to depreciation and effort sensitivity. |
+
+The stochastic threshold of six standard errors is a conservative diagnostic.
+The plot reports approximate 95% intervals for each cell separately.
 
 ## Stochastic design and error
 
