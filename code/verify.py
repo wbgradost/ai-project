@@ -6,8 +6,8 @@ Formula evaluations illustrate comparative statics; independent exact CTMC
 trajectories check the stochastic implementation. Neither supplies a proof.
 """
 from dataclasses import replace
-import csv
 from fractions import Fraction
+import csv
 import json
 import os
 import platform
@@ -30,10 +30,14 @@ OUT, FIG = HERE / "output", HERE / "figures"
 SEED = 20261104
 REPLICATIONS = 384
 HORIZONS = np.array([25.0, 100.0, 400.0])
-BASE = Parameters()
+MC_GATE = 6
+DEMO_A, DEMO_GAMMA, DEMO_SKILL_L, DEMO_SKILL_H = 4., 1., 1., 3.
+DEMO_TARGET = DEMO_A / DEMO_GAMMA - 1
+BASE = Parameters(b=DEMO_TARGET - DEMO_SKILL_L)
 SCENARIOS = [("None", 0.0), ("Weak", 0.25), ("Strong", 1.0)]
 COLORS = ["#6b7280", "#d87812", "#1569a0"]
 ASSISTANCE = np.array([0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5])
+CRITICAL_PAIR = (0.4, 0.8)
 
 
 def close(actual, expected, tol=1e-10, message="Numerical identity failed"):
@@ -56,6 +60,7 @@ def symbolic_checks():
     n = eta * (b - 2 * a) - 1
     identities = [
         sp.diff(lam, a) - k * n,
+        sp.diff(lam, a) - (k * eta * (b - a) - k * (1 + eta * a)),
         sp.diff(pi, a) - mu * k * n / (lam + mu)**2,
         sp.diff(pi, a, 2) + 2 * mu * k *
         (eta * (lam + mu) + k * n**2) / (lam + mu)**3,
@@ -78,6 +83,11 @@ def symbolic_checks():
     M=(C1+mu)*(C0+mu);B=l0+mu
     G=mu*k*(factor-b)/M
     peak=(b-1/eta)/2;ret=b-1/eta
+    peak_excess = (eta * b - 1)**2 / (4 * eta)
+    baseline_denominator = l0 + k * b + mu
+    normalized_peak_gain = mu * k / (
+        4 * eta * baseline_denominator * (baseline_denominator + k * peak_excess)
+    )
     A,gamma,skill=sp.symbols("A gamma skill",positive=True)
     gap=A/gamma-1-skill
     identities.extend([
@@ -88,35 +98,48 @@ def symbolic_checks():
         sp.diff(ret,eta)-1/eta**2,sp.diff(ret,b)-1,
         sp.diff(gap,A)-1/gamma,sp.diff(gap,gamma)+A/gamma**2,
         sp.diff(gap,skill)+1,
-        (lam - lam.subs(a, 0)).subs(a, peak) - k * (eta * b - 1)**2 / (4 * eta),
+        ((b - peak) * (1 + eta * peak) - b) - (eta * b - 1)**2 / (4 * eta),
+        sp.diff(1 / b, b) + 1 / b**2,
+        sp.limit(peak, eta, 1 / b, dir="+"),
+        sp.limit(ret, eta, 1 / b, dir="+"),
+        sp.limit(peak, eta, sp.oo) - b / 2,
+        sp.limit(ret, eta, sp.oo) - b,
+        sp.limit(normalized_peak_gain, eta, 1 / b, dir="+")
+        - mu * k * b / (4 * baseline_denominator**2),
     ])
     for i, expression in enumerate(identities):
         if sp.simplify(expression) != 0:
             raise AssertionError(f"Symbolic identity {i + 1} failed")
     # Stationary flow and forward equation; independent symbolic derivations.
-    l, m, t, q, T = sp.symbols("l m t q T", positive=True)
+    l, m, T = sp.symbols("l m T", positive=True)
+    t, q = sp.symbols("t q", nonnegative=True)
     high = sp.Symbol("high")
     stationary = sp.solve([-(1-high)*l+high*m], high)
     if sp.simplify(stationary[high]-l/(l+m)) != 0:
         raise AssertionError("Stationary solution failed")
-    h = l/(l+m)+(q-l/(l+m))*sp.exp(-(l+m)*t)
-    if sp.simplify(sp.diff(h,t)-(l*(1-h)-m*h)) != 0:
-        raise AssertionError("Forward equation failed")
-    if sp.simplify(h.subs(t,0)-q) != 0:
-        raise AssertionError("Initial condition failed")
-    occupation_mean = sp.integrate(h, (t, 0, T)) / T
-    if sp.simplify(occupation_mean - l/(l+m) - (q-l/(l+m)) *
-                   (1-sp.exp(-(l+m)*T))/((l+m)*T)) != 0:
-        raise AssertionError("Occupation mean failed")
+    r, ph = l + m, l / (l + m)
+    decay = sp.exp(-r * t)
     generator = sp.Matrix([[-l, l], [m, -m]])
-    from_low, from_high = h.subs(q, 0), h.subs(q, 1)
-    transition = sp.Matrix([[1-from_low, from_low], [1-from_high, from_high]])
-    if (sp.simplify(transition.subs(t, 0) - sp.eye(2)) != sp.zeros(2)
-            or sp.simplify(transition.diff(t) - transition * generator) != sp.zeros(2)):
-        raise AssertionError("Transition kernel failed its matrix forward equation")
+    transition = sp.Matrix([
+        [1 - ph + ph * decay, ph * (1 - decay)],
+        [(1 - ph) * (1 - decay), ph + (1 - ph) * decay],
+    ])
+    h = ph + (q - ph) * decay
+    dynamics = [
+        transition.diff(t) - transition * generator,
+        transition.subs(t, 0) - sp.eye(2),
+        transition * sp.ones(2, 1) - sp.ones(2, 1),
+        sp.Matrix([[1 - q, q]]) * transition - sp.Matrix([[1 - h, h]]),
+    ]
+    for residual in dynamics:
+        if residual.applyfunc(sp.simplify) != sp.zeros(*residual.shape):
+            raise AssertionError("Transition law contradicts the generator, normalization, or initial law")
+    occupation_mean = sp.integrate(h, (t, 0, T)) / T
+    occupation_target = ph + (q - ph) * (1 - sp.exp(-r * T)) / (r * T)
+    if sp.simplify(occupation_mean - occupation_target) != 0:
+        raise AssertionError("Occupation mean for an arbitrary initial law failed")
     # Exact occupation second moment from the Markov joint law.
     s = sp.symbols("s", nonnegative=True)
-    r, ph = l+m, l/(l+m)
     integrand = ph*(1-sp.exp(-r*s))*(ph*(T-s)+(1-ph)*(1-sp.exp(-r*(T-s)))/r)
     second = 2*sp.integrate(integrand,(s,0,T))/T**2
     i1 = T**2/2-T/r+(1-sp.exp(-r*T))/r**2
@@ -128,7 +151,10 @@ def symbolic_checks():
     root = A/gamma-1-skill-a
     if sp.simplify(sp.diff(objective,e).subs(e,root)) != 0:
         raise AssertionError("Worker FOC failed")
-    return len(identities)+7
+    corner_slope = gamma * root / (1 + skill + a)
+    if sp.simplify(sp.diff(objective, e).subs(e, 0) - corner_slope) != 0:
+        raise AssertionError("Worker corner condition failed")
+    return len(identities) + len(dynamics) + 5
 
 
 def check_worker_ties():
@@ -191,12 +217,19 @@ def deterministic_checks():
     rows, step = [], 0.00005
     grid = np.arange(0.0,7.0+step/2,step)
     # Independent maximization includes roots, corners, and both skill states.
-    for A,gamma,s in [(4.,1.,1.),(4.,1.,3.),(3.1,.83,.5),(2.,1.5,1.)]:
+    for A, gamma, s in [(DEMO_A, DEMO_GAMMA, DEMO_SKILL_L),
+                        (DEMO_A, DEMO_GAMMA, DEMO_SKILL_H),
+                        (3.1, .83, .5), (2., 1.5, 1.)]:
         for a in [0.,.13,.5,1.,1.93,2.,2.5,4.]:
             candidate=max(A/gamma-1-s-a,0)
             maximizer=grid[np.argmax(A*np.log1p(s+grid+a)-gamma*grid)]
             if abs(maximizer-candidate)>step:
                 raise AssertionError("Effort formula disagrees with independent grid search")
+            slope = A / (1 + s + a + candidate) - gamma
+            if candidate > 0:
+                close(slope, 0., message="Positive effort violates the worker FOC")
+            elif slope > 1e-12:
+                raise AssertionError("Zero effort violates the worker corner condition")
             rows.append(dict(A=A,gamma=gamma,skill=s,assistance=a,
                              effort_formula=candidate,effort_grid=maximizer,
                              absolute_error=abs(maximizer-candidate)))
@@ -285,38 +318,36 @@ def deterministic_checks():
             raise AssertionError("Stationary curve must be strictly concave on the active interval")
         if not share(p.b,p) < (share(0,p) + share(2*p.b,p))/2:
             raise AssertionError("Concavity must fail at the midpoint across the plateau boundary")
+        # At fixed assistance a=b, varying b crosses from the plateau to active effort.
+        left = replace(p, b=p.b - eps)
+        right = replace(p, b=p.b + eps)
+        close((share(p.b, p) - share(p.b, left)) / eps, 0.)
+        close((share(p.b, right) - share(p.b, p)) / eps, -expected, tol=2e-6)
+        raised_eta = replace(p, eta=p.eta + eps)
+        raised_kappa = replace(p, kappa=p.kappa + eps)
+        close(share([0., p.b, 1.5 * p.b], raised_eta), share([0., p.b, 1.5 * p.b], p))
+        close(share([p.b, 1.5 * p.b], raised_kappa), share([p.b, 1.5 * p.b], p))
+        if not share(p.b / 2, raised_eta) > share(p.b / 2, p):
+            raise AssertionError("Positive active assistance must benefit from greater complementarity")
+        if not share(p.b / 2, raised_kappa) > share(p.b / 2, p):
+            raise AssertionError("Active effort must benefit from greater effort sensitivity")
     # Hand-critical comparison: both beat no AI, but the higher AI level loses.
-    close((BASE.b-.4)*(1+BASE.eta*.4),2.24)
-    close((BASE.b-.8)*(1+BASE.eta*.8),2.16)
-    if not share(0,BASE)<share(.8,BASE)<share(.4,BASE):
+    u, v = CRITICAL_PAIR
+    close(effort(u, BASE) * (1 + BASE.eta * u), 2.24)
+    close(effort(v, BASE) * (1 + BASE.eta * v), 2.16)
+    if not share(0, BASE) < share(v, BASE) < share(u, BASE):
         raise AssertionError("Pairwise counterexample failed")
     close(share(.5,BASE),10/13); close(share(0,BASE),3/4)
     close(share(.5,BASE)-share(0,BASE),1/52)
     close(effort(.5,BASE),1.5); close(learning(.5,BASE),1.)
     close(share(.2,BASE),share(.8,BASE))
+    close(share(BASE.b, BASE), 1 / 4)
+    close(learning(0., BASE), .9)
     pairwise_cases = check_pairwise_orders()
     check_gain_turning_points()
-    # Exact values from the author's handwritten counterexample.
-    hand = Parameters(lambda0=.25, kappa=1, mu=.75)
-    hand_lambda = Fraction(1, 4)
-    hand_mu = Fraction(3, 4)
-    hand_assistance = Fraction(3, 2)
-    rate_zero = hand_lambda + Fraction(2)
-    rate_hand = hand_lambda + (2-hand_assistance) * (1+hand_assistance)
-    share_zero = rate_zero / (rate_zero + hand_mu)
-    share_hand = rate_hand / (rate_hand + hand_mu)
-    if (share_zero, share_hand) != (Fraction(3, 4), Fraction(2, 3)):
-        raise AssertionError("Exact handwritten counterexample failed")
-    close(share(0, hand), float(share_zero))
-    close(share(float(hand_assistance), hand), float(share_hand))
-    close(thresholds(hand)["peak"], .5)
-    close(thresholds(hand)["return"], 1)
     return {"effort_grid_max_error":max(r["absolute_error"] for r in rows),
             "effort_grid_step":step,"random_parameter_cases":checked,
-            "worker_tie_and_corner_cases":tie_cases,"skill_order_cases":pairwise_cases,
-            "handwritten_counterexample":{"assistance":str(hand_assistance),
-                                         "no_ai_share":str(share_zero),
-                                         "assisted_share":str(share_hand)}}
+            "worker_tie_and_corner_cases":tie_cases,"skill_order_cases":pairwise_cases}
 
 
 def comparative_data():
@@ -347,12 +378,46 @@ def comparative_data():
                               pi0=float(share(0,p)),pi_peak=float(share(t["peak"],p)),
                               pi_cutoff=float(share(p.b,p))))
     write_csv("scenarios.csv",scenarios)
-    write_csv("critical_pair.csv",[
-        dict(assistance=a,effort=float(effort(a,BASE)),
-             effort_learning_factor=(BASE.b-a)*(1+BASE.eta*a),
-             learning=float(learning(a,BASE)),stationary_high=float(share(a,BASE)))
-        for a in [0.,.4,.8]])
-    return scenarios
+    critical_pair = [
+        dict(assistance=a, effort=float(effort(a, BASE)),
+             effort_learning_factor=float(effort(a, BASE)) * (1 + BASE.eta * a),
+             learning=float(learning(a, BASE)), stationary_high=float(share(a, BASE)))
+        for a in (0., *CRITICAL_PAIR)
+    ]
+    write_csv("critical_pair.csv", critical_pair)
+    return scenarios, critical_pair
+
+
+def handwritten_check():
+    """Check the photographed counterexample with its own exact inputs."""
+    b, eta = Fraction(2), Fraction(1)
+    lambda0, kappa, mu = Fraction(1, 4), Fraction(1), Fraction(3, 4)
+    high_assistance = Fraction(3, 2)
+    peak = (b - 1 / eta) / 2
+    ret = 2 * peak
+    doses = (Fraction(0), peak, high_assistance)
+    efforts = [max(b - a, 0) for a in doses]
+    rates = [lambda0 + kappa * effort_at_a * (1 + eta * a)
+             for a, effort_at_a in zip(doses, efforts)]
+    shares = [rate / (rate + mu) for rate in rates]
+    if (not 0 < peak < ret < high_assistance < b
+            or efforts[-1] != Fraction(1, 2)
+            or rates != [Fraction(9, 4), Fraction(5, 2), Fraction(3, 2)]
+            or shares != [Fraction(3, 4), Fraction(10, 13), Fraction(2, 3)]
+            or not shares[-1] < shares[0] < shares[1]):
+        raise AssertionError("The photographed counterexample failed")
+    p = Parameters(b=float(b), lambda0=float(lambda0), kappa=float(kappa),
+                   mu=float(mu), eta=float(eta))
+    numeric_doses = list(map(float, doses))
+    close(learning(numeric_doses, p), list(map(float, rates)))
+    close(share(numeric_doses, p), list(map(float, shares)))
+    return {
+        "HandInitialEffort": b, "HandEta": eta, "HandLambdaZero": lambda0,
+        "HandKappa": kappa, "HandMu": mu, "HandPeak": peak, "HandReturn": ret,
+        "HandHighAssistance": high_assistance, "HandHighEffort": efforts[-1],
+        "HandBaselineRate": rates[0], "HandPeakRate": rates[1], "HandHighRate": rates[2],
+        "HandBaselineShare": shares[0], "HandPeakShare": shares[1], "HandHighShare": shares[2],
+    }
 
 
 def stochastic_checks():
@@ -363,14 +428,14 @@ def stochastic_checks():
         p=replace(BASE,eta=eta);lam=float(learning(a,p));pi=float(share(a,p))
         repseeds=children[cell].spawn(REPLICATIONS)
         values=np.array([simulate_occupation(lam,p.mu,HORIZONS,np.random.default_rng(seed)) for seed in repseeds])
-        if np.any((values<0)|(values>1)):
+        if np.any(~np.isfinite(values) | (values < 0) | (values > 1)):
             raise AssertionError("Occupation estimate outside [0,1]")
         target,variance=occupation_moments(HORIZONS,lam,p.mu)
         means=values.mean(axis=0);sem=values.std(axis=0,ddof=1)/np.sqrt(REPLICATIONS)
         exact_se=np.sqrt(variance/REPLICATIONS)
         z=(means-target)/exact_se
-        if np.max(np.abs(z))>6:
-            raise AssertionError(f"CTMC mean exceeds six exact MC standard errors: {label}, a={a}, z={z}")
+        if not np.all(np.isfinite(z) & (np.abs(z) <= MC_GATE)):
+            raise AssertionError(f"CTMC mean exceeds {MC_GATE} exact MC standard errors: {label}, a={a}, z={z}")
         for j,T in enumerate(HORIZONS):
             rows.append(dict(scenario=label,eta=eta,assistance=float(a),horizon=float(T),
                              replications=REPLICATIONS,lambda_L=lam,mu=p.mu,stationary=pi,
@@ -389,7 +454,7 @@ def stochastic_checks():
                  "max_abs_initial_bias_final":max(abs(r["initial_bias"]) for r in final),
                  "max_empirical_sem_final":max(r["mc_sem"] for r in final),
                  "nominal_95_coverage_finite_horizon":sum(r["ci95_low"]<=r["exact_occupation_mean"]<=r["ci95_high"] for r in rows)/len(rows),
-                 "validation_rule":"abs(mean-exact finite-horizon mean) <= 6 exact MC standard errors; diagnostic, not proof"}
+                 "validation_rule": f"abs(mean-exact finite-horizon mean) <= {MC_GATE} exact MC standard errors; diagnostic, not proof"}
 
 
 def style_axis(ax):
@@ -406,6 +471,8 @@ def make_figures(mc):
     plt.rcParams.update({"font.size":11,"axes.titlesize":12,"axes.labelsize":11,
                          "legend.fontsize":9,"pdf.fonttype":42,"font.family":"DejaVu Sans"})
     a=np.linspace(0,2.5,501)
+    strong_thresholds = thresholds(BASE)
+    peak, ret = strong_thresholds["peak"], strong_thresholds["return"]
     fig,axes=plt.subplots(1,3,figsize=(11.6,3.7),constrained_layout=True)
     axes[0].plot(a,effort(a,BASE),color="#333333",lw=2.3)
     for (label,eta),color in zip(SCENARIOS,COLORS):
@@ -415,13 +482,13 @@ def make_figures(mc):
     for ax,title,ylabel in zip(axes,["Human effort","Learning rate","Stationary high-skill share"],
                               ["$e_L^*(a)$","$\\lambda_L(a)$","$\\pi_H(a)$"]):
         style_axis(ax);ax.set(xlabel="AI assistance, $a$",ylabel=ylabel,title=title,xlim=(0,2.5))
-        ax.axvline(2,color="black",ls=":",lw=1)
+        ax.axvline(BASE.b,color="black",ls=":",lw=1)
     axes[1].legend(loc="lower left",frameon=False)
-    axes[2].axhline(.75,color="black",lw=.8,ls="--")
-    axes[2].axvline(.5,color=COLORS[2],ls="--",lw=.9)
-    axes[2].axvline(1,color=COLORS[2],ls=":",lw=1)
-    axes[2].text(.5,.81,"peak\n0.5",ha="center",fontsize=9,color=COLORS[2])
-    axes[2].text(1.1,.83,"return 1",fontsize=9,color=COLORS[2])
+    axes[2].axhline(share(0., BASE),color="black",lw=.8,ls="--")
+    axes[2].axvline(peak,color=COLORS[2],ls="--",lw=.9)
+    axes[2].axvline(ret,color=COLORS[2],ls=":",lw=1)
+    axes[2].text(peak,.81,f"peak\n{peak:g}",ha="center",fontsize=9,color=COLORS[2])
+    axes[2].text(ret+.1,.83,f"return {ret:g}",fontsize=9,color=COLORS[2])
     axes[2].set_ylim(.2,.9)
     save(fig,"mechanism")
 
@@ -459,11 +526,11 @@ def make_figures(mc):
             p=replace(BASE,**{field:value})
             av=np.linspace(0,3.3 if field=="b" else 2.5,501)
             line,=ax.plot(av,share(av,p),lw=1.8,label=f"{value:g}")
-            peak=thresholds(p)["peak"]
-            ax.plot(peak,share(peak,p),"o",ms=4,color=line.get_color())
+            panel_peak=thresholds(p)["peak"]
+            ax.plot(panel_peak,share(panel_peak,p),"o",ms=4,color=line.get_color())
         if field!="b":
-            ax.axvline(.5,color="black",lw=.9,ls=":")
-            ax.axvline(1,color="black",lw=.9,ls="--",alpha=.5)
+            ax.axvline(peak,color="black",lw=.9,ls=":")
+            ax.axvline(ret,color="black",lw=.9,ls="--",alpha=.5)
         style_axis(ax);ax.set(xlabel="AI assistance, $a$",ylabel="$\\pi_H(a)$",title=title)
         ax.legend(frameon=False,loc="best",title="Value",fontsize=9)
     save(fig,"sensitivity")
@@ -474,9 +541,9 @@ def make_figures(mc):
         for value in values:
             p=replace(BASE,**{field:value})
             line,=ax.plot(a,share(a,p),lw=2,label=f"{value:g}")
-            ax.plot(.5,share(.5,p),"o",ms=4,color=line.get_color())
-        ax.axvline(.5,color="black",lw=.9,ls=":")
-        ax.axvline(1,color="black",lw=.9,ls="--",alpha=.5)
+            ax.plot(peak,share(peak,p),"o",ms=4,color=line.get_color())
+        ax.axvline(peak,color="black",lw=.9,ls=":")
+        ax.axvline(ret,color="black",lw=.9,ls="--",alpha=.5)
         style_axis(ax)
         ax.set(xlabel="AI assistance, $a$",ylabel="$\\pi_H(a)$",title=title)
         ax.legend(frameon=False,loc="best",title="Value",fontsize=9)
@@ -491,31 +558,29 @@ def make_figures(mc):
                          yerr=[1.96*r["mc_sem"] for r in group],fmt="o",ms=4,capsize=3,color=color)
     axes[0].set(xlabel="AI assistance, $a$",ylabel="High-skill time share",title="CTMC occupation vs stationary prediction")
     axes[0].legend(frameon=False,fontsize=9)
-    group=[r for r in mc if r["eta"]==1 and r["assistance"]==.5]
+    group=[r for r in mc if r["eta"]==BASE.eta and r["assistance"]==peak]
     axes[1].errorbar([r["horizon"] for r in group],[100*r["error_vs_stationary"] for r in group],
                      yerr=[100*1.96*r["mc_sem"] for r in group],fmt="o",capsize=4,color=COLORS[2],
                      label="Monte Carlo mean and 95% interval")
     Ts=np.geomspace(20,450,300)
-    lam=float(learning(.5,BASE));target,_=occupation_moments(Ts,lam,BASE.mu)
-    axes[1].plot(Ts,100*(target-share(.5,BASE)),color="black",ls="--",label="Exact initial-state bias")
+    lam=float(learning(peak,BASE));target,_=occupation_moments(Ts,lam,BASE.mu)
+    axes[1].plot(Ts,100*(target-share(peak,BASE)),color="black",ls="--",label="Exact initial-state bias")
     axes[1].axhline(0,color="black",lw=.8)
     axes[1].set(xscale="log",xlabel="Observation horizon, $T$",ylabel="Error vs stationary share (pp)",
-                title="Convergence: strong regime, $a=0.5$")
-    axes[1].set_xticks([25,100,400],labels=["25","100","400"])
+                title=f"Convergence: strong regime, $a={peak:g}$")
+    axes[1].set_xticks(HORIZONS,labels=[f"{horizon:g}" for horizon in HORIZONS])
     axes[1].xaxis.set_minor_locator(NullLocator())
     axes[1].legend(frameon=False,fontsize=8,loc="lower right")
     for ax in axes:style_axis(ax)
     save(fig,"ctmc")
 
 
-def write_tex(scenarios,mc,metrics,checks):
+def write_tex(scenarios, critical_pair, hand_values, mc, metrics):
     p=BASE;t=thresholds(p)
     macros={"PeakAssistance":t["peak"],"ReturnAssistance":t["return"],
             "EffortCutoff":p.b,"BaselineShare":share(0,p),"PeakShare":share(t["peak"],p),
             "PeakGainPP":100*(share(t["peak"],p)-share(0,p)),"CutoffShare":share(p.b,p),
-            "WorkerTieCases":checks["worker_tie_and_corner_cases"],
-            "MCCells":metrics["cells"],"MCReplications":REPLICATIONS,
-            "MCHorizon":int(HORIZONS[-1]),"MCSeed":SEED,
+            "MCReplications":REPLICATIONS,"MCHorizon":int(HORIZONS[-1]),"MCSeed":SEED,
             "MCMaxAbsError":metrics["max_abs_error_vs_stationary"],
             "MCMaxAbsErrorPP":100*metrics["max_abs_error_vs_stationary"],
             "MCMaxFiniteErrorPP":100*metrics["max_abs_error_vs_exact_finite_horizon_mean"],
@@ -523,11 +588,57 @@ def write_tex(scenarios,mc,metrics,checks):
             "MCMaxZ":metrics["max_abs_z_all_horizons"],
             "MCMaxSE":metrics["max_empirical_sem_final"],
             "MCCoveragePct":100*metrics["nominal_95_coverage_finite_horizon"]}
+    paper_values = {
+        "DemoA": f"{DEMO_A:g}", "DemoGamma": f"{DEMO_GAMMA:g}",
+        "DemoSkillL": f"{DEMO_SKILL_L:g}", "DemoSkillH": f"{DEMO_SKILL_H:g}",
+        "DemoTarget": f"{DEMO_TARGET:g}", "DemoInitialEffort": f"{p.b:g}",
+        "DemoLambdaZero": f"{p.lambda0:g}", "DemoKappa": f"{p.kappa:g}",
+        "DemoMu": f"{p.mu:g}", "DemoCriticalEta": f"{1 / p.b:g}",
+        "DemoEtaGrid": ",".join(f"{r['eta']:g}" for r in scenarios),
+        "DemoEtaBGrid": ",".join(f"{r['eta_b']:g}" for r in scenarios),
+        "DemoPeak": f"{t['peak']:g}", "DemoReturn": f"{t['return']:g}",
+        "DemoBaselineLearning": f"{learning(0., p):g}",
+        "DemoPeakLearning": f"{learning(t['peak'], p):g}",
+        "DemoBaselineEffortFactor": f"{effort(0., p):g}",
+        "DemoPeakEffortFactor": f"{effort(t['peak'], p) * (1 + p.eta * t['peak']):g}",
+        "MCCells": str(metrics["cells"]), "MCGate": str(MC_GATE),
+        "MCHorizons": ",".join(f"{horizon:g}" for horizon in HORIZONS),
+        "MCAssistanceGrid": ",".join(f"{a:g}" for a in ASSISTANCE),
+    }
+    # Preserve the exact rational arithmetic of the illustrative inputs.
+    b, eta, lambda0, kappa, mu = map(
+        Fraction, map(str, (p.b, p.eta, p.lambda0, p.kappa, p.mu))
+    )
+    peak = (b - 1 / eta) / 2
+    baseline_rate = lambda0 + kappa * b
+    peak_rate = lambda0 + kappa * (b - peak) * (1 + eta * peak)
+    baseline_share = baseline_rate / (baseline_rate + mu)
+    peak_share = peak_rate / (peak_rate + mu)
+    cutoff_share = lambda0 / (lambda0 + mu)
+    peak_gain = peak_share - baseline_share
+    close([float(peak), float(baseline_share), float(peak_share), float(cutoff_share),
+           float(peak_gain)],
+          [t["peak"], share(0., p), share(t["peak"], p), share(p.b, p),
+           share(t["peak"], p) - share(0., p)],
+          message="Exact illustrative fractions disagree with the numerical model")
+    exact_values = {
+        "DemoBaselineShareExact": baseline_share, "DemoPeakShareExact": peak_share,
+        "DemoCutoffShareExact": cutoff_share, "DemoPeakGainExact": peak_gain,
+        **hand_values,
+    }
+    for key, value in exact_values.items():
+        paper_values[key] = (str(value) if value.denominator == 1 else
+                             rf"\frac{{{value.numerator}}}{{{value.denominator}}}")
+    for label, row in zip(("Low", "High"), critical_pair[1:]):
+        paper_values[f"DemoPair{label}Assistance"] = f"{row['assistance']:g}"
+        paper_values[f"DemoPair{label}Share"] = f"{row['stationary_high']:.4f}"
     with (OUT/"results.tex").open("w",encoding="utf-8") as f:
         f.write("% Generated by code/verify.py; do not edit.\n")
         for key,value in macros.items():
             formatted=str(value) if isinstance(value,int) else f"{float(value):.4f}"
             f.write("\\newcommand{\\"+key+"}{"+formatted+"}\n")
+        for key, value in paper_values.items():
+            f.write(f"\\newcommand{{\\{key}}}{{{value}}}\n")
     with (OUT/"scenarios_table.tex").open("w",encoding="utf-8") as f:
         f.write("% Table body: scenario, eta, eta*b, peak, return, pi0, pi_peak.\n")
         for r in scenarios:
@@ -544,28 +655,37 @@ def main():
     OUT.mkdir(exist_ok=True);FIG.mkdir(exist_ok=True)
     count=symbolic_checks()
     checks=deterministic_checks()
-    scenarios=comparative_data()
+    scenarios, critical_pair = comparative_data()
+    hand_values = handwritten_check()
+    checks["handwritten_counterexample"] = {
+        "assistance": str(hand_values["HandHighAssistance"]),
+        "no_ai_share": str(hand_values["HandBaselineShare"]),
+        "assisted_share": str(hand_values["HandHighShare"]),
+    }
     mc,metrics=stochastic_checks()
     make_figures(mc)
-    write_tex(scenarios,mc,metrics,checks)
+    write_tex(scenarios, critical_pair, hand_values, mc, metrics)
     summary={"runtime":{"python":platform.python_version(),"numpy":np.__version__,
                         "sympy":sp.__version__,"matplotlib":matplotlib.__version__},
-             "parameters":{"A":4,"gamma":1,"s_L":1,"s_H":3,"x_star":3,
+             "parameters":{"A":int(DEMO_A),"gamma":int(DEMO_GAMMA),
+                           "s_L":int(DEMO_SKILL_L),"s_H":int(DEMO_SKILL_H),"x_star":int(DEMO_TARGET),
                            "b":BASE.b,"lambda0":BASE.lambda0,"kappa":BASE.kappa,"mu":BASE.mu},
              "scenarios":scenarios,"symbolic_identities":count,"deterministic_checks":checks,
              "ctmc":metrics,"interpretation":"Illustrative parameters, not estimated; no welfare or N-state claim."}
     (OUT/"summary.json").write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
     from render_spanish import render_spanish
     render_spanish(mc=mc)
-    print(f"PASS: {count} symbolic checks and {checks['random_parameter_cases']} random parameter cases.")
-    print(f"PASS: independent effort grids, including {checks['worker_tie_and_corner_cases']} tie and corner cases, "
-          f"{checks['skill_order_cases']} distributional comparisons, and the exact handwritten counterexample.")
-    print("Strong complementarity: peak a=0.5, no-AI return a=1, zero effort a=2.")
-    print(f"High-skill share: no AI={share(0,BASE):.6f}; peak={share(.5,BASE):.6f}; zero-effort plateau={share(2,BASE):.6f}.")
+    print(f"PASS: {count} symbolic checks; {checks['random_parameter_cases']} random parameter cases; independent effort grid check.")
+    print(f"PASS: {checks['worker_tie_and_corner_cases']} worker tie and corner cases, "
+          f"{checks['skill_order_cases']} distributional comparisons, and gain turning points.")
+    print("PASS: exact rational check of the photographed counterexample.")
+    t = thresholds(BASE)
+    print(f"Strong complementarity: peak a={t['peak']:g}, no-AI return a={t['return']:g}, zero effort a={BASE.b:g}.")
+    print(f"High-skill share: no AI={share(0,BASE):.6f}; peak={share(t['peak'],BASE):.6f}; zero-effort plateau={share(BASE.b,BASE):.6f}.")
     print(f"CTMC: {metrics['cells']} parameter cells, {REPLICATIONS} independent paths per cell; seed={SEED}; T={HORIZONS.tolist()}.")
     print(f"T=400 maximum absolute error vs stationary={100*metrics['max_abs_error_vs_stationary']:.4f} pp; maximum exact initial-state bias={100*metrics['max_abs_initial_bias_final']:.4f} pp.")
-    print(f"Maximum standardized error vs exact finite-horizon mean={metrics['max_abs_z_all_horizons']:.3f} (pass threshold 6).")
-    print("PASS: generated English and Spanish figures, CSV data, LaTeX numbers and tables, and summary.json.")
+    print(f"Maximum standardized error vs exact finite-horizon mean={metrics['max_abs_z_all_horizons']:.3f} (pass threshold {MC_GATE}).")
+    print("PASS: generated manuscript and slide figures, CSV data, LaTeX numbers and tables, and summary.json.")
 
 
 if __name__=="__main__":

@@ -24,16 +24,34 @@ units, and `kappa` has rate-per-effort units. There is no calibration claim.
 
 ## Checks that fail on a discrepancy
 
-| Result | Check |
-|---|---|
-| Lemma 1 | SymPy checks the first-order condition. Independent effort grids cover interior choices, corners, and a concave payoff with a flat maximum for the largest-effort rule. |
-| Lemma 2 | SymPy checks balance, the transition kernel, and occupation moments. Numerical uniformization independently evaluates the transition kernel. Simulated occupations must lie within six exact Monte Carlo standard errors of the finite-horizon mean. |
-| Proposition 1 | Symbolic derivatives and seeded parameter sweeps check maxima, baseline comparisons, active curvature, the boundary kink, and the failure of global concavity. The exact rational check reproduces the author's handwritten counterexample. |
-| Proposition 2 | Symbolic subtraction and numerical comparisons cover strict orderings, equality, saturation, and the corresponding cumulative distributions and means. The pair `a=0.4,0.8` illustrates two shares above the no-AI level with the lower assistance level yielding the larger share. |
-| Corollary 1 | Symbolic checks verify threshold, level, and gain derivatives. Numerical cases check threshold invariance, time rescaling, and interior turning points of the gain with respect to depreciation and effort sensitivity. |
-
-The stochastic threshold of six standard errors is a conservative diagnostic.
-The plot reports approximate 95% intervals for each cell separately.
+- SymPy checks effort's first-order condition, stationary flow, the full
+  transition matrix and its forward equation, the occupation mean for any
+  initial distribution, the second moment starting in L, and the derivatives,
+  limits and factorizations behind the stationary comparisons. Numerical
+  uniformization independently evaluates the transition matrix.
+- An independent grid maximization checks the worker's effort at interior
+  and corner choices. A second grid checks selection of the largest effort
+  with a flat objective over a range of maximizers. Three hundred seeded
+  random parameter cases check stationary balance, finite-difference
+  derivatives, global maxima, comparisons, thresholds and rate invariance.
+- Explicit boundary checks cover `eta=0`, `eta*b=1`, `a=b`, and `a>b`.
+  Common scaling of all rates preserves the full stationary curve and
+  multiplies the speed of convergence. Midpoint inequalities check active
+  concavity and its failure across the cutoff. Explicit pairs check the
+  equality and saturation cases against the stationary cumulative
+  distribution and mean skill, including `a=0.4,0.8`, which both exceed the
+  no-AI outcome although increasing assistance lowers stationary skill.
+- Numerical rate comparisons check the interior turning points of the
+  gain with respect to depreciation and effort sensitivity.
+- Exact CTMC occupation means are checked against the finite-horizon
+  analytic mean using six *exact* Monte Carlo standard errors. This is a
+  conservative stochastic diagnostic, not a mathematical guarantee or a
+  proof of the economic proposition. There is no requirement that every
+  nominal 95% interval contain its target.
+- Exact rational arithmetic checks the counterexample in the manuscript's
+  handwritten evidence, using its rates `lambda0=1/4`, `kappa=1`, and
+  `mu=3/4`. The checks reproduce the photographed rates and stationary
+  shares and compare them with the numerical model.
 
 ## Stochastic design and error
 
@@ -63,7 +81,8 @@ economic parameters. The validation gate uses `sqrt(exact variance/384)`.
 
 ## Outputs
 
-All five PDF figure files and their numerical inputs are reproducible:
+The five English PDF figures and their numerical inputs are reproducible.
+The same entry point also regenerates the four Spanish slide figures.
 
 | Figure | Purpose | Data |
 |---|---|---|
@@ -73,12 +92,15 @@ All five PDF figure files and their numerical inputs are reproducible:
 | `figures/rate_sensitivity.pdf` | Wide slide rendering of the same three rate panels | `output/sensitivity.csv` |
 | `figures/ctmc.pdf` | Stationary predictions, sampling error and finite-horizon bias | `output/ctmc_summary.csv` |
 
-`output/critical_pair.csv` records the hand-critical example.
+`output/critical_pair.csv` records the illustrative pair at `a=0.4,0.8`.
 `output/effort_check.csv` records the independent maximization checks.
 `output/summary.json` records runtime versions, parameters, gates and aggregate results.
-`output/results.tex` and the two table bodies are generated inputs for the
-manuscript/slides. Generated PDFs and LaTeX numbers are committed because
-the official PDF and Python jobs run independently.
+`output/results.tex` supplies the manuscript and slides with illustrative
+inputs, exact stationary shares, the critical pair, the handwritten
+counterexample, and Monte Carlo diagnostics. The two table bodies are also
+generated. Generated PDFs and
+LaTeX numbers are committed because the official PDF and Python jobs run
+independently.
 
 These experiments test mathematical and implementation consistency. They
 do not estimate complementarity, establish causality, prove the proposition,
