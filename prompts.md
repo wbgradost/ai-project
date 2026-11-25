@@ -1185,7 +1185,6 @@ La comprobación Lean terminó con código de salida 0: confirmó la equivalenci
   layout overflows. Reviewed rendered pages including both original-photo crops.
 - The pinned manuscript and the official build workflow were not modified.
 
-
 ## 2026-11-24 — mathematical consolidation for the Final Paper
 
 **User request (raw excerpts)**
@@ -1253,3 +1252,33 @@ La comprobación Lean terminó con código de salida 0: confirmó la equivalenci
   maximum absolute gaps were 0.5223 pp from stationarity and 0.3661 pp from
   the finite-horizon mean. The maximum absolute initial-state bias was
   0.2083 pp. The simulation quantities agree with the earlier run.
+
+### Follow-up audit for the mathematical pin
+
+**Additional author instruction (verbatim excerpt)**
+
+> No modifiques los enunciados para facilitar artificialmente su formalización en Lean. Tampoco agregues resultados numerados innecesarios. Si identificas un error genuino que exige modificar alguna proposición, realiza la corrección y documenta su justificación matemática.
+
+**Assistant update (verbatim)**
+
+> Confirmé que la Proposición 3.5 de la versión de mayo contiene el resultado original de degradación estacionaria. La revisión de octubre lo renumera como Proposición 3.3. El paper citará ambas versiones e identificará la hipótesis que cambia aquí: la tasa de aprendizaje pasa a depender directamente de la asistencia.
+
+**Evidence from the follow-up (notes, not dialogue)**
+
+- The original PDFs confirm Proposition 3.5 on p. 8 with Appendix A.4
+  and its October counterpart, Proposition 3.3 on p. 10 with Appendix
+  B.3. The official EC 2026 list confirms acceptance of the conference
+  version. Davies's research page lists his paper as a working paper.
+  Shen and Tamkin's revised arXiv v3 is dated November 23. The ACM
+  proceedings and Crossmark give Wu et al.'s DOI 10.1145/3834580.3838741.
+- The five proofs are collected in Appendices A.1–A.5. The sensitivity
+  audit checked the one-sided derivatives at the effort cutoff and the
+  exact quadratic limit of the peak gain at critical complementarity.
+  That limit follows by dividing the gain by the squared distance
+  to the critical value and taking the limit of the positive
+  denominator. The two-state model and five numbered results were retained.
+- The rerun passed 39 symbolic checks, 300 seeded parameter cases, 32
+  independent grid optimizations, seven tie and corner cases, and six
+  distributional comparisons. It checked the exact rational values
+  from the existing photograph. The CTMC results match the earlier
+  audit above. The full handwritten appendix remains open.

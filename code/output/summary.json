@@ -51,7 +51,7 @@
       "pi_cutoff": 0.25
     }
   ],
-  "symbolic_identities": 30,
+  "symbolic_identities": 39,
   "deterministic_checks": {
     "effort_grid_max_error": 1.0240963855184804e-05,
     "effort_grid_step": 5e-05,
