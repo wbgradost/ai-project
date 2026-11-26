@@ -37,9 +37,8 @@ its no-AI value at $b-1/\eta$. Effort vanishes at $b$, after which the share
 is constant. Exact pairwise comparisons characterize when one assistance
 level improves on another. Formula evaluations and Markov simulations check
 the results, with Monte Carlo error measured separately from
-initial-condition bias. The existing Lean module verifies stationary
-comparisons for the closed-form share. Its derivation from the Markov chain
-and other parts of the formalization remain open.
+initial-condition bias. The Lean development proves the five numbered results. Appendix~ef{app:lean}
+records the declarations and the scope of verification.
 \end{abstract}
 
 \section{Introduction}
@@ -891,64 +890,70 @@ through $\lambda_0/\mu$ and $\kappa b/\mu$.
 \end{proof}
 \clearpage
 \section{Lean correspondence}\label{app:lean}
-The existing Lean check used the manuscript pinned at the following commit.\\
-\href{https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf}
-{\texttt{7cc3a7406e09ba1544ff6997d5d742430c6c771c}}.
+The proof target is commit
+\href{https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf}
+{\texttt{3f8749bfbb5ee2c3d1eefa646724fb6c043018cf}}.
 
-The recorded check with Lean \texttt{4.30.0-rc2} imported the compiled
-algebra module and returned exit status~0. Its output and file hashes
-are in \path{lean/Grados26Learning/verification.txt}. The full
-paper-scoped check for the five results remains open.
+Table~\ref{tab:lean} identifies the Lean declaration and the scope of
+verification for each numbered result. The declarations belong to the
+\path{Grados26Learning} namespace. File paths are relative to
+\path{lean/Grados26Learning/}.
 
-The names in Table~\ref{tab:lean} belong to the \texttt{Grados26Learning}
-namespace. Their source is \path{lean/Grados26Learning/Algebra.lean}.
-The share in that module is defined by the right-hand side of
-\eqref{eq:stationary}. Proposition~\ref{prop:pairwise}'s comparison is
-proved for that formula under the paper's parameter restrictions.
-An interpretation as a comparison of Markov stationary laws depends
-on the open probabilistic derivation in Lemma~\ref{lem:stationary}.
+The specifications use Assumptions~\ref{ass:worker}--\ref{ass:chain}.
+The Markov formalization represents the generator and time-homogeneous
+transition law explicitly. Its occupation formulas use a jointly measurable
+process on the nonnegative time domain and a positive horizon $T$.
+
+The course's paper-scoped command was executed from the AppliedModelingLib root using Lean~\texttt{4.30.0-rc2}.
+\begin{quote}\small
+\verb|python3 scripts/paper_contribution.py check Grados26Learning --fast|
+\end{quote}
+The upstream command built the paper interface and reached its 600-second limit in the dependency reader. The rerun returned exit status~0 after a local adjustment to the generated reader's Lean imports. Both runs used the native dependency-closure check. The command output is recorded in
+\path{lean/Grados26Learning/paper-scoped-check.txt}.
 
 \begin{table}[htbp]
 \centering\small
-\caption{Correspondence of the existing Lean declarations with the five results.}
+\caption{Lean correspondence for the five numbered results.}
 \label{tab:lean}
-\begin{tabular}{@{}p{.13\linewidth}
- >{\raggedright\arraybackslash}p{.35\linewidth}
+\begin{tabular}{@{}p{.19\linewidth}
+ >{\raggedright\arraybackslash}p{.28\linewidth}
  >{\raggedright\arraybackslash}p{.46\linewidth}@{}}
 \toprule
-Result & Verified declarations & Scope and status\\
+Result & Declaration and file & Status and scope\\
 \midrule
 Lemma~\ref{lem:effort}
-& \path{effort_nonneg}, \path{effort_active}, \path{effort_saturated}
-& Formula properties proved. Open: existence and identification of the
-  largest optimizer of the concave worker problem, including the
-  first-order conditions.\\[4pt]
+& \path{lemma1}\newline\path{WorkerResult.lean}
+& Proved. Existence and identification of the largest maximizers, the
+  interior and corner marginal conditions, and low-state effort on both
+  sides of the cutoff.\\[4pt]
 Lemma~\ref{lem:stationary}
-& \path{learningRate_pos}, \path{denominator_pos},
-  \path{share_pos}, \path{share_lt_one}
-& Positivity and share bounds proved. Open: existence and uniqueness
-  of the stationary law, the transition law and expected occupation.\\[4pt]
+& \path{lemma2}\newline\path{CTMCResult.lean}
+& Proved. The two-state semigroup has a unique invariant law and the stated transient probabilities. The process yields the expected occupation and initial-state bias. \path{OccupationSecondMomentResult.lean} verifies the second moment in \eqref{eq:occupation-second-moment}.\\[4pt]
 Proposition~\ref{prop:shape}
-& \path{share_active}, \path{share_saturated};
-  the pairwise sign declarations below
-& Active and saturated formulas proved. Open: the full regime
-  characterization, maximizer and return thresholds, one-sided
-  derivatives and curvature.\\[4pt]
+& \path{proposition1}\newline\path{ShapeResult.lean}
+& Proved. Covers the three regimes, the unique maximum, the return threshold, the effort cutoff, the one-sided derivatives, and concavity.\\[4pt]
 Proposition~\ref{prop:pairwise}
-& \path{share_difference}, \path{share_active_difference},
-  \path{active_pair_increase_iff}, \path{active_pair_equal_iff},
-  \path{active_pair_decrease_iff}, \path{mixed_pair_decrease},
-  \path{plateau_pair_equal}, \path{skillFOSD_iff},
-  \path{meanSkill_order_iff}
-& Complete for the defined share under the paper's domains. At the
-  level of Markov laws, this verification is conditional on the
-  stationary formula in Lemma~\ref{lem:stationary}.\\[4pt]
+& \path{proposition2}\newline\path{ComparisonResult.lean}
+& Proved. Includes equality, saturation, and weak and strict rankings by
+  first-order stochastic dominance and mean skill. Lemma~\ref{lem:stationary}
+  identifies the stationary law.\\[4pt]
 Corollary~\ref{cor:sensitivity}
-& --- & Open: the threshold and level derivatives, stationary gain
-  sensitivities and the time change under common rate scaling.\\
+& \path{corollary1}\newline\path{SensitivityResult.lean}
+& Proved. Includes derivative signs and equality cases, cutoff sensitivities, gain comparisons, and rate scaling. The supporting modules verify the threshold limits and the gain maxima with respect to the rates.\\
 \bottomrule
 \end{tabular}
 \end{table}
+
+A fresh import of \path{ProofInterface.lean} checked the five theorem types.
+Their axiom audit lists \path{propext}, \path{Classical.choice}, and
+\path{Quot.sound}. The output is in \path{proof-kernel-check.txt}.
+
+The presentation used a separate check against commit
+\href{https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf}
+{\texttt{7cc3a74}}.
+The archived output records exit status~0 and the original source hashes.
+\href{https://github.com/wbgradost/ai-project/blob/4e08d41135cb1f4b563efcc349c1f2a14f8e0d58/lean/Grados26Learning/verification.txt}
+{Presentation verification record}.
 
 \clearpage
 \section{AI collaboration and handwritten verification}\label{app:ai}
@@ -991,6 +996,13 @@ An AI-assisted presentation update identified the Lean statement for the
 active pairwise improvement claim. Importing the compiled module and
 printing the declarations and dependencies confirmed the scope recorded
 in Appendix~\ref{app:lean}.
+
+\item[Formalization of the final results.]
+The AI translated the pinned statements into Lean and assembled proofs
+from the model definitions and the steps in Appendix~\ref{app:proofs}.
+Lean checked each proof against its stated proposition and reported its
+axiom dependencies. Table~\ref{tab:lean} records the verified scope.
+Section~\ref{sec:sim} documents the separate computational checks.
 \end{description}
 
 \subsection{Author's handwritten check}\label{app:hand}
@@ -1010,9 +1022,16 @@ $\pi_H(\HandHighAssistance)=\HandHighShare<\HandBaselineShare=\pi_H(0)$.
 At the peak, $\pi_H(\HandPeak)=\HandPeakShare$.
 The conjecture is therefore false even with positive effort. The same
 witness is checked with exact rational arithmetic in \path{code/verify.py}.
-The photograph documents the comparison with no AI and its counterexample.
-A complete handwritten appendix covering the five derivations in
-Appendix~\ref{app:proofs} remains open.
+
+The author also supplied six numbered photographs, archived in order in
+\href{https://github.com/wbgradost/ai-project/tree/main/hand}{\texttt{hand/}}.
+They cover the five derivations in Appendix~\ref{app:proofs}. The review
+found a sign slip in part~2. The photograph writes $h_0+\pi_H$
+where \eqref{eq:transient} and the preceding handwritten step give $h_0-\pi_H$.
+Part~5 gives the maximizing value of $\kappa$ but omits the intermediate
+derivation of $\partial_\kappa G$ in \eqref{eq:gain-derivatives}.
+The repository preserves the original photographs and the separate
+counterexample in Figure~\ref{fig:hand}.
 
 \clearpage
 \begin{figure}[p]

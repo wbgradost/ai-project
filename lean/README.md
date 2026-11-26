@@ -1,45 +1,29 @@
-﻿# Grados26Learning: evidencia formal utilizada en la presentación
+# Grados26Learning
 
-El manuscrito permanece fijado en
-[`7cc3a7406e09ba1544ff6997d5d742430c6c771c`](https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf).
-No se modifican sus proposiciones numeradas.
+Manuscrito formalizado en el commit [`3f8749bfbb5ee2c3d1eefa646724fb6c043018cf`](https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf).
+La carpeta [Grados26Learning](Grados26Learning/) se recuperó del worktree de
+AppliedModelingLib sobre la revisión `194edcc95df74806a39b961d10dedddc6e730cce` y se comprobó con Lean
+`4.30.0-rc2`.
 
-`Grados26Learning/Model.lean` y `Algebra.lean` son copias fieles del trabajo
-existente en `papers/Grados26Learning/` de AppliedModelingLib, worktree
-`/home/william/AppliedModelingLib-Grados26Learning` (base de la biblioteca:
-`194edcc95df74806a39b961d10dedddc6e730cce`). Se conservan los módulos
-compilados necesarios para la evidencia de la presentación, sin presentar los
-borradores restantes como demostraciones verificadas.
+| Resultado | Declaración y archivo | Alcance comprobado |
+|---|---|---|
+| Lema 1 | `Grados26Learning.lemma1` · `WorkerResult.lean` | Mayor maximizador y condiciones de interior y esquina. |
+| Lema 2 | `Grados26Learning.lemma2` · `CTMCResult.lean` | Ley estacionaria única, transición y esperanza de ocupación. |
+| Proposición 1 | `Grados26Learning.proposition1` · `ShapeResult.lean` | Regímenes, umbrales, saturación y curvatura. |
+| Proposición 2 | `Grados26Learning.proposition2` · `ComparisonResult.lean` | Comparaciones, igualdad, saturación, dominancia y habilidad media. |
+| Corolario 1 | `Grados26Learning.corollary1` · `SensitivityResult.lean` | Sensibilidades, ganancias y escala temporal. |
 
-La declaración mostrada es `Grados26Learning.active_pair_increase_iff`, en
-`Algebra.lean`, líneas 109–114. Prueba exactamente la comparación de la
-Proposición 2 para 0 ≤ u < v ≤ b: mayor asistencia mejora la fórmula estacionaria
-si y solo si eta · (b − u − v) > 1. `Parameters` contiene exclusivamente las
-positividades originales y eta ≥ 0. No hay hipótesis económica adicional.
-El módulo también demuestra las comparaciones de igualdad y disminución,
-la saturación y la equivalencia del orden de proporciones con dominancia
-estocástica y habilidad media en dos estados.
+El [registro oficial](Grados26Learning/paper-scoped-check.txt) conserva
+la salida de `python3 scripts/paper_contribution.py check Grados26Learning --fast`.
+La [comprobación de declaraciones y axiomas](Grados26Learning/proof-kernel-check.txt)
+documenta los resultados que se cargaron en una sesión nueva.
 
-`PresentationCheck.lean` importa ese módulo ya compilado y consulta las
-declaraciones y los axiomas del teorema mostrado. `verification.txt` conserva
-la salida auténtica de esta comprobación estrecha, la versión de Lean y las
-huellas de los dos archivos originales. Los axiomas fundacionales estándar de
-Lean/Mathlib no constituyen supuestos económicos añadidos. No se utiliza
-`sorry`, `admit` ni un axioma adicional para obtener la conclusión.
+La [ejecución sin ajustes](Grados26Learning/paper-scoped-check-upstream.txt)
+compiló la interfaz y agotó el tiempo del lector de dependencias. La
+ejecución completa usó importaciones modulares en el lector generado y
+conservó la validación nativa del cierre de dependencias.
 
-Desde el mismo entorno AppliedModelingLib, con estos módulos disponibles:
-
-```bash
-lake env lean /ruta/a/ai-project/lean/Grados26Learning/PresentationCheck.lean
-```
-
-Esta comprobación no es el paper-scoped check oficial ni una certificación
-completa de los cinco resultados. En particular, aquí no se da por formalizada
-la construcción probabilística de la cadena, el optimizador original, la
-caracterización global completa ni todo el corolario de sensibilidad. La
-presentación distingue estas limitaciones de las demostraciones analíticas
-existentes. Completar el procedimiento oficial del paper sigue requiriendo
-cerrar esos componentes, ejecutar
-`python3 scripts/paper_contribution.py check Grados26Learning --fast` y trasladar
-la carpeta generada completa respetando su `.gitignore`, como exige el
-[Issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7).
+El registro de la presentación, [verification.txt](Grados26Learning/verification.txt),
+corresponde al [pin histórico](https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf).
+La declaración y la prueba que las diapositivas extraen de `Algebra.lean`
+se conservan en las líneas 109–114.

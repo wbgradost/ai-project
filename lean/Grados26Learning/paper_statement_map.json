@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "paper": "Grados26Learning",
+  "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+  "source_version": "Git commit 3f8749bfbb5ee2c3d1eefa646724fb6c043018cf; unpublished manuscript; no arXiv record",
+  "source_artifact_path": "source-audited.tex",
+  "source_artifact_sha256": "59f8ef4840ba1f892f73379245d2093f2b210a6ef317e4794885f91b7e406a70",
+  "source_provenance": {
+    "controlling_pdf_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+    "controlling_pdf_sha256": "35e8b9c79c56812190e3a2decc58c9a5ffcb538041834c03769b6c086dc1356e",
+    "controlling_pdf_git_blob": "91f997c7f9fe4d9e393fb65326a17ff55caf7727",
+    "canonical_tex_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.tex",
+    "canonical_tex_git_blob": "2f65e875c25cd4814fa14414d7b0c5d430827cff",
+    "canonical_tex_sha256": "59f8ef4840ba1f892f73379245d2093f2b210a6ef317e4794885f91b7e406a70",
+    "source_relation": "Controlling PDF and its exact TeX source are Git blobs from the same author-pinned commit.",
+    "publication_status": "Own unpublished manuscript, no arXiv record, as explicitly supplied by the author.",
+    "previous_pdf_extraction_retained": false
+  },
+  "source_inventory_kind": "curated_same_commit_author_manuscript_tex_source",
+  "source_curated": true,
+  "seed_scaffold": false,
+  "source_coverage_mode": "named_theoretical_statements",
+  "semantic_route_schema": 2,
+  "items": {
+    "assumption1": {
+      "source_item": "Assumption 1",
+      "source_kind": "assumption",
+      "source_location": "source-audited.tex:122-135",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{assumption}[Worker problem and selection]\\label{ass:worker}\nThe production function $p:[0,\\infty)\\to\\mathbb R$ is continuously\ndifferentiable, nondecreasing, and concave, and the marginal cost of effort\nis constant at $\\gamma>0$. Assume\n\\begin{equation}\\label{eq:growth}\n \\limsup_{x\\to\\infty}\\frac{p(x)}{x}<\\gamma.\n\\end{equation}\nFor skill $s\\geq0$ and assistance $a\\geq0$, the worker selects the largest\nmaximizer of\n\\begin{equation}\\label{eq:worker}\n \\max_{e\\geq0}\\{p(s+e+a)-\\gamma e\\}.\n\\end{equation}\nLet $x^*$ denote the largest maximizer of $p(x)-\\gamma x$ over $x\\geq0$.\n\\end{assumption}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": false,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 122,
+          "line_end": 135,
+          "quoted_text": "\\begin{assumption}[Worker problem and selection]\\label{ass:worker}\nThe production function $p:[0,\\infty)\\to\\mathbb R$ is continuously\ndifferentiable, nondecreasing, and concave, and the marginal cost of effort\nis constant at $\\gamma>0$. Assume\n\\begin{equation}\\label{eq:growth}\n \\limsup_{x\\to\\infty}\\frac{p(x)}{x}<\\gamma.\n\\end{equation}\nFor skill $s\\geq0$ and assistance $a\\geq0$, the worker selects the largest\nmaximizer of\n\\begin{equation}\\label{eq:worker}\n \\max_{e\\geq0}\\{p(s+e+a)-\\gamma e\\}.\n\\end{equation}\nLet $x^*$ denote the largest maximizer of $p(x)-\\gamma x$ over $x\\geq0$.\n\\end{assumption}",
+          "quoted_text_sha256": "ee6a215fb0b28f914dfcc8bd516972813d6cdc6534e49dd01c6ce790256dd05d"
+        }
+      ],
+      "review_intensity": "main_text_primary"
+    },
+    "assumption2": {
+      "source_item": "Assumption 2",
+      "source_kind": "assumption",
+      "source_location": "source-audited.tex:142-153",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{assumption}[States, learning, and depreciation]\\label{ass:chain}\nThere are two skill states, $L$ and $H$, with skill levels\n$0\\leq s_L<s_H$. Define $b=x^*-s_L$ and assume $b>0$. For each fixed\n$a\\geq0$, $(X_t)_{t\\geq0}$ is a time-homogeneous continuous-time Markov\nchain on $\\{L,H\\}$. The rate from $L$ to $H$ at the chosen low-state effort\nis given by the learning technology\n\\begin{equation}\\label{eq:technology}\n \\lambda(e,a)=\\lambda_0+\\kappa e(1+\\eta a),\\qquad\n e,a\\geq0,\\quad \\lambda_0>0,\\quad \\kappa>0,\\quad \\eta\\geq0.\n\\end{equation}\nThe rate from $H$ to $L$ is the constant $\\mu>0$.\n\\end{assumption}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": false,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 142,
+          "line_end": 153,
+          "quoted_text": "\\begin{assumption}[States, learning, and depreciation]\\label{ass:chain}\nThere are two skill states, $L$ and $H$, with skill levels\n$0\\leq s_L<s_H$. Define $b=x^*-s_L$ and assume $b>0$. For each fixed\n$a\\geq0$, $(X_t)_{t\\geq0}$ is a time-homogeneous continuous-time Markov\nchain on $\\{L,H\\}$. The rate from $L$ to $H$ at the chosen low-state effort\nis given by the learning technology\n\\begin{equation}\\label{eq:technology}\n \\lambda(e,a)=\\lambda_0+\\kappa e(1+\\eta a),\\qquad\n e,a\\geq0,\\quad \\lambda_0>0,\\quad \\kappa>0,\\quad \\eta\\geq0.\n\\end{equation}\nThe rate from $H$ to $L$ is the constant $\\mu>0$.\n\\end{assumption}",
+          "quoted_text_sha256": "7a2347585810d2bfdde91671c7833f07d2557c11789d8cfced6e42bc9f9e43d6"
+        }
+      ],
+      "review_intensity": "main_text_primary"
+    },
+    "definition1": {
+      "source_item": "Definition 1",
+      "source_kind": "definition",
+      "source_location": "source-audited.tex:164-172",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{definition}[Effective effort]\\label{def:f}\nWrite $y^+=\\max\\{y,0\\}$ for the positive part of $y\\in\\mathbb R$. For\n$a\\geq0$, define\n\\begin{equation}\\label{eq:f}\n f(a)=(b-a)^+(1+\\eta a),\\qquad \\lam(a)=\\lambda_0+\\kappa f(a).\n\\end{equation}\nWrite $\\share(a)$ and $\\pi_L(a)$ for the stationary probabilities of $H$\nand $L$, respectively.\n\\end{definition}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": false,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 164,
+          "line_end": 172,
+          "quoted_text": "\\begin{definition}[Effective effort]\\label{def:f}\nWrite $y^+=\\max\\{y,0\\}$ for the positive part of $y\\in\\mathbb R$. For\n$a\\geq0$, define\n\\begin{equation}\\label{eq:f}\n f(a)=(b-a)^+(1+\\eta a),\\qquad \\lam(a)=\\lambda_0+\\kappa f(a).\n\\end{equation}\nWrite $\\share(a)$ and $\\pi_L(a)$ for the stationary probabilities of $H$\nand $L$, respectively.\n\\end{definition}",
+          "quoted_text_sha256": "89d0c144e204c7c669201f27f909dacd23ece785e99328e2fee724f707d8fe83"
+        }
+      ],
+      "review_intensity": "main_text_primary"
+    },
+    "lemma1": {
+      "source_item": "Lemma 1",
+      "source_kind": "lemma",
+      "source_location": "source-audited.tex:180-192",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{lemma}[Effort and the largest-maximizer rule]\\label{lem:effort}\nUnder Assumption~\\ref{ass:worker}, the largest maximizers defining $x^*$\nand the worker's selected effort exist. For every $s,a\\geq0$ the selected\neffort is\n\\begin{equation}\\label{eq:effort}\n e^*(s,a)=(x^*-s-a)^+ .\n\\end{equation}\nAn interior choice satisfies $p'(x^*)=\\gamma$. At the corner $s+a\\geq x^*$,\nthe selected effort is zero and $p'(s+a)\\leq\\gamma$, strictly if\n$s+a>x^*$. Under\nAssumption~\\ref{ass:chain}, $e_L^*(a)=b-a$ for $0\\leq a<b$, with\nderivative $-1$ on $(0,b)$, and $e_L^*(a)=0$ for $a\\geq b$.\n\\end{lemma}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": true,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 180,
+          "line_end": 192,
+          "quoted_text": "\\begin{lemma}[Effort and the largest-maximizer rule]\\label{lem:effort}\nUnder Assumption~\\ref{ass:worker}, the largest maximizers defining $x^*$\nand the worker's selected effort exist. For every $s,a\\geq0$ the selected\neffort is\n\\begin{equation}\\label{eq:effort}\n e^*(s,a)=(x^*-s-a)^+ .\n\\end{equation}\nAn interior choice satisfies $p'(x^*)=\\gamma$. At the corner $s+a\\geq x^*$,\nthe selected effort is zero and $p'(s+a)\\leq\\gamma$, strictly if\n$s+a>x^*$. Under\nAssumption~\\ref{ass:chain}, $e_L^*(a)=b-a$ for $0\\leq a<b$, with\nderivative $-1$ on $(0,b)$, and $e_L^*(a)=0$ for $a\\geq b$.\n\\end{lemma}",
+          "quoted_text_sha256": "0ef118f3efc8859d573f8dafe4c86a38d09428e42cf2d2059adb472c20f6b8e1"
+        }
+      ],
+      "review_intensity": "main_text_primary",
+      "spec_lean_declarations": [
+        "lemma1Spec"
+      ],
+      "proof_lean_declarations": [
+        "lemma1"
+      ]
+    },
+    "lemma2": {
+      "source_item": "Lemma 2",
+      "source_kind": "lemma",
+      "source_location": "source-audited.tex:200-220",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{lemma}[Stationarity and finite-horizon occupation]\\label{lem:stationary}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, each fixed $a\\geq0$\nhas a unique stationary distribution,\n\\begin{equation}\\label{eq:stationary}\n \\share(a)=\\frac{\\lam(a)}{\\lam(a)+\\mu},\\qquad\n \\pi_L(a)=\\frac{\\mu}{\\lam(a)+\\mu}.\n\\end{equation}\nLet $q_a=\\lam(a)+\\mu$ and let $h_0\\in[0,1]$ be the initial probability\nof state $H$. At time $t\\geq0$, the probability of state $H$ is\n\\begin{equation}\\label{eq:transient}\n h(t)=\\share(a)+(h_0-\\share(a))e^{-q_at}.\n\\end{equation}\nFor $T>0$, the occupation fraction\n$Y_T=T^{-1}\\int_0^T\\mathbf{1}_{\\{X_t=H\\}}\\,dt$ satisfies\n\\begin{equation}\\label{eq:occupation}\n \\mathbb E[Y_T]=\\share(a)+(h_0-\\share(a))\n                       \\frac{1-e^{-q_aT}}{q_a T}.\n\\end{equation}\nStarting in $L$ gives a downward bias relative to $\\share(a)$ of\nmagnitude $\\share(a)(1-e^{-q_aT})/(q_a T)$.\n\\end{lemma}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": true,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 200,
+          "line_end": 220,
+          "quoted_text": "\\begin{lemma}[Stationarity and finite-horizon occupation]\\label{lem:stationary}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, each fixed $a\\geq0$\nhas a unique stationary distribution,\n\\begin{equation}\\label{eq:stationary}\n \\share(a)=\\frac{\\lam(a)}{\\lam(a)+\\mu},\\qquad\n \\pi_L(a)=\\frac{\\mu}{\\lam(a)+\\mu}.\n\\end{equation}\nLet $q_a=\\lam(a)+\\mu$ and let $h_0\\in[0,1]$ be the initial probability\nof state $H$. At time $t\\geq0$, the probability of state $H$ is\n\\begin{equation}\\label{eq:transient}\n h(t)=\\share(a)+(h_0-\\share(a))e^{-q_at}.\n\\end{equation}\nFor $T>0$, the occupation fraction\n$Y_T=T^{-1}\\int_0^T\\mathbf{1}_{\\{X_t=H\\}}\\,dt$ satisfies\n\\begin{equation}\\label{eq:occupation}\n \\mathbb E[Y_T]=\\share(a)+(h_0-\\share(a))\n                       \\frac{1-e^{-q_aT}}{q_a T}.\n\\end{equation}\nStarting in $L$ gives a downward bias relative to $\\share(a)$ of\nmagnitude $\\share(a)(1-e^{-q_aT})/(q_a T)$.\n\\end{lemma}",
+          "quoted_text_sha256": "d3123103cd474b68a1075905e5731e65a1ed3fc854c4952249e69f8c378bb401"
+        }
+      ],
+      "review_intensity": "main_text_primary",
+      "spec_lean_declarations": [
+        "lemma2Spec"
+      ],
+      "proof_lean_declarations": [
+        "lemma2"
+      ]
+    },
+    "proposition1": {
+      "source_item": "Proposition 1",
+      "source_kind": "proposition",
+      "source_location": "source-audited.tex:228-266",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{proposition}[Global shape and the no-AI benchmark]\\label{prop:shape}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, $\\share$ is continuous\non $[0,\\infty)$. For $0\\leq a<b$, its derivative (from the right at $0$) is\n\\begin{equation}\\label{eq:derivative}\n \\share'(a)=\\frac{\\mu\\kappa[\\eta(b-2a)-1]}{[\\lam(a)+\\mu]^2}.\n\\end{equation}\n\\begin{enumerate}\n \\item In the null and weak regimes, $\\share$ is strictly decreasing on\n $[0,b]$, has its unique global maximum at $a=0$, and satisfies\n $\\share(a)<\\share(0)$ for every $a>0$. At $\\eta b=1$,\n $\\share'(0+)=0$ and $\\share'(a)<0$ for $0<a<b$.\n \\item In the strong regime, define\n \\begin{equation}\\label{eq:thresholds}\n  \\peak=\\frac{b-1/\\eta}{2},\\qquad \\ret=b-1/\\eta=2\\peak .\n \\end{equation}\n Then $0<\\peak<\\ret<b$ and $\\peak<b/2$. The share is strictly increasing\n on $[0,\\peak]$ and strictly decreasing on $[\\peak,b]$. It reaches its\n unique global maximum at $\\peak$. For positive assistance,\n \\begin{equation}\\label{eq:baseline}\n  \\begin{aligned}\n   \\share(a)>\\share(0)&\\iff 0<a<\\ret,\\\\\n   \\share(a)=\\share(0)&\\iff a=\\ret,\\\\\n   \\share(a)<\\share(0)&\\iff a>\\ret .\n  \\end{aligned}\n \\end{equation}\n \\item In every regime, for all $a\\geq b$,\n \\begin{equation}\\label{eq:plateau}\n  \\lam(a)=\\lambda_0,\\qquad\n  \\share(a)=\\frac{\\lambda_0}{\\lambda_0+\\mu}<\\share(0).\n \\end{equation}\n The one-sided derivatives at $b$ are\n \\begin{equation}\\label{eq:kink}\n  \\share'(b-)=-\\frac{\\mu\\kappa(1+\\eta b)}{(\\lambda_0+\\mu)^2}<0,\\qquad\n  \\share'(b+)=0.\n \\end{equation}\n The share is strictly concave on the active branch $[0,b]$ and fails\n global concavity on $[0,\\infty)$.\n\\end{enumerate}\n\\end{proposition}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": true,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 228,
+          "line_end": 266,
+          "quoted_text": "\\begin{proposition}[Global shape and the no-AI benchmark]\\label{prop:shape}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, $\\share$ is continuous\non $[0,\\infty)$. For $0\\leq a<b$, its derivative (from the right at $0$) is\n\\begin{equation}\\label{eq:derivative}\n \\share'(a)=\\frac{\\mu\\kappa[\\eta(b-2a)-1]}{[\\lam(a)+\\mu]^2}.\n\\end{equation}\n\\begin{enumerate}\n \\item In the null and weak regimes, $\\share$ is strictly decreasing on\n $[0,b]$, has its unique global maximum at $a=0$, and satisfies\n $\\share(a)<\\share(0)$ for every $a>0$. At $\\eta b=1$,\n $\\share'(0+)=0$ and $\\share'(a)<0$ for $0<a<b$.\n \\item In the strong regime, define\n \\begin{equation}\\label{eq:thresholds}\n  \\peak=\\frac{b-1/\\eta}{2},\\qquad \\ret=b-1/\\eta=2\\peak .\n \\end{equation}\n Then $0<\\peak<\\ret<b$ and $\\peak<b/2$. The share is strictly increasing\n on $[0,\\peak]$ and strictly decreasing on $[\\peak,b]$. It reaches its\n unique global maximum at $\\peak$. For positive assistance,\n \\begin{equation}\\label{eq:baseline}\n  \\begin{aligned}\n   \\share(a)>\\share(0)&\\iff 0<a<\\ret,\\\\\n   \\share(a)=\\share(0)&\\iff a=\\ret,\\\\\n   \\share(a)<\\share(0)&\\iff a>\\ret .\n  \\end{aligned}\n \\end{equation}\n \\item In every regime, for all $a\\geq b$,\n \\begin{equation}\\label{eq:plateau}\n  \\lam(a)=\\lambda_0,\\qquad\n  \\share(a)=\\frac{\\lambda_0}{\\lambda_0+\\mu}<\\share(0).\n \\end{equation}\n The one-sided derivatives at $b$ are\n \\begin{equation}\\label{eq:kink}\n  \\share'(b-)=-\\frac{\\mu\\kappa(1+\\eta b)}{(\\lambda_0+\\mu)^2}<0,\\qquad\n  \\share'(b+)=0.\n \\end{equation}\n The share is strictly concave on the active branch $[0,b]$ and fails\n global concavity on $[0,\\infty)$.\n\\end{enumerate}\n\\end{proposition}",
+          "quoted_text_sha256": "78e1ec0f83b8a6190a5e3d832f19d14756a299bda5d2ba0d78f48f8d236977f7"
+        }
+      ],
+      "review_intensity": "main_text_primary",
+      "spec_lean_declarations": [
+        "proposition1Spec"
+      ],
+      "proof_lean_declarations": [
+        "proposition1"
+      ]
+    },
+    "proposition2": {
+      "source_item": "Proposition 2",
+      "source_kind": "proposition",
+      "source_location": "source-audited.tex:274-292",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{proposition}[Comparison of two assistance levels]\\label{prop:pairwise}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, let $0\\leq u<v$\nand let $D_w=\\lambda_0+\\kappa f(w)+\\mu$ for $w\\in\\{u,v\\}$. Then\n\\begin{equation}\\label{eq:globaldiff}\n \\share(v)-\\share(u)=\\frac{\\mu\\kappa[f(v)-f(u)]}{D_vD_u}.\n\\end{equation}\nIf $v\\leq b$, then\n\\begin{equation}\\label{eq:pairwise}\n \\share(v)-\\share(u)=\n \\frac{\\mu\\kappa(v-u)[\\eta(b-u-v)-1]}{D_vD_u}.\n\\end{equation}\nIn this case $\\share(v)$ is greater than, equal to, or less than $\\share(u)$\nexactly when $\\eta(b-u-v)$ is greater than, equal to, or less than $1$,\nrespectively. If $u<b\\leq v$, then $\\share(v)<\\share(u)$. If $b\\leq u<v$,\nthen $\\share(v)=\\share(u)$. For two ordered states, $\\share(v)\\geq\\share(u)$\nis equivalent to first-order stochastic dominance of the stationary law\nat $v$ over the law at $u$ and to at least as high a mean skill at $v$.\nStrict inequalities in the shares give strict rankings in both comparisons.\n\\end{proposition}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": true,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 274,
+          "line_end": 292,
+          "quoted_text": "\\begin{proposition}[Comparison of two assistance levels]\\label{prop:pairwise}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, let $0\\leq u<v$\nand let $D_w=\\lambda_0+\\kappa f(w)+\\mu$ for $w\\in\\{u,v\\}$. Then\n\\begin{equation}\\label{eq:globaldiff}\n \\share(v)-\\share(u)=\\frac{\\mu\\kappa[f(v)-f(u)]}{D_vD_u}.\n\\end{equation}\nIf $v\\leq b$, then\n\\begin{equation}\\label{eq:pairwise}\n \\share(v)-\\share(u)=\n \\frac{\\mu\\kappa(v-u)[\\eta(b-u-v)-1]}{D_vD_u}.\n\\end{equation}\nIn this case $\\share(v)$ is greater than, equal to, or less than $\\share(u)$\nexactly when $\\eta(b-u-v)$ is greater than, equal to, or less than $1$,\nrespectively. If $u<b\\leq v$, then $\\share(v)<\\share(u)$. If $b\\leq u<v$,\nthen $\\share(v)=\\share(u)$. For two ordered states, $\\share(v)\\geq\\share(u)$\nis equivalent to first-order stochastic dominance of the stationary law\nat $v$ over the law at $u$ and to at least as high a mean skill at $v$.\nStrict inequalities in the shares give strict rankings in both comparisons.\n\\end{proposition}",
+          "quoted_text_sha256": "c8c9375fc12fa910a19dac538c4b06ce7f30bbfa9afcd47ddac6006668016630"
+        }
+      ],
+      "review_intensity": "main_text_primary",
+      "spec_lean_declarations": [
+        "proposition2Spec"
+      ],
+      "proof_lean_declarations": [
+        "proposition2"
+      ]
+    },
+    "corollary1": {
+      "source_item": "Corollary 1",
+      "source_kind": "corollary",
+      "source_location": "source-audited.tex:300-335",
+      "source_url": "https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf",
+      "statement": "\\begin{corollary}[Threshold locations and outcome magnitudes]\\label{cor:sensitivity}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, the critical\ncomplementarity is $\\eta_c=1/b$. In the strong regime, $\\peak,\\ret$ depend\nonly on $b,\\eta$. Holding the other arguments fixed,\n\\begin{equation}\\label{eq:threshold-sensitivity}\n \\partial_\\eta\\peak=\\frac{1}{2\\eta^2},\\quad\n \\partial_\\eta\\ret=\\frac{1}{\\eta^2},\\quad\n \\partial_b\\peak=\\frac12,\\quad \\partial_b\\ret=1 .\n\\end{equation}\nFor fixed $a\\geq0$ and $D=\\lam(a)+\\mu$,\n\\begin{equation}\\label{eq:level-sensitivity}\n \\partial_{\\lambda_0}\\share=\\frac{\\mu}{D^2}>0,\\qquad\n \\partial_\\kappa\\share=\\frac{\\mu f(a)}{D^2}\\geq0,\\qquad\n \\partial_\\mu\\share=-\\frac{\\lam(a)}{D^2}<0.\n\\end{equation}\nAlso $\\partial_\\eta\\share=\\mu\\kappa a(b-a)^+/D^2\\geq0$ (from the\nright at $\\eta=0$). The derivative in $\\kappa$ is zero exactly when\n$a\\geq b$, and the derivative in $\\eta$ is zero exactly when $a=0$ or\n$a\\geq b$. For $a<b$, $\\partial_b\\share=\\mu\\kappa(1+\\eta a)/D^2>0$,\nand for $a>b$ it is zero. At $b=a>0$ the left derivative in $b$ is zero\nand the right derivative is $\\mu\\kappa(1+\\eta a)/(\\lambda_0+\\mu)^2>0$.\nMultiplying $(\\lambda_0,\\kappa,\\mu)$ by a common factor $c>0$ leaves\n$\\share$ unchanged and multiplies the convergence rate $q_a$ by $c$.\n\nFor fixed $0<a<\\ret$ in the strong regime, let $\\Delta=f(a)-b>0$. The\npositive stationary gain over no AI is\n\\begin{equation}\\label{eq:gain}\n G(a)=\\share(a)-\\share(0)\n =\\frac{\\mu\\kappa\\Delta}{(\\lambda_0+\\kappa f(a)+\\mu)\n                            (\\lambda_0+\\kappa b+\\mu)}.\n\\end{equation}\nIt strictly decreases with $\\lambda_0$. The derivative in $\\mu$ has the\nsign of $(\\lambda_0+\\kappa f(a))(\\lambda_0+\\kappa b)-\\mu^2$, and the\nderivative in $\\kappa$ has the sign of\n$(\\lambda_0+\\mu)^2-\\kappa^2 f(a)b$, including zero at equality.\n\\end{corollary}",
+      "source_status": "source-curated; Lean semantic correspondence pending",
+      "claim_bearing": true,
+      "source_anchor_evidence": [
+        {
+          "path": "source-audited.tex",
+          "line_start": 300,
+          "line_end": 335,
+          "quoted_text": "\\begin{corollary}[Threshold locations and outcome magnitudes]\\label{cor:sensitivity}\nUnder Assumptions~\\ref{ass:worker}--\\ref{ass:chain}, the critical\ncomplementarity is $\\eta_c=1/b$. In the strong regime, $\\peak,\\ret$ depend\nonly on $b,\\eta$. Holding the other arguments fixed,\n\\begin{equation}\\label{eq:threshold-sensitivity}\n \\partial_\\eta\\peak=\\frac{1}{2\\eta^2},\\quad\n \\partial_\\eta\\ret=\\frac{1}{\\eta^2},\\quad\n \\partial_b\\peak=\\frac12,\\quad \\partial_b\\ret=1 .\n\\end{equation}\nFor fixed $a\\geq0$ and $D=\\lam(a)+\\mu$,\n\\begin{equation}\\label{eq:level-sensitivity}\n \\partial_{\\lambda_0}\\share=\\frac{\\mu}{D^2}>0,\\qquad\n \\partial_\\kappa\\share=\\frac{\\mu f(a)}{D^2}\\geq0,\\qquad\n \\partial_\\mu\\share=-\\frac{\\lam(a)}{D^2}<0.\n\\end{equation}\nAlso $\\partial_\\eta\\share=\\mu\\kappa a(b-a)^+/D^2\\geq0$ (from the\nright at $\\eta=0$). The derivative in $\\kappa$ is zero exactly when\n$a\\geq b$, and the derivative in $\\eta$ is zero exactly when $a=0$ or\n$a\\geq b$. For $a<b$, $\\partial_b\\share=\\mu\\kappa(1+\\eta a)/D^2>0$,\nand for $a>b$ it is zero. At $b=a>0$ the left derivative in $b$ is zero\nand the right derivative is $\\mu\\kappa(1+\\eta a)/(\\lambda_0+\\mu)^2>0$.\nMultiplying $(\\lambda_0,\\kappa,\\mu)$ by a common factor $c>0$ leaves\n$\\share$ unchanged and multiplies the convergence rate $q_a$ by $c$.\n\nFor fixed $0<a<\\ret$ in the strong regime, let $\\Delta=f(a)-b>0$. The\npositive stationary gain over no AI is\n\\begin{equation}\\label{eq:gain}\n G(a)=\\share(a)-\\share(0)\n =\\frac{\\mu\\kappa\\Delta}{(\\lambda_0+\\kappa f(a)+\\mu)\n                            (\\lambda_0+\\kappa b+\\mu)}.\n\\end{equation}\nIt strictly decreases with $\\lambda_0$. The derivative in $\\mu$ has the\nsign of $(\\lambda_0+\\kappa f(a))(\\lambda_0+\\kappa b)-\\mu^2$, and the\nderivative in $\\kappa$ has the sign of\n$(\\lambda_0+\\mu)^2-\\kappa^2 f(a)b$, including zero at equality.\n\\end{corollary}",
+          "quoted_text_sha256": "7d32bf36daced3be605e868c64b520caa9e1b6a2e57f3b102c03f911e510e458"
+        }
+      ],
+      "review_intensity": "main_text_primary",
+      "spec_lean_declarations": [
+        "corollary1Spec"
+      ],
+      "proof_lean_declarations": [
+        "corollary1"
+      ]
+    }
+  }
+}

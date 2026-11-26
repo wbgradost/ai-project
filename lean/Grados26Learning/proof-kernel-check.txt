@@ -1,0 +1,57 @@
+Source manuscript: 3f8749bfbb5ee2c3d1eefa646724fb6c043018cf
+Lean (version 4.30.0-rc2, x86_64-unknown-linux-gnu, commit 3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc, Release)
+Grados26Learning.lemma1 : Grados26Learning.lemma1Spec
+'Grados26Learning.lemma1' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.lemma2.{u} : Grados26Learning.lemma2Spec
+'Grados26Learning.lemma2' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.proposition1 : Grados26Learning.proposition1Spec
+'Grados26Learning.proposition1' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.proposition2 : Grados26Learning.proposition2Spec
+'Grados26Learning.proposition2' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.corollary1 : Grados26Learning.corollary1Spec
+'Grados26Learning.corollary1' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.peakGain_second_order (p : Grados26Learning.Parameters) :
+  have D := p.lambda0 + p.kappa * p.b + p.mu;
+  Filter.Tendsto
+      (fun η =>
+        (Grados26Learning.rawShare p.b p.lambda0 p.kappa p.mu η ((p.b - 1 / η) / 2) -
+            Grados26Learning.rawShare p.b p.lambda0 p.kappa p.mu η 0) /
+          (η * p.b - 1) ^ 2)
+      (nhdsWithin (1 / p.b) (Set.Ioi (1 / p.b))) (nhds (p.mu * p.kappa * p.b / (4 * D ^ 2))) ∧
+    0 < p.mu * p.kappa * p.b / (4 * D ^ 2)
+'Grados26Learning.peakGain_second_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.gain_depreciation_strict_max (p : Grados26Learning.Parameters) (h : 1 < p.eta * p.b) {a : ℝ}
+  (ha : 0 < a) (har : a < Grados26Learning.returnPoint p) :
+  have f := fun m =>
+    Grados26Learning.rawShare p.b p.lambda0 p.kappa m p.eta a -
+      Grados26Learning.rawShare p.b p.lambda0 p.kappa m p.eta 0;
+  have r := √(Grados26Learning.learningRate p a * Grados26Learning.learningRate p 0);
+  0 < r ∧ ∀ m > 0, m ≠ r → f m < f r
+'Grados26Learning.gain_depreciation_strict_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.gain_effortSensitivity_strict_max (p : Grados26Learning.Parameters) (h : 1 < p.eta * p.b) {a : ℝ}
+  (ha : 0 < a) (har : a < Grados26Learning.returnPoint p) :
+  have f := fun k =>
+    Grados26Learning.rawShare p.b p.lambda0 k p.mu p.eta a - Grados26Learning.rawShare p.b p.lambda0 k p.mu p.eta 0;
+  have r := (p.lambda0 + p.mu) / √(Grados26Learning.effectiveEffort p a * p.b);
+  0 < r ∧ ∀ k > 0, k ≠ r → f k < f r
+'Grados26Learning.gain_effortSensitivity_strict_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.threshold_limits {b : ℝ} (hb : 0 < b) :
+  Filter.Tendsto (fun η => (b - 1 / η) / 2) (nhdsWithin (1 / b) (Set.Ioi (1 / b))) (nhds 0) ∧
+    Filter.Tendsto (fun η => b - 1 / η) (nhdsWithin (1 / b) (Set.Ioi (1 / b))) (nhds 0) ∧
+      Filter.Tendsto (fun η => (b - 1 / η) / 2) Filter.atTop (nhds (b / 2)) ∧
+        Filter.Tendsto (fun η => b - 1 / η) Filter.atTop (nhds b)
+'Grados26Learning.threshold_limits' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.transientHigh_scale_rates (up down h0 t c : ℝ) (hc : c ≠ 0) (hr : up + down ≠ 0) :
+  Grados26Learning.transientHigh (c * up) (c * down) h0 t = Grados26Learning.transientHigh up down h0 (c * t)
+'Grados26Learning.transientHigh_scale_rates' depends on axioms: [propext, Classical.choice, Quot.sound]
+Grados26Learning.expected_occupation_sq_startLow_eq_formula.{u_1} {up down : ℝ}
+  {S : Grados26Learning.TwoStateSemigroup up down} {Ω : Type u_1} [MeasurableSpace Ω] {ν : MeasureTheory.Measure Ω}
+  [MeasureTheory.IsProbabilityMeasure ν] (X : Grados26Learning.TwoStateProcess S Ω ν) (hup : 0 < up) (hdown : 0 < down)
+  (hstart : Grados26Learning.processHigh X 0 = 0) (T : ℝ) (hT : 0 < T) :
+  have q := up + down;
+  have p := up / q;
+  have d := 1 - Real.exp (-q * T);
+  ∫ (ω : Ω), Grados26Learning.occupation X T ω ^ 2 ∂ν =
+    2 * p / T ^ 2 * (p * (T ^ 2 / 2 - T / q + d / q ^ 2) + (1 - p) / q * (T * (1 + Real.exp (-q * T)) - 2 * d / q))
+'Grados26Learning.expected_occupation_sq_startLow_eq_formula' depends on axioms: [propext, Classical.choice, Quot.sound]
+Proof declaration and axiom check exit status: 0

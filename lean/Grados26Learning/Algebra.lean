@@ -1,10 +1,10 @@
-import Grados26Learning.Model
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
-
+module
+public import Grados26Learning.Model
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.Ring
+@[expose] public section
 namespace Grados26Learning
-
 noncomputable section
 
 theorem effort_nonneg (p : Parameters) (a : ℝ) : 0 ≤ effort p a :=

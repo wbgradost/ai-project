@@ -38,10 +38,10 @@ figures and numerical inputs. [Computational details](code/README.md)
 
 | Component | Status |
 |---|---|
-| Manuscript | [Source](paper/paper.tex), [PDF](paper/paper.pdf), [bibliography](paper/references.bib). Five complete proofs. The Lean target is the PDF at the final merge commit. |
+| Manuscript | [Source](paper/paper.tex), [PDF](paper/paper.pdf), [bibliography](paper/references.bib). Five complete proofs. The [Lean target](https://github.com/wbgradost/ai-project/blob/3f8749bfbb5ee2c3d1eefa646724fb6c043018cf/paper/paper.pdf) is pinned at `3f8749b`. |
 | Proposal and presentations | [Proposal](proposal/proposal.pdf), [topic slides](slides/topic.pdf), [final slides](slides/final.pdf). |
-| Lean | [Existing verification](lean/README.md) covers stationary comparisons for the closed-form share from the [historical pin](https://github.com/wbgradost/ai-project/blob/7cc3a7406e09ba1544ff6997d5d742430c6c771c/paper/paper.pdf). Full paper-scoped verification remains open. |
-| Handwritten work | [Original derivation and counterexample](hand/derivacion_manuscrita.jpeg). The complete set of handwritten derivations remains open. |
+| Lean | All five numbered results compile. The paper-scoped check returned 0 with a local reader import adjustment. The upstream run timed out in the dependency reader. See [Lean verification](lean/README.md). |
+| Handwritten work | [Six author photographs and original counterexample](hand/README.md). Includes coverage and two review notes. |
 | Collaboration log | [Prompts, answers, and verification record](prompts.md). |
 
 [Course requirements in Issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7)

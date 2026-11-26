@@ -1,0 +1,7 @@
+Source manuscript: 3f8749bfbb5ee2c3d1eefa646724fb6c043018cf
+AppliedModelingLib base: 194edcc95df74806a39b961d10dedddc6e730cce
+Command: python3 scripts/paper_contribution.py check Grados26Learning --fast
++ lake build +Grados26Learning.PaperInterface
+Build completed successfully (2547 jobs).
+error: could not verify the semantic Lean import closure for Grados26Learning: Lean import-graph command failed: Command '['lake', 'env', 'lean', '/tmp/tmpldnccu72/AppliedModelingLibImportClosure.lean']' timed out after 600 seconds
+Paper-scoped check exit status: 2
