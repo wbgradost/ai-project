@@ -1282,3 +1282,49 @@ La comprobación Lean terminó con código de salida 0: confirmó la equivalenci
   distributional comparisons. It checked the exact rational values
   from the existing photograph. The CTMC results match the earlier
   audit above. The full handwritten appendix remains open.
+
+
+## November 25, 2026 — Formalization of the final manuscript
+
+**Author instruction (verbatim excerpts)**
+
+> No utilices `sorry`, `admit`, axiomas injustificados ni hipótesis que incorporen la conclusión. No debilites los enunciados del paper para facilitar las pruebas.
+>
+> Actualiza el Apéndice B del paper con la correspondencia entre cada resultado numerado, su declaración Lean, archivo y estado real. Identifica el commit formalizado y el resultado del check oficial.
+
+**Verification record**
+
+- The source artifacts were recovered from the author's pinned commit `3f8749bfbb5ee2c3d1eefa646724fb6c043018cf`.
+  The recorded PDF SHA-256 is
+  `35e8b9c79c56812190e3a2decc58c9a5ffcb538041834c03769b6c086dc1356e`.
+- The recovered proofs were compiled incrementally with the existing toolchain.
+  The module headers were migrated to Lean's public-import syntax after legacy
+  imports caused repeated memory and disk stalls. Proofs were corrected against
+  compiler diagnostics and kept separate from source-facing propositions.
+- The exact five numbered statements and their proof declarations compiled. The
+  supporting proofs also cover the closed-form second occupation moment, the
+  threshold limits and the gain maxima with respect to the rates. The five
+  proof dependencies list only `propext`, `Classical.choice` and `Quot.sound`.
+- The paper-scoped and kernel declaration checks are archived under
+  `lean/Grados26Learning/`. Table 2 of the updated paper records the proven scope.
+
+
+## November 26, 2026 — Author's handwritten appendix and final verification
+
+**Author instruction (verbatim excerpts)**
+
+> Ya he realizado personalmente las derivaciones manuscritas y guardado las seis partes en:
+>
+> No reconstruyas ni alteres el contenido de mis derivaciones manuscritas. Si encuentras alguna deficiencia sustantiva, identifícala con precisión.
+
+**Evidence and review**
+
+- The author supplied six handwritten JPEG pages. The AI reviewed each
+  page in order against Appendix A for legibility and coverage. That review
+  identified the sign slip in part 2 and the omitted intermediate derivative
+  with respect to \(\kappa\) in part 5. The photographs are archived unchanged.
+- The numbered statements and Appendix A were compared verbatim with the
+  mathematical pin. The Lean kernel checked the formal statements and
+  proof dependencies. The symbolic and numerical verification uses the
+  repository's separate `code/verify.py` entry point. The photographs
+  document the author’s own work.

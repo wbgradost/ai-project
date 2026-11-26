@@ -1,0 +1,9 @@
+Source manuscript: 3f8749bfbb5ee2c3d1eefa646724fb6c043018cf
+AppliedModelingLib base: 194edcc95df74806a39b961d10dedddc6e730cce
+WSL compatibility: the generated Lean import-closure driver for Grados26Learning
+starts with a module header. It runs the repository's native closure analyzer.
+Command: python3 scripts/paper_contribution.py check Grados26Learning --fast
++ lake build +Grados26Learning.PaperInterface
+Build completed successfully (2547 jobs).
++ git diff --check -- papers/Grados26Learning papers/Grados26Learning.lean lakefile.toml ':(exclude)papers/Grados26Learning/source/'
+Paper-scoped check exit status: 0
